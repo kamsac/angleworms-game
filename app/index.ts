@@ -1,4 +1,5 @@
-console.clear();
+import './style.scss';
 
-let title: string = 'Angleworms';
-console.log(title);
+import Game from "./classes/game";
+
+new Game();
