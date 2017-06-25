@@ -5,18 +5,22 @@ import MapPosition from "../types/map-position.type";
 import IMapItem from "../interfaces/map-item.interface";
 import Color from "../types/color.type";
 import Velocity from "../types/velocity.type";
+import IMap from "../interfaces/map.interface";
 
 class MapItem extends Drawable implements IMapItem {
     protected position: MapPosition;
     protected color: Color;
+    protected map: IMap;
     protected squareDimensions: Dimensions;
     protected mapSize: Dimensions;
 
     public constructor() {
         super();
         this.color = '#aaa';
+        this.map = Locator.getMap();
         this.squareDimensions = Locator.getMap().getSquareDimensions();
         this.mapSize = Locator.getMap().getSize();
+        this.registerItselfToMap();
     }
 
     public draw(): void {
@@ -42,6 +46,10 @@ class MapItem extends Drawable implements IMapItem {
     public move(velocity: Velocity): void {
         this.position.x = (this.mapSize.width + (this.position.x + velocity.x)) % this.mapSize.width;
         this.position.y = (this.mapSize.height + (this.position.y + velocity.y)) % this.mapSize.height;
+    }
+
+    private registerItselfToMap() {
+        this.map.addMapItem(this);
     }
 }
 

@@ -8,6 +8,7 @@ import Color from "../types/color.type";
 import Tail from "./tail";
 import MapPosition from "../types/map-position.type";
 import PlayerCheatInputBindings from "../types/player-cheat-input-bindings.type";
+import IMap from "../interfaces/map.interface";
 
 export default class Player implements IDrawable {
     private velocity: Velocity;
@@ -17,6 +18,8 @@ export default class Player implements IDrawable {
     private size: number;
     private inputBindings: PlayerInputBindings;
     private mapSize: Dimensions;
+    private map: IMap;
+    private ticksLived: number;
 
     public constructor() {
         this.color = '#0f0';
@@ -25,8 +28,10 @@ export default class Player implements IDrawable {
             y: 0
         };
         this.tail = [];
-        this.size = 5;
+        this.size = 0;
+        this.ticksLived = 0;
         this.mapSize = Locator.getMap().getSize();
+        this.map = Locator.getMap();
         this.initInputBindings();
         this.initHead();
 
@@ -36,6 +41,8 @@ export default class Player implements IDrawable {
     public update(): void {
         this.updateTail();
         this.moveHead();
+
+        this.ticksLived++;
     }
 
     public draw(): void {
@@ -44,12 +51,39 @@ export default class Player implements IDrawable {
     }
 
     private moveHead(): void {
-        this.head.move(this.velocity);
+        const futurePosition: MapPosition = {
+            x: this.head.getPosition().x + this.velocity.x,
+            y: this.head.getPosition().y + this.velocity.y
+        };
+
+        if (this.map.getMapItemsAt(futurePosition).length === 0) {
+            this.head.move(this.velocity);
+        } else if (this.isMoving()) {
+            this.kindaDie();
+        }
+    }
+
+    private kindaDie(): void {
+        // TODO: This isn't Angleworms II at all, but while it's still not playable game, it's kind of fun. Remove this crap later.
+        const newColor = `#${Math.floor(Math.random()*8+2)}${Math.floor(Math.random()*8+2)}${Math.floor(Math.random()*8+2)}`;
+        this.size -= 2;
+        this.setColor(newColor);
+    }
+
+    private setColor(color: Color) {
+        this.color = color;
+        this.head.setColor(this.color);
+    }
+
+    private isMoving(): boolean {
+        return (this.velocity.x !== 0 ||
+                this.velocity.y !== 0);
     }
 
     private updateTail(): void {
         this.spawnTail();
         this.removeDeadTail();
+        this.growSize();
     }
 
     private spawnTail(): void {
@@ -67,8 +101,15 @@ export default class Player implements IDrawable {
     private removeDeadTail(): void {
         if (this.tail.length > this.size) {
             for(let i = 0; this.tail.length - this.size; i++) {
-                this.tail.shift();
+                const removedTailPiece: Tail = this.tail.shift();
+                this.map.removeMapItem(removedTailPiece);
             }
+        }
+    }
+
+    private growSize(): void {
+        if (this.isMoving() && this.ticksLived % 4 == 0) {
+            this.size++;
         }
     }
 
