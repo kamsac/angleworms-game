@@ -9,12 +9,14 @@ import Velocity from "../types/velocity.type";
 class MapItem extends Drawable implements IMapItem {
     protected position: MapPosition;
     protected color: Color;
-    protected squareDimensions: Dimensions = Locator.getMap().getSquareDimensions();
-    protected mapSize: Dimensions = Locator.getMap().getSize();
+    protected squareDimensions: Dimensions;
+    protected mapSize: Dimensions;
 
     public constructor() {
         super();
         this.color = '#aaa';
+        this.squareDimensions = Locator.getMap().getSquareDimensions();
+        this.mapSize = Locator.getMap().getSize();
     }
 
     public draw(): void {
@@ -27,6 +29,10 @@ class MapItem extends Drawable implements IMapItem {
 
     public setPosition(position: MapPosition) {
         this.position = position;
+    }
+
+    public getPosition(): MapPosition {
+        return this.position;
     }
 
     public setColor(color: Color): void {

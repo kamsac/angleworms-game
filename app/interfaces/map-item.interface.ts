@@ -5,6 +5,7 @@ import Color from "../types/color.type";
 interface IMapItem {
     setColor: (color: Color) => void;
     setPosition: (position: MapPosition) => void;
+    getPosition: () => MapPosition;
     move: (velocity: Velocity) => void;
     draw: () => void;
 }
