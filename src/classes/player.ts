@@ -8,6 +8,7 @@ import MapPosition from "../types/map-position.type";
 import IMap from "../interfaces/map.interface";
 import IInputComponent from "../interfaces/input-component.interface";
 import IPlayer from "../interfaces/player.interface";
+import PlayerInitialSettings from "../types/player-initial-settings.type";
 
 export default class Player implements IPlayer {
     private input: IInputComponent;
@@ -20,17 +21,17 @@ export default class Player implements IPlayer {
     private map: IMap;
     private ticksLived: number;
 
-    public constructor(input: IInputComponent) {
+    public constructor(initialSettings: PlayerInitialSettings, input: IInputComponent) {
         this.input = input;
-        this.color = '#0f0';
-        this.velocity = {x: 0, y: 0};
+        this.color = initialSettings.color;
+        this.velocity = initialSettings.velocity;
         this.tail = [];
         this.size = 0;
         this.ticksLived = 0;
         this.mapSize = Locator.getMap().getSize();
         this.map = Locator.getMap();
 
-        this.initHead();
+        this.initHead(initialSettings.position);
         this.input.init(this);
     }
 
@@ -154,10 +155,7 @@ export default class Player implements IPlayer {
     }
 
     private kindaDie(): void {
-        // TODO: This isn't Angleworms II at all, but while it's still not playable game, it's kind of fun. Remove this crap later.
-        const newColor = `#${Math.floor(Math.random()*8+2)}${Math.floor(Math.random()*8+2)}${Math.floor(Math.random()*8+2)}`;
-        this.size -= 2;
-        this.setColor(newColor);
+        this.size = 0;
     }
 
     private setColor(color: Color) {
@@ -208,14 +206,9 @@ export default class Player implements IPlayer {
         }
     }
 
-    private initHead(): void {
+    private initHead(startPosition: MapPosition): void {
         this.head = new Head();
-        let startPosition = {
-            x: Math.floor(this.mapSize.width / 2),
-            y: Math.floor(this.mapSize.height / 2)
-        };
         this.head.setPosition(startPosition);
         this.head.setColor(this.color);
-
     }
 }
