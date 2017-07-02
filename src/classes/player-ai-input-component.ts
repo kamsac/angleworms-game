@@ -53,6 +53,6 @@ export default class PlayerAiInputComponent implements IInputComponent {
     }
 
     private doIFeelLikeChangingDirectionForNoGoodReason(): boolean {
-        return (Math.random() < 0.5);
+        return (Math.random() < 0.2);
     }
 }
