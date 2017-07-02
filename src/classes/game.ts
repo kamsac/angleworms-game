@@ -4,6 +4,7 @@ import Locator from "./locator";
 import IMap from "../interfaces/map.interface";
 import Canvas from "./canvas";
 import PlayerCheatInputComponent from "./player-cheat-input-component";
+import PlayerAiInputComponent from "./player-ai-input-component";
 
 export default class Game {
     private readonly fps: number;
@@ -43,6 +44,6 @@ export default class Game {
     }
 
     private initPlayer(): void {
-        this.player = new Player(new PlayerCheatInputComponent());
+        this.player = new Player(new PlayerAiInputComponent());
     }
 }

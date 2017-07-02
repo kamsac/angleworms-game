@@ -35,6 +35,7 @@ export default class Player implements IPlayer {
     }
 
     public update(): void {
+        this.input.update(this);
         this.updateTail();
         this.moveHead();
 
@@ -62,6 +63,83 @@ export default class Player implements IPlayer {
         this.size = size;
     }
 
+    public goLeft(): void {
+        this.velocity = {x: -1, y: 0};
+    }
+
+    public goUp(): void {
+        this.velocity = {x: 0, y: -1};
+    }
+
+    public goRight(): void {
+        this.velocity = {x: 1, y: 0};
+    }
+
+    public goDown(): void {
+        this.velocity = {x: 0, y: 1};
+    }
+
+    public isMoving(): boolean {
+        return (this.velocity.x !== 0 ||
+                this.velocity.y !== 0);
+    }
+
+    public isMovingLeft(): boolean {
+        return this.velocity.x === -1;
+    }
+
+    public isMovingUp(): boolean {
+        return this.velocity.y === -1;
+    }
+
+    public isMovingRight(): boolean {
+        return this.velocity.x === 1;
+    }
+
+    public isMovingDown(): boolean {
+        return this.velocity.y === 1;
+    }
+
+    public isSafeToGoLeft(): boolean {
+        const position = {
+            x: this.head.getPosition().x - 1,
+            y: this.head.getPosition().y
+        };
+
+        return (this.map.getMapItemsAt(position).length === 0);
+    }
+
+    public isSafeToGoUp(): boolean {
+        const position = {
+            x: this.head.getPosition().x,
+            y: this.head.getPosition().y - 1
+        };
+
+        return (this.map.getMapItemsAt(position).length === 0);
+    }
+
+    public isSafeToGoRight(): boolean {
+        const position = {
+            x: this.head.getPosition().x + 1,
+            y: this.head.getPosition().y
+        };
+
+        return (this.map.getMapItemsAt(position).length === 0);
+    }
+
+    public isSafeToGoDown(): boolean {
+        const position = {
+            x: this.head.getPosition().x,
+            y: this.head.getPosition().y + 1
+        };
+
+        return (this.map.getMapItemsAt(position).length === 0);
+    }
+
+    public getHead(): Head {
+        return this.head;
+    }
+
     private moveHead(): void {
         const futurePosition: MapPosition = {
             x: this.head.getPosition().x + this.velocity.x,
@@ -85,11 +163,6 @@ export default class Player implements IPlayer {
     private setColor(color: Color) {
         this.color = color;
         this.head.setColor(this.color);
-    }
-
-    private isMoving(): boolean {
-        return (this.velocity.x !== 0 ||
-                this.velocity.y !== 0);
     }
 
     private updateTail(): void {

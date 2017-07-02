@@ -9,24 +9,28 @@ export default class PlayerInputComponent implements IInputComponent {
         this.initBindings();
     }
 
-    public init(player: IPlayer) {
+    public init(player: IPlayer): void {
         window.addEventListener('keydown', (event: KeyboardEvent) => {
             let key: string = event.key;
             switch(key) {
                 case this.bindings.left:
-                    player.setVelocity({x: -1, y: 0});
+                    player.goLeft();
                     break;
                 case this.bindings.up:
-                    player.setVelocity({x: 0, y: -1});
+                    player.goUp();
                     break;
                 case this.bindings.right:
-                    player.setVelocity({x: 1, y: 0});
+                    player.goRight();
                     break;
                 case this.bindings.down:
-                    player.setVelocity({x: 0, y: 1});
+                    player.goDown();
                     break;
             }
         }, false);
+    }
+
+    public update(player: IPlayer): void {
+
     }
 
     private initBindings(): void {
