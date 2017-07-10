@@ -9,19 +9,33 @@ import PlayerInitialSettings from "../types/player-initial-settings.type";
 import Dimensions from "../types/dimensions.type";
 
 export default class Game {
-    private readonly fps: number;
     private map: IMap;
     private players: Player[];
+    private fps: number;
+    private stepTime: number; // ms
+    private lastTime: number; // ms
+    private deltaTime: number; // ms
+    private updateLag: number; // ms
+    private maxUpdateLag: number; // ms
 
     constructor() {
         Game.provideServices();
 
-        this.fps = 1000 / 10;
         this.map = Locator.getMap();
         this.players = [];
+        this.fps = 10;
+        this.stepTime = 1000 / this.fps;
+        this.lastTime = 0;
+        this.deltaTime = 0;
+        this.updateLag = 0;
+        this.maxUpdateLag = 500;
 
         this.init();
-        setInterval(() => { this.gameLoop() }, this.fps);
+        this.requestNextFrame();
+    }
+
+    private requestNextFrame(): void {
+        window.requestAnimationFrame((timestamp) => { this.gameLoop(timestamp) });
     }
 
     private static provideServices(): void {
@@ -29,9 +43,17 @@ export default class Game {
         Locator.provideMap(new Map({width: 20, height: 20}));
     }
 
-    private gameLoop(): void {
-        this.update();
-        this.draw();
+    private gameLoop(time: number /* ms */): void {
+        this.deltaTime = Math.min(this.maxUpdateLag, time - this.lastTime);
+        this.updateLag += this.deltaTime;
+
+        while (this.updateLag > this.stepTime) {
+            this.updateLag -= this.stepTime;
+            this.update();
+        }
+        this.render();
+        this.lastTime = time;
+        this.requestNextFrame();
     };
 
     private init(): void {
@@ -44,7 +66,7 @@ export default class Game {
         }
     }
 
-    private draw(): void {
+    private render(): void {
         this.map.draw();
         for(let i = 0; i < this.players.length; i++) {
             this.players[i].draw();
