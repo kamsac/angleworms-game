@@ -17,28 +17,30 @@ export default class PlayerAiInputComponent implements IInputComponent {
     }
 
     public update(player: IPlayer) {
-        let safePlayerActions = [];
-        if (player.isSafeToGoLeft()) {
-            safePlayerActions.push(() => { player.goLeft() });
-        }
-        if (player.isSafeToGoUp()) {
-            safePlayerActions.push(() => { player.goUp() });
-        }
-        if (player.isSafeToGoRight()) {
-            safePlayerActions.push(() => { player.goRight() });
-        }
-        if (player.isSafeToGoDown()) {
-            safePlayerActions.push(() => { player.goDown() });
-        }
-        const doIHaveAnySafeMoves = () => safePlayerActions.length > 0;
-        if (doIHaveAnySafeMoves()) {
-            const whichDirectionIWantToGo: number = Math.floor(Math.random() * safePlayerActions.length );
-            const go = () => { safePlayerActions[whichDirectionIWantToGo]() };
+        if (player.getTicksToMove() === 0) {
+            let safePlayerActions = [];
+            if (player.isSafeToGoLeft()) {
+                safePlayerActions.push(() => { player.goLeft() });
+            }
+            if (player.isSafeToGoUp()) {
+                safePlayerActions.push(() => { player.goUp() });
+            }
+            if (player.isSafeToGoRight()) {
+                safePlayerActions.push(() => { player.goRight() });
+            }
+            if (player.isSafeToGoDown()) {
+                safePlayerActions.push(() => { player.goDown() });
+            }
+            const doIHaveAnySafeMoves = () => safePlayerActions.length > 0;
+            if (doIHaveAnySafeMoves()) {
+                const whichDirectionIWantToGo: number = Math.floor(Math.random() * safePlayerActions.length );
+                const go = () => { safePlayerActions[whichDirectionIWantToGo]() };
 
-            if (this.doIfIDieIfIDontChangeDirection(player)) {
-                go();
-            } else if (this.doIFeelLikeChangingDirectionForNoGoodReason()) {
-                go();
+                if (this.doIfIDieIfIDontChangeDirection(player)) {
+                    go();
+                } else if (this.doIFeelLikeChangingDirectionForNoGoodReason()) {
+                    go();
+                }
             }
         }
     }

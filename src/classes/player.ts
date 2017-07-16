@@ -19,7 +19,10 @@ export default class Player implements IPlayer {
     private size: number;
     private mapSize: Dimensions;
     private map: IMap;
-    private ticksLived: number;
+    private ticksToMove: number;
+    private readonly ticksToMoveDelay: number;
+    private ticksToGrow: number;
+    private readonly ticksToGrowDelay: number;
 
     public constructor(initialSettings: PlayerInitialSettings, input: IInputComponent) {
         this.input = input;
@@ -27,7 +30,10 @@ export default class Player implements IPlayer {
         this.velocity = initialSettings.velocity;
         this.tail = [];
         this.size = 0;
-        this.ticksLived = 0;
+        this.ticksToMove = 0;
+        this.ticksToMoveDelay = Math.round(120 / 10);
+        this.ticksToGrow = 0;
+        this.ticksToGrowDelay = Math.round(this.ticksToMoveDelay * 4);
         this.mapSize = Locator.getMap().getSize();
         this.map = Locator.getMap();
 
@@ -39,8 +45,6 @@ export default class Player implements IPlayer {
         this.input.update(this);
         this.updateTail();
         this.moveHead();
-
-        this.ticksLived++;
     }
 
     public draw(): void {
@@ -137,20 +141,34 @@ export default class Player implements IPlayer {
         return (this.map.getMapItemsAt(position).length === 0);
     }
 
+    public getTicksToMove(): number {
+        return this.ticksToMove;
+    }
+
+    public getTicksToMoveDelay(): number {
+        return this.ticksToMoveDelay;
+    }
+
     public getHead(): Head {
         return this.head;
     }
 
     private moveHead(): void {
-        const futurePosition: MapPosition = {
-            x: this.head.getPosition().x + this.velocity.x,
-            y: this.head.getPosition().y + this.velocity.y
-        };
+        if (++this.ticksToMove === this.ticksToMoveDelay) {
+            const futurePosition: MapPosition = {
+                x: this.head.getPosition().x + this.velocity.x,
+                y: this.head.getPosition().y + this.velocity.y
+            };
 
-        if (this.map.getMapItemsAt(futurePosition).length === 0) {
-            this.head.move(this.velocity);
-        } else if (this.isMoving()) {
-            this.kindaDie();
+            if (this.map.getMapItemsAt(futurePosition).length === 0) {
+                this.head.move(this.velocity);
+
+                this.spawnTail();
+            } else if (this.isMoving()) {
+                this.kindaDie();
+            }
+
+            this.ticksToMove = 0;
         }
     }
 
@@ -164,7 +182,6 @@ export default class Player implements IPlayer {
     }
 
     private updateTail(): void {
-        this.spawnTail();
         this.removeDeadTail();
         this.growSize();
     }
@@ -191,8 +208,12 @@ export default class Player implements IPlayer {
     }
 
     private growSize(): void {
-        if (this.isMoving() && this.ticksLived % 4 == 0) {
-            this.size++;
+        if (++this.ticksToGrow === this.ticksToGrowDelay) {
+            if (this.isMoving()) {
+                this.size++;
+            }
+
+            this.ticksToGrow = 0;
         }
     }
 

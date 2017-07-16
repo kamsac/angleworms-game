@@ -12,7 +12,7 @@ export default class Game {
     private map: IMap;
     private players: Player[];
     private fps: number;
-    private stepTime: number; // ms
+    private tickTime: number; // ms
     private lastTime: number; // ms
     private deltaTime: number; // ms
     private updateLag: number; // ms
@@ -23,8 +23,8 @@ export default class Game {
 
         this.map = Locator.getMap();
         this.players = [];
-        this.fps = 10;
-        this.stepTime = 1000 / this.fps;
+        this.fps = 120;
+        this.tickTime = 1000 / this.fps;
         this.lastTime = 0;
         this.deltaTime = 0;
         this.updateLag = 0;
@@ -47,8 +47,8 @@ export default class Game {
         this.deltaTime = Math.min(this.maxUpdateLag, time - this.lastTime);
         this.updateLag += this.deltaTime;
 
-        while (this.updateLag > this.stepTime) {
-            this.updateLag -= this.stepTime;
+        while (this.updateLag > this.tickTime) {
+            this.updateLag -= this.tickTime;
             this.update();
         }
         this.render();

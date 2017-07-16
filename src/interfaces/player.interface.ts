@@ -9,6 +9,8 @@ interface IPlayer extends IDrawable, IMovable, ISizable {
     isSafeToGoUp: () => boolean;
     isSafeToGoRight: () => boolean;
     isSafeToGoDown: () => boolean;
+    getTicksToMove: () => number;
+    getTicksToMoveDelay: () => number;
 }
 
 export default IPlayer
