@@ -7,6 +7,7 @@ import PlayerCheatInputComponent from "./player-cheat-input-component";
 import PlayerAiInputComponent from "./player-ai-input-component";
 import PlayerInitialSettings from "../types/player-initial-settings.type";
 import Dimensions from "../types/dimensions.type";
+import GameInput from "./game-input";
 
 export default class Game {
     private map: IMap;
@@ -41,6 +42,7 @@ export default class Game {
     private static provideServices(): void {
         Locator.provideCanvas(new Canvas());
         Locator.provideMap(new Map({width: 20, height: 20}));
+        Locator.provideGameInput(new GameInput());
     }
 
     private gameLoop(time: number /* ms */): void {

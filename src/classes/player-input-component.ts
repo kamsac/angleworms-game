@@ -1,44 +1,34 @@
 import IInputComponent from "../interfaces/input-component.interface";
 import IPlayer from "../interfaces/player.interface";
-import PlayerInputBindings from "../types/player-input-bindings.type";
+import IGameInput from "../interfaces/game-input.interface";
+import Locator from "./locator";
 
 export default class PlayerInputComponent implements IInputComponent {
-    private bindings: PlayerInputBindings;
+    private gameInput: IGameInput;
 
     public constructor() {
-        this.initBindings();
+        this.gameInput = Locator.getGameInput();
     }
 
     public init(player: IPlayer): void {
-        window.addEventListener('keydown', (event: KeyboardEvent) => {
-            let key: string = event.key;
-            switch(key) {
-                case this.bindings.left:
-                    player.goLeft();
-                    break;
-                case this.bindings.up:
-                    player.goUp();
-                    break;
-                case this.bindings.right:
-                    player.goRight();
-                    break;
-                case this.bindings.down:
-                    player.goDown();
-                    break;
-            }
-        }, false);
+
     }
 
     public update(player: IPlayer): void {
+        if (this.gameInput.pressed.player1.left) {
+            player.goLeft();
+        }
 
-    }
+        if (this.gameInput.pressed.player1.up) {
+            player.goUp();
+        }
 
-    private initBindings(): void {
-        this.bindings = {
-            left: 'ArrowLeft',
-            up: 'ArrowUp',
-            right: 'ArrowRight',
-            down: 'ArrowDown',
+        if (this.gameInput.pressed.player1.right) {
+            player.goRight();
+        }
+
+        if (this.gameInput.pressed.player1.down) {
+            player.goDown();
         }
     }
 }
