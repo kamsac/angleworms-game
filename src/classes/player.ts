@@ -38,7 +38,6 @@ export default class Player implements IPlayer {
         this.map = Locator.getMap();
 
         this.initHead(initialSettings.position);
-        this.input.init(this);
     }
 
     public update(): void {

@@ -4,14 +4,10 @@ import IGameInput from "../interfaces/game-input.interface";
 import Locator from "./locator";
 
 export default class PlayerInputComponent implements IInputComponent {
-    private gameInput: IGameInput;
+    protected gameInput: IGameInput;
 
     public constructor() {
         this.gameInput = Locator.getGameInput();
-    }
-
-    public init(player: IPlayer): void {
-
     }
 
     public update(player: IPlayer): void {

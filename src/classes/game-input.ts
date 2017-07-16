@@ -11,7 +11,9 @@ export default class GameInput implements IGameInput {
                 left: 'ArrowLeft',
                 up: 'ArrowUp',
                 right: 'ArrowRight',
-                down: 'ArrowDown'
+                down: 'ArrowDown',
+                cheatGrow: '1',
+                cheatShrink: '2'
             }
         };
 
@@ -20,7 +22,9 @@ export default class GameInput implements IGameInput {
                 left: false,
                 up: false,
                 right: false,
-                down: false
+                down: false,
+                cheatGrow: false,
+                cheatShrink: false
             }
         };
 
@@ -61,6 +65,6 @@ export default class GameInput implements IGameInput {
 
         window.addEventListener('keyup', (event: KeyboardEvent) => {
             this.onKeyup(event);
-        });
+        }, false);
     }
 }

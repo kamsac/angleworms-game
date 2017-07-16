@@ -1,8 +1,7 @@
-import IMovable from "./movable.interface";
+import IPlayer from "./player.interface";
 
 interface IInputComponent {
-    init: (movable: IMovable) => void;
-    update: (movable: IMovable) => void;
+    update: (player: IPlayer) => void;
 }
 
 export default IInputComponent;
