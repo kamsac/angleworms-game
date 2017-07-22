@@ -11,12 +11,20 @@ module.exports = {
         path: path.join(__dirname, 'dist')
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: ['.ts', '.js']
     },
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.ts$/,
+                enforce: 'pre',
+                loader: 'tslint-loader',
+                options: {
+
+                }
+            },
+            {
+                test: /\.ts$/,
                 use: {
                     loader: 'ts-loader',
                     options: {
