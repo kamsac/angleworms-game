@@ -8,6 +8,7 @@ import PlayerAiInputComponent from "./player-ai-input-component";
 import PlayerInitialSettings from "../types/player-initial-settings.type";
 import Dimensions from "../types/dimensions.type";
 import GameInput from "./game-input";
+import Stats = require("stats.js");
 
 export default class Game {
     private map: IMap;
@@ -18,6 +19,7 @@ export default class Game {
     private deltaTime: number; // ms
     private updateLag: number; // ms
     private maxUpdateLag: number; // ms
+    private fpsStats: Stats;
 
     constructor() {
         Game.provideServices();
@@ -36,7 +38,7 @@ export default class Game {
     }
 
     private requestNextFrame(): void {
-        window.requestAnimationFrame((timestamp) => { this.gameLoop(timestamp) });
+        window.requestAnimationFrame((timestamp: number) => { this.gameLoop(timestamp) });
     }
 
     private static provideServices(): void {
@@ -46,6 +48,7 @@ export default class Game {
     }
 
     private gameLoop(time: number /* ms */): void {
+        this.fpsStats.begin();
         this.deltaTime = Math.min(this.maxUpdateLag, time - this.lastTime);
         this.updateLag += this.deltaTime;
 
@@ -55,10 +58,12 @@ export default class Game {
         }
         this.render();
         this.lastTime = time;
+        this.fpsStats.end();
         this.requestNextFrame();
     };
 
     private init(): void {
+        this.initFpsStats();
         this.initPlayers();
     }
 
@@ -90,5 +95,11 @@ export default class Game {
 
         this.players.push(new Player(player1Settings, new PlayerCheatInputComponent()));
         this.players.push(new Player(player2Settings, new PlayerAiInputComponent()));
+    }
+
+    private initFpsStats(): void {
+        this.fpsStats = new Stats();
+        this.fpsStats.showPanel(0);
+        document.body.appendChild(this.fpsStats.dom);
     }
 }

@@ -29,5 +29,9 @@
     "typescript": "^2.3.4",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "@types/stats.js": "^0.16.0",
+    "stats.js": "^0.17.0"
   }
 }
