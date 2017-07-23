@@ -20,7 +20,7 @@ module.exports = {
                 enforce: 'pre',
                 loader: 'tslint-loader',
                 options: {
-
+                    formatter: 'msbuild'
                 }
             },
             {
