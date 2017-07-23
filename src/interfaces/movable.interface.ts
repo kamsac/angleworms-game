@@ -1,4 +1,4 @@
-import Velocity from "../types/velocity.type";
+import Velocity from '../types/velocity.type';
 
 interface IMovable {
     setVelocity: (velocity: Velocity) => void;

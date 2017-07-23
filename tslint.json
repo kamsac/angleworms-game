@@ -4,6 +4,13 @@
         "tslint:recommended"
     ],
     "jsRules": {},
-    "rules": {},
+    "rules": {
+        "interface-over-type-literal": false,
+        "member-access": [true, "check-accessor", "check-constructor"],
+        "member-ordering": [true, {"order": "fields-first"}],
+        "object-literal-sort-keys": false,
+        "quotemark": [true, "single"],
+        "variable-name": [true, "check-format", "ban-keywords"]
+    },
     "rulesDirectory": []
 }

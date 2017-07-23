@@ -1,11 +1,11 @@
-import IDrawable from "../interfaces/drawable.interface";
-import Locator from "./locator";
-import ICanvas from "../interfaces/canvas.interface";
+import ICanvas from '../interfaces/canvas.interface';
+import IDrawable from '../interfaces/drawable.interface';
+import Locator from './locator';
 
 abstract class Drawable implements IDrawable {
-    private canvasService: ICanvas;
     protected canvas: HTMLCanvasElement;
     protected context: CanvasRenderingContext2D;
+    private canvasService: ICanvas;
 
     public constructor() {
         this.canvasService = Locator.getCanvas();

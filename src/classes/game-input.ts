@@ -1,5 +1,5 @@
-import IGameInput from "../interfaces/game-input.interface";
-import InputBindings from "../types/input-bindings.type";
+import IGameInput from '../interfaces/game-input.interface';
+import InputBindings from '../types/input-bindings.type';
 
 export default class GameInput implements IGameInput {
     public bindings: InputBindings<string>;
@@ -13,8 +13,8 @@ export default class GameInput implements IGameInput {
                 right: 'ArrowRight',
                 down: 'ArrowDown',
                 cheatGrow: '1',
-                cheatShrink: '2'
-            }
+                cheatShrink: '2',
+            },
         };
 
         this.pressed = {
@@ -24,8 +24,8 @@ export default class GameInput implements IGameInput {
                 right: false,
                 down: false,
                 cheatGrow: false,
-                cheatShrink: false
-            }
+                cheatShrink: false,
+            },
         };
 
         this.initKeyboard();
@@ -36,11 +36,15 @@ export default class GameInput implements IGameInput {
     }
 
     private updateInput(pressedKey: string, pressed: boolean) {
-        for(let bindingGroup in this.bindings) {
-            for(let actionName in this.bindings[bindingGroup]) {
-                const actionKey: string = this.bindings[bindingGroup][actionName];
-                if (actionKey === pressedKey) {
-                    this.pressed[bindingGroup][actionName] = pressed;
+        for (const bindingGroup in this.bindings) {
+            if (this.bindings.hasOwnProperty(bindingGroup)) {
+                for (const actionName in this.bindings[bindingGroup]) {
+                    if (this.bindings[bindingGroup].hasOwnProperty(actionName)) {
+                        const actionKey: string = this.bindings[bindingGroup][actionName];
+                        if (actionKey === pressedKey) {
+                            this.pressed[bindingGroup][actionName] = pressed;
+                        }
+                    }
                 }
             }
         }

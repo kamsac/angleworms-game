@@ -1,7 +1,7 @@
-import IInputComponent from "../interfaces/input-component.interface";
-import IPlayer from "../interfaces/player.interface";
-import IGameInput from "../interfaces/game-input.interface";
-import Locator from "./locator";
+import IGameInput from '../interfaces/game-input.interface';
+import IInputComponent from '../interfaces/input-component.interface';
+import IPlayer from '../interfaces/player.interface';
+import Locator from './locator';
 
 export default class PlayerInputComponent implements IInputComponent {
     protected gameInput: IGameInput;

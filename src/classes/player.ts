@@ -1,14 +1,14 @@
-import Head from "./head";
-import Velocity from "../types/velocity.type";
-import Dimensions from "../types/dimensions.type";
-import Locator from "./locator";
-import Color from "../types/color.type";
-import Tail from "./tail";
-import MapPosition from "../types/map-position.type";
-import IMap from "../interfaces/map.interface";
-import IInputComponent from "../interfaces/input-component.interface";
-import IPlayer from "../interfaces/player.interface";
-import PlayerInitialSettings from "../types/player-initial-settings.type";
+import IInputComponent from '../interfaces/input-component.interface';
+import IMap from '../interfaces/map.interface';
+import IPlayer from '../interfaces/player.interface';
+import Color from '../types/color.type';
+import Dimensions from '../types/dimensions.type';
+import MapPosition from '../types/map-position.type';
+import PlayerInitialSettings from '../types/player-initial-settings.type';
+import Velocity from '../types/velocity.type';
+import Head from './head';
+import Locator from './locator';
+import Tail from './tail';
 
 export default class Player implements IPlayer {
     private input: IInputComponent;
@@ -107,7 +107,7 @@ export default class Player implements IPlayer {
     public isSafeToGoLeft(): boolean {
         const position = {
             x: this.head.getPosition().x - 1,
-            y: this.head.getPosition().y
+            y: this.head.getPosition().y,
         };
 
         return (this.map.getMapItemsAt(position).length === 0);
@@ -116,7 +116,7 @@ export default class Player implements IPlayer {
     public isSafeToGoUp(): boolean {
         const position = {
             x: this.head.getPosition().x,
-            y: this.head.getPosition().y - 1
+            y: this.head.getPosition().y - 1,
         };
 
         return (this.map.getMapItemsAt(position).length === 0);
@@ -125,7 +125,7 @@ export default class Player implements IPlayer {
     public isSafeToGoRight(): boolean {
         const position = {
             x: this.head.getPosition().x + 1,
-            y: this.head.getPosition().y
+            y: this.head.getPosition().y,
         };
 
         return (this.map.getMapItemsAt(position).length === 0);
@@ -134,7 +134,7 @@ export default class Player implements IPlayer {
     public isSafeToGoDown(): boolean {
         const position = {
             x: this.head.getPosition().x,
-            y: this.head.getPosition().y + 1
+            y: this.head.getPosition().y + 1,
         };
 
         return (this.map.getMapItemsAt(position).length === 0);
@@ -156,7 +156,7 @@ export default class Player implements IPlayer {
         if (++this.ticksToMove === this.ticksToMoveDelay) {
             const futurePosition: MapPosition = {
                 x: this.head.getPosition().x + this.velocity.x,
-                y: this.head.getPosition().y + this.velocity.y
+                y: this.head.getPosition().y + this.velocity.y,
             };
 
             if (this.map.getMapItemsAt(futurePosition).length === 0) {
@@ -189,7 +189,7 @@ export default class Player implements IPlayer {
         const tail = new Tail();
         const position: MapPosition = {
             x: this.head.getPosition().x,
-            y: this.head.getPosition().y
+            y: this.head.getPosition().y,
         };
 
         tail.setPosition(position);
@@ -199,7 +199,7 @@ export default class Player implements IPlayer {
 
     private removeDeadTail(): void {
         if (this.tail.length > this.size) {
-            for(let i = 0; this.tail.length - this.size; i++) {
+            for (let i = 0; this.tail.length - this.size; i++) {
                 const removedTailPiece: Tail = this.tail.shift();
                 this.map.removeMapItem(removedTailPiece);
             }
@@ -221,8 +221,8 @@ export default class Player implements IPlayer {
     }
 
     private drawTail(): void {
-        for(let i = 0; i < this.tail.length; i++) {
-            this.tail[i].draw();
+        for (const tail of this.tail) {
+            tail.draw();
         }
     }
 

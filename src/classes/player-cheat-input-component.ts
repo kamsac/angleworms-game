@@ -1,5 +1,5 @@
-import PlayerInputComponent from "./player-input-component";
-import IPlayer from "../interfaces/player.interface";
+import IPlayer from '../interfaces/player.interface';
+import PlayerInputComponent from './player-input-component';
 
 export default class PlayerCheatInputComponent extends PlayerInputComponent {
 

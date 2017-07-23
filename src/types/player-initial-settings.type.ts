@@ -1,6 +1,6 @@
-import Color from "./color.type";
-import MapPosition from "./map-position.type";
-import Velocity from "./velocity.type";
+import Color from './color.type';
+import MapPosition from './map-position.type';
+import Velocity from './velocity.type';
 
 type PlayerInitialSettings = {
     color: Color;

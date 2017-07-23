@@ -1,6 +1,6 @@
-import Dimensions from "../types/dimensions.type";
-import MapItem from "../classes/map-item";
-import MapPosition from "../types/map-position.type";
+import Dimensions from '../types/dimensions.type';
+import MapItem from '../classes/map-item';
+import MapPosition from '../types/map-position.type';
 
 interface IMap {
     getSquareDimensions: () => Dimensions;

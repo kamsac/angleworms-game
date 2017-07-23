@@ -1,15 +1,11 @@
-import ICanvas from "../interfaces/canvas.interface";
-import IMap from "../interfaces/map.interface";
-import IGameInput from "../interfaces/game-input.interface";
+import ICanvas from '../interfaces/canvas.interface';
+import IGameInput from '../interfaces/game-input.interface';
+import IMap from '../interfaces/map.interface';
 
 export default class Locator {
     private static canvas: ICanvas;
     private static map: IMap;
     private static gameInput: IGameInput;
-
-    public constructor() {
-
-    }
 
     public static provideCanvas(canvas: ICanvas): void {
         Locator.canvas = canvas;

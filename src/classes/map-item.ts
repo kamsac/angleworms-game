@@ -1,11 +1,11 @@
-import Drawable from "./drawable";
-import Locator from "./locator";
-import Dimensions from "../types/dimensions.type";
-import MapPosition from "../types/map-position.type";
-import IMapItem from "../interfaces/map-item.interface";
-import Color from "../types/color.type";
-import Velocity from "../types/velocity.type";
-import IMap from "../interfaces/map.interface";
+import IMapItem from '../interfaces/map-item.interface';
+import IMap from '../interfaces/map.interface';
+import Color from '../types/color.type';
+import Dimensions from '../types/dimensions.type';
+import MapPosition from '../types/map-position.type';
+import Velocity from '../types/velocity.type';
+import Drawable from './drawable';
+import Locator from './locator';
 
 class MapItem extends Drawable implements IMapItem {
     protected position: MapPosition;
@@ -24,7 +24,7 @@ class MapItem extends Drawable implements IMapItem {
     }
 
     public draw(): void {
-        let context = this.context;
+        const context = this.context;
         context.fillStyle = this.color;
         context.fillRect(this.position.x * this.squareDimensions.width,
                          this.position.y * this.squareDimensions.height,

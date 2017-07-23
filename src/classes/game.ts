@@ -1,14 +1,14 @@
-import Map from "./map";
-import Player from "./player";
-import Locator from "./locator";
-import IMap from "../interfaces/map.interface";
-import Canvas from "./canvas";
-import PlayerCheatInputComponent from "./player-cheat-input-component";
-import PlayerAiInputComponent from "./player-ai-input-component";
-import PlayerInitialSettings from "../types/player-initial-settings.type";
-import Dimensions from "../types/dimensions.type";
-import GameInput from "./game-input";
-import Stats = require("stats.js");
+import IMap from '../interfaces/map.interface';
+import Dimensions from '../types/dimensions.type';
+import PlayerInitialSettings from '../types/player-initial-settings.type';
+import Canvas from './canvas';
+import GameInput from './game-input';
+import Locator from './locator';
+import Map from './map';
+import Player from './player';
+import PlayerAiInputComponent from './player-ai-input-component';
+import PlayerCheatInputComponent from './player-cheat-input-component';
+import Stats = require('stats.js');
 
 export default class Game {
     private map: IMap;
@@ -21,7 +21,7 @@ export default class Game {
     private maxUpdateLag: number; // ms
     private fpsStats: Stats;
 
-    constructor() {
+    public constructor() {
         Game.provideServices();
 
         this.map = Locator.getMap();
@@ -37,14 +37,14 @@ export default class Game {
         this.requestNextFrame();
     }
 
-    private requestNextFrame(): void {
-        window.requestAnimationFrame((timestamp: number) => { this.gameLoop(timestamp) });
-    }
-
     private static provideServices(): void {
         Locator.provideCanvas(new Canvas());
         Locator.provideMap(new Map({width: 20, height: 20}));
         Locator.provideGameInput(new GameInput());
+    }
+
+    private requestNextFrame(): void {
+        window.requestAnimationFrame((timestamp: number) => { this.gameLoop(timestamp); });
     }
 
     private gameLoop(time: number /* ms */): void {
@@ -60,7 +60,7 @@ export default class Game {
         this.lastTime = time;
         this.fpsStats.end();
         this.requestNextFrame();
-    };
+    }
 
     private init(): void {
         this.initFpsStats();
@@ -68,15 +68,15 @@ export default class Game {
     }
 
     private update(): void {
-        for(let i = 0; i < this.players.length; i++) {
-            this.players[i].update();
+        for (const player of this.players) {
+            player.update();
         }
     }
 
     private render(): void {
         this.map.draw();
-        for(let i = 0; i < this.players.length; i++) {
-            this.players[i].draw();
+        for (const player of this.players) {
+            player.draw();
         }
     }
 
@@ -85,12 +85,12 @@ export default class Game {
         const player1Settings: PlayerInitialSettings = {
             color: '#8f0',
             position: {x: Math.floor(2), y: Math.floor(mapSize.height / 2)},
-            velocity: {x: 1, y: 0}
+            velocity: {x: 1, y: 0},
         };
         const player2Settings: PlayerInitialSettings = {
             color: '#08f',
             position: {x: Math.floor(mapSize.width - 2), y: Math.floor(mapSize.height / 2)},
-            velocity: {x: -1, y: 0}
+            velocity: {x: -1, y: 0},
         };
 
         this.players.push(new Player(player1Settings, new PlayerCheatInputComponent()));

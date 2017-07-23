@@ -1,17 +1,25 @@
-import ICanvas from "../interfaces/canvas.interface";
-import Dimensions from "../types/dimensions.type";
+import ICanvas from '../interfaces/canvas.interface';
+import Dimensions from '../types/dimensions.type';
 
 class Canvas implements ICanvas {
     private resolution: Dimensions;
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
 
-    constructor() {
+    public constructor() {
         this.resolution = {
             width: 400,
-            height: 400
+            height: 400,
         };
         this.initCanvas();
+    }
+
+    public getCanvas(): HTMLCanvasElement {
+        return this.canvas;
+    }
+
+    public getContext(): CanvasRenderingContext2D {
+        return this.context;
     }
 
     private initCanvas(): void {
@@ -22,14 +30,6 @@ class Canvas implements ICanvas {
         this.context = this.canvas.getContext('2d');
 
         document.body.appendChild(this.canvas);
-    }
-
-    public getCanvas(): HTMLCanvasElement {
-        return this.canvas;
-    }
-
-    public getContext(): CanvasRenderingContext2D {
-        return this.context;
     }
 }
 

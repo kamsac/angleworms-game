@@ -1,9 +1,9 @@
-import Drawable from "./drawable";
-import Dimensions from "../types/dimensions.type";
-import IMap from "../interfaces/map.interface";
-import Color from "../types/color.type";
-import MapItem from "./map-item";
-import MapPosition from "../types/map-position.type";
+import IMap from '../interfaces/map.interface';
+import Color from '../types/color.type';
+import Dimensions from '../types/dimensions.type';
+import MapPosition from '../types/map-position.type';
+import Drawable from './drawable';
+import MapItem from './map-item';
 
 export default class Map extends Drawable implements IMap {
     private dimensions: Dimensions;
@@ -16,11 +16,11 @@ export default class Map extends Drawable implements IMap {
         super();
         this.dimensions = {
             width: this.canvas.width,
-            height: this.canvas.height
+            height: this.canvas.height,
         };
         this.squareDimensions = {
             width: 1,
-            height: 1
+            height: 1,
         };
         this.size = size;
         this.backgroundColor = '#000';
@@ -29,10 +29,10 @@ export default class Map extends Drawable implements IMap {
     }
 
     public draw(): void {
-        let ctx = this.context;
+        const context = this.context;
 
-        ctx.fillStyle = this.backgroundColor;
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        context.fillStyle = this.backgroundColor;
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
     }
 
     public getSquareDimensions(): Dimensions {
@@ -45,12 +45,12 @@ export default class Map extends Drawable implements IMap {
 
     public addMapItem(mapItem: MapItem): void {
         this.mapItems.push(mapItem);
-    };
+    }
 
     public removeMapItem(mapItem: MapItem): void {
         const index: number = this.mapItems.indexOf(mapItem);
         this.mapItems.splice(index, 1);
-    };
+    }
 
     public getMapItems() {
         return this.mapItems;
@@ -61,7 +61,7 @@ export default class Map extends Drawable implements IMap {
             return (mapItem.getPosition().x === mapPosition.x &&
                     mapItem.getPosition().y === mapPosition.y);
         });
-    };
+    }
 
     private calculateSquareDimensions(): void {
         this.squareDimensions.width = this.dimensions.width / this.size.width;
