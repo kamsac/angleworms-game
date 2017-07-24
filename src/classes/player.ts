@@ -1,5 +1,6 @@
 import IInputComponent from '../interfaces/input-component.interface';
 import IMap from '../interfaces/map.interface';
+import ICollisionDetectorComponent from '../interfaces/player-collision-detector-component.interface';
 import IPlayer from '../interfaces/player.interface';
 import Color from '../types/color.type';
 import Dimensions from '../types/dimensions.type';
@@ -12,6 +13,7 @@ import Tail from './tail';
 
 export default class Player implements IPlayer {
     private input: IInputComponent;
+    private collisionDetector: ICollisionDetectorComponent;
     private velocity: Velocity;
     private color: Color;
     private head: Head;
@@ -24,8 +26,13 @@ export default class Player implements IPlayer {
     private ticksToGrow: number;
     private readonly ticksToGrowDelay: number;
 
-    public constructor(initialSettings: PlayerInitialSettings, input: IInputComponent) {
+    public constructor(
+        initialSettings: PlayerInitialSettings,
+        input: IInputComponent,
+        collisionDetector: ICollisionDetectorComponent,
+    ) {
         this.input = input;
+        this.collisionDetector = collisionDetector;
         this.color = initialSettings.color;
         this.velocity = initialSettings.velocity;
         this.tail = [];
@@ -105,39 +112,23 @@ export default class Player implements IPlayer {
     }
 
     public isSafeToGoLeft(): boolean {
-        const position = {
-            x: this.head.getPosition().x - 1,
-            y: this.head.getPosition().y,
-        };
-
-        return (this.map.getMapItemsAt(position).length === 0);
+        return this.collisionDetector.isSafeToGoLeft(this);
     }
 
     public isSafeToGoUp(): boolean {
-        const position = {
-            x: this.head.getPosition().x,
-            y: this.head.getPosition().y - 1,
-        };
-
-        return (this.map.getMapItemsAt(position).length === 0);
+        return this.collisionDetector.isSafeToGoUp(this);
     }
 
     public isSafeToGoRight(): boolean {
-        const position = {
-            x: this.head.getPosition().x + 1,
-            y: this.head.getPosition().y,
-        };
-
-        return (this.map.getMapItemsAt(position).length === 0);
+        return this.collisionDetector.isSafeToGoRight(this);
     }
 
     public isSafeToGoDown(): boolean {
-        const position = {
-            x: this.head.getPosition().x,
-            y: this.head.getPosition().y + 1,
-        };
+        return this.collisionDetector.isSafeToGoDown(this);
+    }
 
-        return (this.map.getMapItemsAt(position).length === 0);
+    public isSafeNotToChangeDirection(): boolean {
+        return this.collisionDetector.isSafeNotToChangeDirection(this);
     }
 
     public getTicksToMove(): number {
@@ -154,12 +145,8 @@ export default class Player implements IPlayer {
 
     private moveHead(): void {
         if (++this.ticksToMove === this.ticksToMoveDelay) {
-            const futurePosition: MapPosition = {
-                x: this.head.getPosition().x + this.velocity.x,
-                y: this.head.getPosition().y + this.velocity.y,
-            };
 
-            if (this.map.getMapItemsAt(futurePosition).length === 0) {
+            if (this.isSafeNotToChangeDirection()) {
                 this.head.move(this.velocity);
 
                 this.spawnTail();

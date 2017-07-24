@@ -9,6 +9,7 @@ import Player from './player';
 import PlayerAiInputComponent from './player-ai-input-component';
 import PlayerCheatInputComponent from './player-cheat-input-component';
 import Stats = require('stats.js');
+import ClassicSnakeCollisionDetectorComponent from './classic-snake-collision-detector';
 
 export default class Game {
     private map: IMap;
@@ -93,8 +94,20 @@ export default class Game {
             velocity: {x: -1, y: 0},
         };
 
-        this.players.push(new Player(player1Settings, new PlayerCheatInputComponent()));
-        this.players.push(new Player(player2Settings, new PlayerAiInputComponent()));
+        this.players.push(
+            new Player(
+                player1Settings,
+                new PlayerCheatInputComponent(),
+                new ClassicSnakeCollisionDetectorComponent(),
+            ),
+        );
+        this.players.push(
+            new Player(
+                player2Settings,
+                new PlayerAiInputComponent(),
+                new ClassicSnakeCollisionDetectorComponent(),
+            ),
+        );
     }
 
     private initFpsStats(): void {

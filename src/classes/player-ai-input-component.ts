@@ -30,24 +30,13 @@ export default class PlayerAiInputComponent implements IInputComponent {
             const doIHaveAnySafeMoves = () => safePlayerActions.length > 0;
             if (doIHaveAnySafeMoves()) {
                 const whichDirectionIWantToGo: number = Math.floor(Math.random() * safePlayerActions.length );
-                const go = () => { safePlayerActions[whichDirectionIWantToGo](); };
+                const goChangeDirection = () => { safePlayerActions[whichDirectionIWantToGo](); };
 
-                if (this.doIfIDieIfIDontChangeDirection(player)) {
-                    go();
-                } else if (this.doIFeelLikeChangingDirectionForNoGoodReason()) {
-                    go();
+                if (!player.isSafeNotToChangeDirection() || this.doIFeelLikeChangingDirectionForNoGoodReason()) {
+                    goChangeDirection();
                 }
             }
         }
-    }
-
-    private doIfIDieIfIDontChangeDirection(me: IPlayer): boolean {
-        const futurePosition: MapPosition = {
-            x: me.getHead().getPosition().x + me.getVelocity().x,
-            y: me.getHead().getPosition().y + me.getVelocity().y,
-        };
-        const isSafe = (this.map.getMapItemsAt(futurePosition).length === 0);
-        return !isSafe;
     }
 
     private doIFeelLikeChangingDirectionForNoGoodReason(): boolean {
