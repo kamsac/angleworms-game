@@ -1,8 +1,8 @@
-import Velocity from '../types/velocity.type';
-import MapPosition from '../types/map-position.type';
 import Color from '../types/color.type';
+import MapPosition from '../types/map-position.type';
+import Velocity from '../types/velocity.type';
 
-interface IMapItem {
+interface MapItem {
     setColor: (color: Color) => void;
     setPosition: (position: MapPosition) => void;
     getPosition: () => MapPosition;
@@ -10,4 +10,4 @@ interface IMapItem {
     draw: () => void;
 }
 
-export default IMapItem;
+export default MapItem;

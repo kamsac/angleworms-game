@@ -1,7 +1,7 @@
-import IGameInput from '../interfaces/game-input.interface';
+import GameInput from '../interfaces/game-input.interface';
 import InputBindings from '../types/input-bindings.type';
 
-export default class GameInput implements IGameInput {
+export default class GameInputImpl implements GameInput {
     public bindings: InputBindings<string>;
     public pressed: InputBindings<boolean>;
 
@@ -51,13 +51,13 @@ export default class GameInput implements IGameInput {
     }
 
     private onKeydown(event: KeyboardEvent): void {
-        const key: string = GameInput.getKeyFromKeyboardEvent(event);
+        const key: string = GameInputImpl.getKeyFromKeyboardEvent(event);
 
         this.updateInput(key, true);
     }
 
     private onKeyup(event: KeyboardEvent): void {
-        const key: string = GameInput.getKeyFromKeyboardEvent(event);
+        const key: string = GameInputImpl.getKeyFromKeyboardEvent(event);
 
         this.updateInput(key, false);
     }

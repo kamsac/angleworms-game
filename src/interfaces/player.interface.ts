@@ -1,10 +1,10 @@
-import IDrawable from './drawable.interface';
-import IMovable from './movable.interface';
-import ISizable from './sizable.interface';
-import Head from '../classes/head';
+import PlayerHead from '../classes/player-head';
+import Drawable from './drawable.interface';
+import Movable from './movable.interface';
+import Sizable from './sizable.interface';
 
-interface IPlayer extends IDrawable, IMovable, ISizable {
-    getHead: () => Head;
+interface Player extends Drawable, Movable, Sizable {
+    getHead: () => PlayerHead;
     isSafeToGoLeft: () => boolean;
     isSafeToGoUp: () => boolean;
     isSafeToGoRight: () => boolean;
@@ -14,4 +14,4 @@ interface IPlayer extends IDrawable, IMovable, ISizable {
     getTicksToMoveDelay: () => number;
 }
 
-export default IPlayer;
+export default Player;

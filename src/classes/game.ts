@@ -1,19 +1,19 @@
-import IMap from '../interfaces/map.interface';
+import Map from '../interfaces/map.interface';
 import Dimensions from '../types/dimensions.type';
 import PlayerInitialSettings from '../types/player-initial-settings.type';
-import Canvas from './canvas';
+import CanvasImpl from './canvas';
 import GameInput from './game-input';
 import Locator from './locator';
-import Map from './map';
-import Player from './player';
+import MapImpl from './map';
+import PlayerImpl from './player';
 import PlayerAiInputComponent from './player-ai-input-component';
 import PlayerCheatInputComponent from './player-cheat-input-component';
 import Stats = require('stats.js');
 import ClassicSnakeCollisionDetectorComponent from './classic-snake-collision-detector';
 
 export default class Game {
-    private map: IMap;
-    private players: Player[];
+    private map: Map;
+    private players: PlayerImpl[];
     private fps: number;
     private tickTime: number; // ms
     private lastTime: number; // ms
@@ -39,8 +39,8 @@ export default class Game {
     }
 
     private static provideServices(): void {
-        Locator.provideCanvas(new Canvas());
-        Locator.provideMap(new Map({width: 20, height: 20}));
+        Locator.provideCanvas(new CanvasImpl());
+        Locator.provideMap(new MapImpl({width: 20, height: 20}));
         Locator.provideGameInput(new GameInput());
     }
 
@@ -95,14 +95,14 @@ export default class Game {
         };
 
         this.players.push(
-            new Player(
+            new PlayerImpl(
                 player1Settings,
                 new PlayerCheatInputComponent(),
                 new ClassicSnakeCollisionDetectorComponent(),
             ),
         );
         this.players.push(
-            new Player(
+            new PlayerImpl(
                 player2Settings,
                 new PlayerAiInputComponent(),
                 new ClassicSnakeCollisionDetectorComponent(),

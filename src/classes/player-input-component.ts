@@ -1,16 +1,16 @@
-import IGameInput from '../interfaces/game-input.interface';
-import IInputComponent from '../interfaces/input-component.interface';
-import IPlayer from '../interfaces/player.interface';
+import GameInput from '../interfaces/game-input.interface';
+import InputComponent from '../interfaces/input-component.interface';
+import Player from '../interfaces/player.interface';
 import Locator from './locator';
 
-export default class PlayerInputComponent implements IInputComponent {
-    protected gameInput: IGameInput;
+export default class PlayerInputComponent implements InputComponent {
+    protected gameInput: GameInput;
 
     public constructor() {
         this.gameInput = Locator.getGameInput();
     }
 
-    public update(player: IPlayer): void {
+    public update(player: Player): void {
         if (this.gameInput.pressed.player1.left) {
             player.goLeft();
         }

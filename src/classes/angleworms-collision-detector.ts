@@ -1,17 +1,17 @@
-import IMap from '../interfaces/map.interface';
-import IPlayerCollisionDetectorComponent from '../interfaces/player-collision-detector-component.interface';
-import IPlayer from '../interfaces/player.interface';
+import Map from '../interfaces/map.interface';
+import PlayerCollisionDetectorComponent from '../interfaces/player-collision-detector-component.interface';
+import Player from '../interfaces/player.interface';
 import MapPosition from '../types/map-position.type';
 import Locator from './locator';
 
-export default class AnglewormsCollisionDetectorComponent implements IPlayerCollisionDetectorComponent {
-    private map: IMap;
+export default class AnglewormsCollisionDetectorComponent implements PlayerCollisionDetectorComponent {
+    private map: Map;
 
     public constructor() {
         this.map = Locator.getMap();
     }
 
-    public isSafeToGoLeft(player: IPlayer): boolean {
+    public isSafeToGoLeft(player: Player): boolean {
         const nextPosition: MapPosition = {
             x: player.getHead().getPosition().x - 2,
             y: player.getHead().getPosition().y,
@@ -20,7 +20,7 @@ export default class AnglewormsCollisionDetectorComponent implements IPlayerColl
         return (this.map.getMapItemsAt(nextPosition).length === 0);
     }
 
-    public isSafeToGoUp(player: IPlayer): boolean {
+    public isSafeToGoUp(player: Player): boolean {
         const nextPosition: MapPosition = {
             x: player.getHead().getPosition().x,
             y: player.getHead().getPosition().y - 2,
@@ -29,7 +29,7 @@ export default class AnglewormsCollisionDetectorComponent implements IPlayerColl
         return (this.map.getMapItemsAt(nextPosition).length === 0);
     }
 
-    public isSafeToGoRight(player: IPlayer): boolean {
+    public isSafeToGoRight(player: Player): boolean {
         const nextPosition: MapPosition = {
             x: player.getHead().getPosition().x + 2,
             y: player.getHead().getPosition().y,
@@ -38,7 +38,7 @@ export default class AnglewormsCollisionDetectorComponent implements IPlayerColl
         return (this.map.getMapItemsAt(nextPosition).length === 0);
     }
 
-    public isSafeToGoDown(player: IPlayer): boolean {
+    public isSafeToGoDown(player: Player): boolean {
         const nextPosition: MapPosition = {
             x: player.getHead().getPosition().x,
             y: player.getHead().getPosition().y + 2,
@@ -47,7 +47,7 @@ export default class AnglewormsCollisionDetectorComponent implements IPlayerColl
         return (this.map.getMapItemsAt(nextPosition).length === 0);
     }
 
-    public isSafeNotToChangeDirection(player: IPlayer): boolean {
+    public isSafeNotToChangeDirection(player: Player): boolean {
         const nextPosition: MapPosition = {
             x: player.getHead().getPosition().x + 2 * player.getVelocity().x,
             y: player.getHead().getPosition().y + 2 * player.getVelocity().y,

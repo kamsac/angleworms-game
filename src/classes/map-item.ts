@@ -1,5 +1,5 @@
-import IMapItem from '../interfaces/map-item.interface';
-import IMap from '../interfaces/map.interface';
+import MapItem from '../interfaces/map-item.interface';
+import Map from '../interfaces/map.interface';
 import Color from '../types/color.type';
 import Dimensions from '../types/dimensions.type';
 import MapPosition from '../types/map-position.type';
@@ -7,10 +7,10 @@ import Velocity from '../types/velocity.type';
 import Drawable from './drawable';
 import Locator from './locator';
 
-class MapItem extends Drawable implements IMapItem {
+class MapItemImpl extends Drawable implements MapItem {
     protected position: MapPosition;
     protected color: Color;
-    protected map: IMap;
+    protected map: Map;
     protected squareDimensions: Dimensions;
     protected mapSize: Dimensions;
 
@@ -53,4 +53,4 @@ class MapItem extends Drawable implements IMapItem {
     }
 }
 
-export default MapItem;
+export default MapItemImpl;

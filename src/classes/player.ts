@@ -1,26 +1,26 @@
-import IInputComponent from '../interfaces/input-component.interface';
-import IMap from '../interfaces/map.interface';
-import ICollisionDetectorComponent from '../interfaces/player-collision-detector-component.interface';
-import IPlayer from '../interfaces/player.interface';
+import InputComponent from '../interfaces/input-component.interface';
+import Map from '../interfaces/map.interface';
+import CollisionDetectorComponent from '../interfaces/player-collision-detector-component.interface';
+import Player from '../interfaces/player.interface';
 import Color from '../types/color.type';
 import Dimensions from '../types/dimensions.type';
 import MapPosition from '../types/map-position.type';
 import PlayerInitialSettings from '../types/player-initial-settings.type';
 import Velocity from '../types/velocity.type';
-import Head from './head';
 import Locator from './locator';
-import Tail from './tail';
+import PlayerHead from './player-head';
+import PlayerTail from './player-tail';
 
-export default class Player implements IPlayer {
-    private input: IInputComponent;
-    private collisionDetector: ICollisionDetectorComponent;
+export default class PlayerImpl implements Player {
+    private input: InputComponent;
+    private collisionDetector: CollisionDetectorComponent;
     private velocity: Velocity;
     private color: Color;
-    private head: Head;
-    private tail: Tail[];
+    private head: PlayerHead;
+    private tail: PlayerTail[];
     private size: number;
     private mapSize: Dimensions;
-    private map: IMap;
+    private map: Map;
     private ticksToMove: number;
     private readonly ticksToMoveDelay: number;
     private ticksToGrow: number;
@@ -28,8 +28,8 @@ export default class Player implements IPlayer {
 
     public constructor(
         initialSettings: PlayerInitialSettings,
-        input: IInputComponent,
-        collisionDetector: ICollisionDetectorComponent,
+        input: InputComponent,
+        collisionDetector: CollisionDetectorComponent,
     ) {
         this.input = input;
         this.collisionDetector = collisionDetector;
@@ -139,7 +139,7 @@ export default class Player implements IPlayer {
         return this.ticksToMoveDelay;
     }
 
-    public getHead(): Head {
+    public getHead(): PlayerHead {
         return this.head;
     }
 
@@ -173,7 +173,7 @@ export default class Player implements IPlayer {
     }
 
     private spawnTail(): void {
-        const tail = new Tail();
+        const tail = new PlayerTail();
         const position: MapPosition = {
             x: this.head.getPosition().x,
             y: this.head.getPosition().y,
@@ -187,7 +187,7 @@ export default class Player implements IPlayer {
     private removeDeadTail(): void {
         if (this.tail.length > this.size) {
             for (let i = 0; this.tail.length - this.size; i++) {
-                const removedTailPiece: Tail = this.tail.shift();
+                const removedTailPiece: PlayerTail = this.tail.shift();
                 this.map.removeMapItem(removedTailPiece);
             }
         }
@@ -214,7 +214,7 @@ export default class Player implements IPlayer {
     }
 
     private initHead(startPosition: MapPosition): void {
-        this.head = new Head();
+        this.head = new PlayerHead();
         this.head.setPosition(startPosition);
         this.head.setColor(this.color);
     }

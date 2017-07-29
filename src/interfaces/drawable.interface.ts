@@ -1,5 +1,5 @@
-interface IDrawable {
+interface Drawable {
     draw: (context: CanvasRenderingContext2D) => void;
 }
 
-export default IDrawable;
+export default Drawable;

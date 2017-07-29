@@ -1,7 +1,7 @@
-import IPlayer from './player.interface';
+import Player from './player.interface';
 
-interface IInputComponent {
-    update: (player: IPlayer) => void;
+interface InputComponent {
+    update: (player: Player) => void;
 }
 
-export default IInputComponent;
+export default InputComponent;

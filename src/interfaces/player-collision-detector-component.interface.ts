@@ -1,11 +1,11 @@
-import IPlayer from './player.interface';
+import Player from './player.interface';
 
-interface IPlayerCollisionDetectorComponent {
-    isSafeToGoLeft: (player: IPlayer) => boolean;
-    isSafeToGoUp: (player: IPlayer) => boolean;
-    isSafeToGoRight: (player: IPlayer) => boolean;
-    isSafeToGoDown: (player: IPlayer) => boolean;
-    isSafeNotToChangeDirection: (player: IPlayer) => boolean;
+interface PlayerCollisionDetectorComponent {
+    isSafeToGoLeft: (player: Player) => boolean;
+    isSafeToGoUp: (player: Player) => boolean;
+    isSafeToGoRight: (player: Player) => boolean;
+    isSafeToGoDown: (player: Player) => boolean;
+    isSafeNotToChangeDirection: (player: Player) => boolean;
 }
 
-export default IPlayerCollisionDetectorComponent;
+export default PlayerCollisionDetectorComponent;

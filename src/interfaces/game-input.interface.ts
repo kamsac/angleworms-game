@@ -1,7 +1,8 @@
 import InputBindings from '../types/input-bindings.type';
-interface IGameInput {
+
+interface GameInput {
     readonly bindings: InputBindings<string>;
     readonly pressed: InputBindings<boolean>;
 }
 
-export default IGameInput;
+export default GameInput;

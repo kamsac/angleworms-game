@@ -1,4 +1,4 @@
-import IPlayer from '../interfaces/player.interface';
+import Player from '../interfaces/player.interface';
 import PlayerInputComponent from './player-input-component';
 
 export default class PlayerCheatInputComponent extends PlayerInputComponent {
@@ -7,7 +7,7 @@ export default class PlayerCheatInputComponent extends PlayerInputComponent {
         super();
     }
 
-    public update(player: IPlayer): void {
+    public update(player: Player): void {
         super.update(player);
 
         if (this.gameInput.pressed.player1.cheatGrow) {

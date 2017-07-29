@@ -1,7 +1,7 @@
-import ICanvas from '../interfaces/canvas.interface';
+import Canvas from '../interfaces/canvas.interface';
 import Dimensions from '../types/dimensions.type';
 
-class Canvas implements ICanvas {
+class CanvasImpl implements Canvas {
     private resolution: Dimensions;
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
@@ -33,4 +33,4 @@ class Canvas implements ICanvas {
     }
 }
 
-export default Canvas;
+export default CanvasImpl;

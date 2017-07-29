@@ -1,18 +1,17 @@
-import IInputComponent from '../interfaces/input-component.interface';
-import IMap from '../interfaces/map.interface';
-import IPlayer from '../interfaces/player.interface';
-import MapPosition from '../types/map-position.type';
+import InputComponent from '../interfaces/input-component.interface';
+import Map from '../interfaces/map.interface';
+import Player from '../interfaces/player.interface';
 import Locator from './locator';
 
-export default class PlayerAiInputComponent implements IInputComponent {
+export default class PlayerAiInputComponent implements InputComponent {
 
-    private map: IMap;
+    private map: Map;
 
     public constructor() {
         this.map = Locator.getMap();
     }
 
-    public update(player: IPlayer) {
+    public update(player: Player) {
         if (player.getTicksToMove() === 0) {
             const safePlayerActions = [];
             if (player.isSafeToGoLeft()) {

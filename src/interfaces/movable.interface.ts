@@ -1,6 +1,6 @@
 import Velocity from '../types/velocity.type';
 
-interface IMovable {
+interface Movable {
     setVelocity: (velocity: Velocity) => void;
     getVelocity: () => Velocity;
     goLeft: () => void;
@@ -14,4 +14,4 @@ interface IMovable {
     isMovingDown: () => boolean;
 }
 
-export default IMovable;
+export default Movable;

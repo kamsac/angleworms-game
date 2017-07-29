@@ -1,11 +1,11 @@
-import IMap from '../interfaces/map.interface';
+import Map from '../interfaces/map.interface';
 import Color from '../types/color.type';
 import Dimensions from '../types/dimensions.type';
 import MapPosition from '../types/map-position.type';
 import Drawable from './drawable';
 import MapItem from './map-item';
 
-export default class Map extends Drawable implements IMap {
+export default class MapImpl extends Drawable implements Map {
     private dimensions: Dimensions;
     private size: Dimensions;
     private squareDimensions: Dimensions;
