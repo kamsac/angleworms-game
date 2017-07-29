@@ -6,6 +6,6 @@ type PlayerInitialSettings = {
     color: Color;
     position: MapPosition;
     velocity: Velocity;
-}
+};
 
 export default PlayerInitialSettings;

@@ -6,7 +6,7 @@ type InputBindings<InputInformation> = {
         down: InputInformation;
         cheatGrow: InputInformation;
         cheatShrink: InputInformation;
-    }
-}
+    },
+};
 
 export default InputBindings;
