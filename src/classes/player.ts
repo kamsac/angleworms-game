@@ -2,10 +2,10 @@ import InputComponent from '../interfaces/input-component.interface';
 import Map from '../interfaces/map.interface';
 import CollisionDetectorComponent from '../interfaces/player-collision-detector-component.interface';
 import Player from '../interfaces/player.interface';
-import Color from '../types/color.type';
 import Dimensions from '../types/dimensions.type';
 import MapPosition from '../types/map-position.type';
 import PlayerInitialSettings from '../types/player-initial-settings.type';
+import Representation from '../types/representation.type';
 import Velocity from '../types/velocity.type';
 import Locator from './locator';
 import PlayerHead from './player-head';
@@ -15,10 +15,10 @@ export default class PlayerImpl implements Player {
     private input: InputComponent;
     private collisionDetector: CollisionDetectorComponent;
     private velocity: Velocity;
-    private color: Color;
     private head: PlayerHead;
     private tail: PlayerTail[];
     private size: number;
+    private representation: Representation;
     private mapSize: Dimensions;
     private map: Map;
     private ticksToMove: number;
@@ -33,10 +33,10 @@ export default class PlayerImpl implements Player {
     ) {
         this.input = input;
         this.collisionDetector = collisionDetector;
-        this.color = initialSettings.color;
         this.velocity = initialSettings.velocity;
         this.tail = [];
         this.size = 0;
+        this.representation = initialSettings.representation;
         this.ticksToMove = 0;
         this.ticksToMoveDelay = Math.round(120 / 10);
         this.ticksToGrow = 0;
@@ -51,11 +51,6 @@ export default class PlayerImpl implements Player {
         this.input.update(this);
         this.updateTail();
         this.moveHead();
-    }
-
-    public draw(): void {
-        this.drawTail();
-        this.drawHead();
     }
 
     public getVelocity(): Velocity {
@@ -162,25 +157,22 @@ export default class PlayerImpl implements Player {
         this.size = 0;
     }
 
-    private setColor(color: Color) {
-        this.color = color;
-        this.head.setColor(this.color);
-    }
-
     private updateTail(): void {
         this.removeDeadTail();
         this.growSize();
     }
 
     private spawnTail(): void {
-        const tail = new PlayerTail();
+        const tailRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
+        tailRepresentation.Sprite.spriteName += '-tail';
+
+        const tail = new PlayerTail(tailRepresentation);
         const position: MapPosition = {
-            x: this.head.getPosition().x,
-            y: this.head.getPosition().y,
+            x: this.head.getPosition().x - this.velocity.x,
+            y: this.head.getPosition().y - this.velocity.y,
         };
 
         tail.setPosition(position);
-        tail.setColor(this.color);
         this.tail.push(tail);
     }
 
@@ -203,19 +195,11 @@ export default class PlayerImpl implements Player {
         }
     }
 
-    private drawHead(): void {
-        this.head.draw();
-    }
-
-    private drawTail(): void {
-        for (const tail of this.tail) {
-            tail.draw();
-        }
-    }
-
     private initHead(startPosition: MapPosition): void {
-        this.head = new PlayerHead();
+        const headRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
+        headRepresentation.Sprite.spriteName += '-head';
+
+        this.head = new PlayerHead(headRepresentation);
         this.head.setPosition(startPosition);
-        this.head.setColor(this.color);
     }
 }

@@ -1,7 +1,6 @@
 import Map from '../interfaces/map.interface';
 import Dimensions from '../types/dimensions.type';
 import PlayerInitialSettings from '../types/player-initial-settings.type';
-import CanvasImpl from './canvas';
 import GameInput from './game-input';
 import Locator from './locator';
 import MapImpl from './map';
@@ -10,6 +9,7 @@ import PlayerAiInputComponent from './player-ai-input-component';
 import PlayerCheatInputComponent from './player-cheat-input-component';
 import Stats = require('stats.js');
 import ClassicSnakeCollisionDetectorComponent from './classic-snake-collision-detector';
+import GameCanvasRenderer from './renderers/game-canvas-renderer';
 
 export default class Game {
     private map: Map;
@@ -21,6 +21,7 @@ export default class Game {
     private updateLag: number; // ms
     private maxUpdateLag: number; // ms
     private fpsStats: Stats;
+    private renderer: GameCanvasRenderer;
 
     public constructor() {
         Game.provideServices();
@@ -39,9 +40,9 @@ export default class Game {
     }
 
     private static provideServices(): void {
-        Locator.provideCanvas(new CanvasImpl());
         Locator.provideMap(new MapImpl({width: 20, height: 20}));
         Locator.provideGameInput(new GameInput());
+        Locator.provideGameResolution({width: 400, height: 400});
     }
 
     private requestNextFrame(): void {
@@ -65,6 +66,7 @@ export default class Game {
 
     private init(): void {
         this.initFpsStats();
+        this.initRenderer();
         this.initPlayers();
     }
 
@@ -75,21 +77,32 @@ export default class Game {
     }
 
     private render(): void {
-        this.map.draw();
-        for (const player of this.players) {
-            player.draw();
-        }
+        this.renderer.render();
     }
 
     private initPlayers(): void {
         const mapSize: Dimensions = this.map.getSize();
         const player1Settings: PlayerInitialSettings = {
-            color: '#8f0',
+            representation: {
+                ColorPixel: {
+                    color: '#8f0',
+                },
+                Sprite: {
+                    spriteName: 'player-green',
+                },
+            },
             position: {x: Math.floor(2), y: Math.floor(mapSize.height / 2)},
             velocity: {x: 1, y: 0},
         };
         const player2Settings: PlayerInitialSettings = {
-            color: '#08f',
+            representation: {
+                ColorPixel: {
+                    color: '#08f',
+                },
+                Sprite: {
+                    spriteName: 'player-blue',
+                },
+            },
             position: {x: Math.floor(mapSize.width - 2), y: Math.floor(mapSize.height / 2)},
             velocity: {x: -1, y: 0},
         };
@@ -114,5 +127,9 @@ export default class Game {
         this.fpsStats = new Stats();
         this.fpsStats.showPanel(0);
         document.body.appendChild(this.fpsStats.dom);
+    }
+
+    private initRenderer(): void {
+        this.renderer = new GameCanvasRenderer(this.map);
     }
 }

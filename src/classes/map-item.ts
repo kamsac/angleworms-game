@@ -1,37 +1,40 @@
 import MapItem from '../interfaces/map-item.interface';
 import Map from '../interfaces/map.interface';
-import Color from '../types/color.type';
+import AnyRepresentation from '../types/any-representation.type';
 import Dimensions from '../types/dimensions.type';
 import MapPosition from '../types/map-position.type';
+import Representation from '../types/representation.type';
 import Velocity from '../types/velocity.type';
-import Drawable from './drawable';
 import Locator from './locator';
 
-class MapItemImpl extends Drawable implements MapItem {
+class MapItemImpl implements MapItem {
+    protected type: string;
     protected position: MapPosition;
-    protected color: Color;
     protected map: Map;
-    protected squareDimensions: Dimensions;
     protected mapSize: Dimensions;
+    protected representation: Representation;
 
-    public constructor() {
-        super();
-        this.color = '#aaa';
+    public constructor(representation?: Representation) {
         this.map = Locator.getMap();
-        this.squareDimensions = Locator.getMap().getSquareDimensions();
         this.mapSize = Locator.getMap().getSize();
+        this.representation = {
+            ColorPixel: {
+                color: '#888',
+            },
+            Sprite: {
+                spriteName: 'generic-map-item',
+            },
+        };
+        for (const renderer in representation) {
+            if (this.representation.hasOwnProperty(renderer)) {
+                this.representation[renderer] = representation[renderer];
+            }
+        }
+
         this.registerItselfToMap();
     }
 
-    public draw(): void {
-        const context = this.context;
-        context.fillStyle = this.color;
-        context.fillRect(this.position.x * this.squareDimensions.width,
-                         this.position.y * this.squareDimensions.height,
-                         this.squareDimensions.width, this.squareDimensions.height);
-    }
-
-    public setPosition(position: MapPosition) {
+    public setPosition(position: MapPosition): void {
         this.position = position;
     }
 
@@ -39,8 +42,12 @@ class MapItemImpl extends Drawable implements MapItem {
         return this.position;
     }
 
-    public setColor(color: Color): void {
-        this.color = color;
+    public getRepresentation(representationName: string): AnyRepresentation {
+        if (!this.representation[representationName]) {
+            throw new Error(`No such \`${representationName}\` representation ` +
+                `in \`${this.constructor.name}\` implementation!`);
+        }
+        return this.representation[representationName];
     }
 
     public move(velocity: Velocity): void {
@@ -48,7 +55,7 @@ class MapItemImpl extends Drawable implements MapItem {
         this.position.y = (this.mapSize.height + (this.position.y + velocity.y)) % this.mapSize.height;
     }
 
-    private registerItselfToMap() {
+    private registerItselfToMap(): void {
         this.map.addMapItem(this);
     }
 }

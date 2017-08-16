@@ -1,9 +1,8 @@
 import PlayerHead from '../classes/player-head';
-import Drawable from './drawable.interface';
 import Movable from './movable.interface';
 import Sizable from './sizable.interface';
 
-interface Player extends Drawable, Movable, Sizable {
+interface Player extends Movable, Sizable {
     getHead: () => PlayerHead;
     isSafeToGoLeft: () => boolean;
     isSafeToGoUp: () => boolean;

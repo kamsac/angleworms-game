@@ -1,13 +1,11 @@
-import Color from '../types/color.type';
 import MapPosition from '../types/map-position.type';
 import Velocity from '../types/velocity.type';
+import Renderable from './renderable.interface';
 
-interface MapItem {
-    setColor: (color: Color) => void;
+interface MapItem extends Renderable {
     setPosition: (position: MapPosition) => void;
     getPosition: () => MapPosition;
     move: (velocity: Velocity) => void;
-    draw: () => void;
 }
 
 export default MapItem;
