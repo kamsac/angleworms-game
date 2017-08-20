@@ -33,6 +33,8 @@ export default class MapImpl implements Map {
     }
 
     public getMapItemsAt(mapPosition: MapPosition): MapItem[] {
+        mapPosition.x = (this.size.width + mapPosition.x) % this.size.width;
+        mapPosition.y = (this.size.height + mapPosition.y) % this.size.height;
         return this.mapItems.filter((mapItem: MapItem) => {
             return (mapItem.getPosition().x === mapPosition.x &&
                     mapItem.getPosition().y === mapPosition.y);

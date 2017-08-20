@@ -168,11 +168,15 @@ export default class PlayerImpl implements Player {
 
         const tail = new PlayerTail(tailRepresentation);
         const position: MapPosition = {
-            x: this.head.getPosition().x - this.velocity.x,
-            y: this.head.getPosition().y - this.velocity.y,
+            x: this.head.getPosition().x,
+            y: this.head.getPosition().y,
         };
 
         tail.setPosition(position);
+        tail.move({
+            x: -this.velocity.x,
+            y: -this.velocity.y,
+        });
         this.tail.push(tail);
     }
 
