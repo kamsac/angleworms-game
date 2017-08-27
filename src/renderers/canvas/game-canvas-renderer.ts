@@ -1,22 +1,22 @@
 import Locator from '../../locator';
 import Dimensions from '../../world/dimensions.type';
-import Map from '../../world/map/map.interface';
+import World from '../../world/world.interface';
 import CanvasRenderer from './canvas-renderer';
-import ColorPixelMapRenderer from './color-pixel/color-pixel-map-renderer';
-import PrimitiveSpriteMapRenderer from './sprite/primitive/primitive-sprite-map-renderer';
+import ColorPixelWorldRenderer from './color-pixel/color-pixel-world-renderer';
+import PrimitiveSpriteWorldRenderer from './sprite/primitive/primitive-sprite-world-renderer';
 
 class GameCanvasRenderer extends CanvasRenderer {
     protected resolution: Dimensions;
-    protected map: Map;
-    protected mapRenderer: ColorPixelMapRenderer | PrimitiveSpriteMapRenderer;
+    protected world: World;
+    protected worldRenderer: ColorPixelWorldRenderer | PrimitiveSpriteWorldRenderer;
 
-    public constructor(map: Map) {
+    public constructor(world: World) {
         super();
 
-        this.map = map;
+        this.world = world;
         this.resolution = Locator.getGameResolution();
-        this.mapRenderer = new ColorPixelMapRenderer(this.context, this.map);
-        // this.mapRenderer = new PrimitiveSpriteMapRenderer(this.context, this.map);
+        this.worldRenderer = new ColorPixelWorldRenderer(this.context, this.world);
+        // this.worldRenderer = new PrimitiveSpriteWorldRenderer(this.context, this.world);
 
         this.setResolution(this.resolution);
         this.attachCanvas();
@@ -24,7 +24,7 @@ class GameCanvasRenderer extends CanvasRenderer {
 
     public render(): void {
         this.clearCanvas();
-        this.mapRenderer.render();
+        this.worldRenderer.render();
     }
 
     private attachCanvas(): void {

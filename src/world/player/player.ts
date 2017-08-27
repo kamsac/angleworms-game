@@ -1,11 +1,11 @@
 import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
-import PlayerHead from '../map/map-item/player-head';
-import PlayerTail from '../map/map-item/player-tail';
-import MapPosition from '../map/map-position.type';
-import Map from '../map/map.interface';
 import Velocity from '../velocity.type';
+import PlayerHead from '../world-item/player-head';
+import PlayerTail from '../world-item/player-tail';
+import WorldPosition from '../world-position.type';
+import World from '../world.interface';
 import CollisionDetectorComponent from './collision-detectors/player-collision-detector-component.interface';
 import PlayerInitialSettings from './player-initial-settings.type';
 import InputComponent from './player-inputs/input-component.interface';
@@ -19,8 +19,8 @@ export default class PlayerImpl implements Player {
     private tail: PlayerTail[];
     private size: number;
     private representation: Representation;
-    private mapSize: Dimensions;
-    private map: Map;
+    private worldSize: Dimensions;
+    private world: World;
     private ticksToMove: number;
     private readonly ticksToMoveDelay: number;
     private ticksToGrow: number;
@@ -41,8 +41,8 @@ export default class PlayerImpl implements Player {
         this.ticksToMoveDelay = Math.round(120 / 10);
         this.ticksToGrow = 0;
         this.ticksToGrowDelay = Math.round(this.ticksToMoveDelay * 4);
-        this.mapSize = Locator.getMap().getSize();
-        this.map = Locator.getMap();
+        this.worldSize = Locator.getWorld().getSize();
+        this.world = Locator.getWorld();
 
         this.initHead(initialSettings.position);
     }
@@ -167,7 +167,7 @@ export default class PlayerImpl implements Player {
         tailRepresentation.Sprite.spriteName += '-tail';
 
         const tail = new PlayerTail(tailRepresentation);
-        const position: MapPosition = {
+        const position: WorldPosition = {
             x: this.head.getPosition().x,
             y: this.head.getPosition().y,
         };
@@ -184,7 +184,7 @@ export default class PlayerImpl implements Player {
         if (this.tail.length > this.size) {
             for (let i = 0; this.tail.length - this.size; i++) {
                 const removedTailPiece: PlayerTail = this.tail.shift();
-                this.map.removeMapItem(removedTailPiece);
+                this.world.removeWorldItem(removedTailPiece);
             }
         }
     }
@@ -199,7 +199,7 @@ export default class PlayerImpl implements Player {
         }
     }
 
-    private initHead(startPosition: MapPosition): void {
+    private initHead(startPosition: WorldPosition): void {
         const headRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
         headRepresentation.Sprite.spriteName += '-head';
 

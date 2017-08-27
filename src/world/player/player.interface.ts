@@ -1,4 +1,4 @@
-import PlayerHead from '../map/map-item/player-head';
+import PlayerHead from '../world-item/player-head';
 import Movable from './movable.interface';
 import Sizable from './sizable.interface';
 

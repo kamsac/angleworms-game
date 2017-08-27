@@ -1,14 +1,14 @@
 import Locator from '../../../locator';
-import Map from '../../map/map.interface';
+import World from '../../world.interface';
 import Player from '../player.interface';
 import InputComponent from './input-component.interface';
 
 export default class PlayerAiInputComponent implements InputComponent {
 
-    private map: Map;
+    private world: World;
 
     public constructor() {
-        this.map = Locator.getMap();
+        this.world = Locator.getWorld();
     }
 
     public update(player: Player) {

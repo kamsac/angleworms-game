@@ -1,18 +1,18 @@
 import GameInput from './game-input/game-input.interface';
 import Dimensions from './world/dimensions.type';
-import Map from './world/map/map.interface';
+import World from './world/world.interface';
 
 export default class Locator {
-    private static map: Map;
+    private static world: World;
     private static gameInput: GameInput;
     private static gameResolution: Dimensions;
 
-    public static provideMap(map: Map): void {
-        Locator.map = map;
+    public static provideWorld(world: World): void {
+        Locator.world = world;
     }
 
-    public static getMap(): Map {
-        return Locator.map;
+    public static getWorld(): World {
+        return Locator.world;
     }
 
     public static provideGameInput(gameInput: GameInput): void {

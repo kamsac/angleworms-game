@@ -1,18 +1,18 @@
 import GameInput from './game-input/game-input';
 import Locator from './locator';
 import Dimensions from './world/dimensions.type';
-import MapImpl from './world/map/map';
-import Map from './world/map/map.interface';
 import PlayerImpl from './world/player/player';
 import PlayerInitialSettings from './world/player/player-initial-settings.type';
 import PlayerAiInputComponent from './world/player/player-inputs/player-ai-input-component';
 import PlayerCheatInputComponent from './world/player/player-inputs/player-cheat-input-component';
+import WorldImpl from './world/world';
+import World from './world/world.interface';
 import Stats = require('stats.js');
 import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
 import ClassicSnakeCollisionDetectorComponent from './world/player/collision-detectors/classic-snake-collision-detector'; // tslint:disable-line max-line-length
 
 export default class Game {
-    private map: Map;
+    private world: World;
     private players: PlayerImpl[];
     private fps: number;
     private tickTime: number; // ms
@@ -26,7 +26,7 @@ export default class Game {
     public constructor() {
         Game.provideServices();
 
-        this.map = Locator.getMap();
+        this.world = Locator.getWorld();
         this.players = [];
         this.fps = 120;
         this.tickTime = 1000 / this.fps;
@@ -40,7 +40,7 @@ export default class Game {
     }
 
     private static provideServices(): void {
-        Locator.provideMap(new MapImpl({width: 20, height: 20}));
+        Locator.provideWorld(new WorldImpl({width: 20, height: 20}));
         Locator.provideGameInput(new GameInput());
         Locator.provideGameResolution({width: 400, height: 400});
     }
@@ -81,7 +81,7 @@ export default class Game {
     }
 
     private initPlayers(): void {
-        const mapSize: Dimensions = this.map.getSize();
+        const worldSize: Dimensions = this.world.getSize();
         const player1Settings: PlayerInitialSettings = {
             representation: {
                 ColorPixel: {
@@ -91,7 +91,7 @@ export default class Game {
                     spriteName: 'player-green',
                 },
             },
-            position: {x: Math.floor(2), y: Math.floor(mapSize.height / 2)},
+            position: {x: Math.floor(2), y: Math.floor(worldSize.height / 2)},
             velocity: {x: 1, y: 0},
         };
         const player2Settings: PlayerInitialSettings = {
@@ -103,7 +103,7 @@ export default class Game {
                     spriteName: 'player-blue',
                 },
             },
-            position: {x: Math.floor(mapSize.width - 2), y: Math.floor(mapSize.height / 2)},
+            position: {x: Math.floor(worldSize.width - 2), y: Math.floor(worldSize.height / 2)},
             velocity: {x: -1, y: 0},
         };
 
@@ -130,6 +130,6 @@ export default class Game {
     }
 
     private initRenderer(): void {
-        this.renderer = new GameCanvasRenderer(this.map);
+        this.renderer = new GameCanvasRenderer(this.world);
     }
 }
