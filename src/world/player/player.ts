@@ -4,6 +4,7 @@ import Dimensions from '../dimensions.type';
 import Velocity from '../velocity.type';
 import PlayerHead from '../world-item/player-head';
 import PlayerTail from '../world-item/player-tail';
+import WorldItemInitialSettings from '../world-item/world-item-initial-settings.type';
 import WorldPosition from '../world-position.type';
 import World from '../world.interface';
 import CollisionDetectorComponent from './collision-detectors/player-collision-detector-component.interface';
@@ -166,11 +167,17 @@ export default class PlayerImpl implements Player {
         const tailRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
         tailRepresentation.Sprite.spriteName += '-tail';
 
-        const tail = new PlayerTail(tailRepresentation);
         const position: WorldPosition = {
             x: this.head.getPosition().x,
             y: this.head.getPosition().y,
         };
+
+        const tailInitialSettings: WorldItemInitialSettings = {
+            representation: tailRepresentation,
+            position: position,
+        };
+
+        const tail = new PlayerTail(tailInitialSettings);
 
         tail.setPosition(position);
         tail.move({
@@ -203,7 +210,11 @@ export default class PlayerImpl implements Player {
         const headRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
         headRepresentation.Sprite.spriteName += '-head';
 
-        this.head = new PlayerHead(headRepresentation);
-        this.head.setPosition(startPosition);
+        const headInitialSettings: WorldItemInitialSettings = {
+            representation: headRepresentation,
+            position: startPosition,
+        };
+
+        this.head = new PlayerHead(headInitialSettings);
     }
 }

@@ -5,6 +5,7 @@ import WorldPosition from './world-position.type';
 interface World {
     getSize: () => Dimensions;
     addWorldItem: (worldItem: WorldItem) => void;
+    moveWorldItem: (worldItem: WorldItem, position: WorldPosition) => void;
     removeWorldItem: (worldItem: WorldItem) => void;
     getWorldItems: () => WorldItem[];
     getWorldItemsAt: (position: WorldPosition) => WorldItem[];

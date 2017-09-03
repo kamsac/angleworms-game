@@ -5,6 +5,7 @@ import Dimensions from '../dimensions.type';
 import Velocity from '../velocity.type';
 import WorldPosition from '../world-position.type';
 import World from '../world.interface';
+import WorldItemInitialSettings from './world-item-initial-settings.type';
 import WorldItem from './world-item.interface';
 
 class WorldItemImpl implements WorldItem {
@@ -14,8 +15,9 @@ class WorldItemImpl implements WorldItem {
     protected worldSize: Dimensions;
     protected representation: Representation;
 
-    public constructor(representation?: Representation) {
+    public constructor(initialSettings: WorldItemInitialSettings) {
         this.world = Locator.getWorld();
+        this.position = initialSettings.position;
         this.worldSize = Locator.getWorld().getSize();
         this.representation = {
             ColorPixel: {
@@ -25,9 +27,9 @@ class WorldItemImpl implements WorldItem {
                 spriteName: 'generic-world-item',
             },
         };
-        for (const renderer in representation) {
+        for (const renderer in initialSettings.representation) {
             if (this.representation.hasOwnProperty(renderer)) {
-                this.representation[renderer] = representation[renderer];
+                this.representation[renderer] = initialSettings.representation[renderer];
             }
         }
 
@@ -51,8 +53,12 @@ class WorldItemImpl implements WorldItem {
     }
 
     public move(velocity: Velocity): void {
-        this.position.x = (this.worldSize.width + (this.position.x + velocity.x)) % this.worldSize.width;
-        this.position.y = (this.worldSize.height + (this.position.y + velocity.y)) % this.worldSize.height;
+        const newPosition: WorldPosition = {
+            x: (this.worldSize.width + (this.position.x + velocity.x)) % this.worldSize.width,
+            y: (this.worldSize.height + (this.position.y + velocity.y)) % this.worldSize.height,
+        };
+
+        this.world.moveWorldItem(this, newPosition);
     }
 
     private registerItselfToWorld(): void {

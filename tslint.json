@@ -10,6 +10,7 @@
         "member-access": [true, "check-accessor", "check-constructor"],
         "member-ordering": [true, {"order": "fields-first"}],
         "object-literal-sort-keys": false,
+        "object-literal-shorthand": false,
         "quotemark": [true, "single"],
         "variable-name": [true, "check-format", "ban-keywords"]
     },

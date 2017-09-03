@@ -32,7 +32,9 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.74",
     "@types/stats.js": "^0.16.0",
+    "lodash": "^4.17.4",
     "stats.js": "^0.17.0"
   }
 }
