@@ -10,11 +10,11 @@ export default class PlayerCheatInputComponent extends PlayerInputComponent {
     public update(player: Player): void {
         super.update(player);
 
-        if (this.gameInput.pressed.player1.cheatGrow) {
+        if (this.gameInput.bindings.player1.cheatGrow.isPressed) {
             player.setSize(player.getSize() + 1);
         }
 
-        if (this.gameInput.pressed.player1.cheatShrink) {
+        if (this.gameInput.bindings.player1.cheatShrink.isPressed) {
             if (player.getSize() > 0) {
                 player.setSize(player.getSize() - 1);
             }

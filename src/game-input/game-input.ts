@@ -2,29 +2,53 @@ import GameInput from './game-input.interface';
 import InputBindings from './input-bindings.type';
 
 export default class GameInputImpl implements GameInput {
-    public bindings: InputBindings<string>;
-    public pressed: InputBindings<boolean>;
+    public bindings: InputBindings;
 
     public constructor() {
         this.bindings = {
             player1: {
-                left: 'ArrowLeft',
-                up: 'ArrowUp',
-                right: 'ArrowRight',
-                down: 'ArrowDown',
-                cheatGrow: '1',
-                cheatShrink: '2',
-            },
-        };
-
-        this.pressed = {
-            player1: {
-                left: false,
-                up: false,
-                right: false,
-                down: false,
-                cheatGrow: false,
-                cheatShrink: false,
+                left: {
+                    keyName: 'ArrowLeft',
+                    isPressed: false,
+                    lastChange: null,
+                    group: 'player1',
+                    action: 'left',
+                },
+                up: {
+                    keyName: 'ArrowUp',
+                    isPressed: false,
+                    lastChange: null,
+                    group: 'player1',
+                    action: 'up',
+                },
+                right: {
+                    keyName: 'ArrowRight',
+                    isPressed: false,
+                    lastChange: null,
+                    group: 'player1',
+                    action: 'right',
+                },
+                down: {
+                    keyName: 'ArrowDown',
+                    isPressed: false,
+                    lastChange: null,
+                    group: 'player1',
+                    action: 'down',
+                },
+                cheatGrow: {
+                    keyName: '1',
+                    isPressed: false,
+                    lastChange: null,
+                    group: 'player1',
+                    action: 'cheatGrow',
+                },
+                cheatShrink: {
+                    keyName: '2',
+                    isPressed: false,
+                    lastChange: null,
+                    group: 'player1',
+                    action: 'cheatShrink',
+                },
             },
         };
 
@@ -40,9 +64,10 @@ export default class GameInputImpl implements GameInput {
             if (this.bindings.hasOwnProperty(bindingGroup)) {
                 for (const actionName in this.bindings[bindingGroup]) {
                     if (this.bindings[bindingGroup].hasOwnProperty(actionName)) {
-                        const actionKey: string = this.bindings[bindingGroup][actionName];
+                        const actionKey: string = this.bindings[bindingGroup][actionName].keyName;
                         if (actionKey === pressedKey) {
-                            this.pressed[bindingGroup][actionName] = pressed;
+                            this.bindings[bindingGroup][actionName].isPressed = pressed;
+                            this.bindings[bindingGroup][actionName].lastChange = new Date().valueOf();
                         }
                     }
                 }
@@ -53,7 +78,9 @@ export default class GameInputImpl implements GameInput {
     private onKeydown(event: KeyboardEvent): void {
         const key: string = GameInputImpl.getKeyFromKeyboardEvent(event);
 
-        this.updateInput(key, true);
+        if (!event.repeat) {
+            this.updateInput(key, true);
+        }
     }
 
     private onKeyup(event: KeyboardEvent): void {

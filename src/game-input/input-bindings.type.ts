@@ -1,11 +1,13 @@
-type InputBindings<InputInformation> = {
+import InputBindingInformation from './input-binding-information.type';
+
+type InputBindings = {
     player1: {
-        left: InputInformation;
-        up: InputInformation;
-        right: InputInformation;
-        down: InputInformation;
-        cheatGrow: InputInformation;
-        cheatShrink: InputInformation;
+        left: InputBindingInformation;
+        up: InputBindingInformation;
+        right: InputBindingInformation;
+        down: InputBindingInformation;
+        cheatGrow: InputBindingInformation;
+        cheatShrink: InputBindingInformation;
     },
 };
 

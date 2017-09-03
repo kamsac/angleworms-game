@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import Color from '../renderers/color.type';
 import Dimensions from './dimensions.type';
 import WorldItem from './world-item/world-item';
 import WorldPosition from './world-position.type';
