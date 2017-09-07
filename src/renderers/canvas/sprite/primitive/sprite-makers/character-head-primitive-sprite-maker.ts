@@ -1,7 +1,7 @@
 import Color from '../../../../color.type';
-import PlayerTailPrimitiveSpriteMaker from './player-tail-primitive-sprite-maker';
+import CharacterTailPrimitiveSpriteMaker from './character-tail-primitive-sprite-maker';
 
-export default class PlayerHeadPrimitiveSpriteMaker extends PlayerTailPrimitiveSpriteMaker {
+export default class CharacterHeadPrimitiveSpriteMaker extends CharacterTailPrimitiveSpriteMaker {
 
     public constructor(color: Color) {
         super(color);

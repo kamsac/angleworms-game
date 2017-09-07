@@ -2,22 +2,22 @@ import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
 import Velocity from '../velocity.type';
-import PlayerHead from '../world-item/player-head';
-import PlayerTail from '../world-item/player-tail';
+import CharacterHead from '../world-item/character-head';
+import CharacterTail from '../world-item/character-tail';
 import WorldItemInitialSettings from '../world-item/world-item-initial-settings.type';
 import WorldPosition from '../world-position.type';
 import World from '../world.interface';
-import CollisionDetectorComponent from './collision-detectors/player-collision-detector-component.interface';
-import PlayerInitialSettings from './player-initial-settings.type';
-import InputComponent from './player-inputs/player-input-component.interface';
-import Player from './player.interface';
+import CharacterInitialSettings from './character-initial-settings.type';
+import InputComponent from './character-inputs/character-input-component.interface';
+import Character from './character.interface';
+import CollisionDetectorComponent from './collision-detectors/character-collision-detector-component.interface';
 
-export default class PlayerImpl implements Player {
+export default class CharacterImpl implements Character {
     private input: InputComponent;
     private collisionDetector: CollisionDetectorComponent;
     private velocity: Velocity;
-    private head: PlayerHead;
-    private tail: PlayerTail[];
+    private head: CharacterHead;
+    private tail: CharacterTail[];
     private size: number;
     private representation: Representation;
     private worldSize: Dimensions;
@@ -27,7 +27,7 @@ export default class PlayerImpl implements Player {
     private ticksToGrow: number;
     private readonly ticksToGrowDelay: number;
 
-    public constructor(initialSettings: PlayerInitialSettings) {
+    public constructor(initialSettings: CharacterInitialSettings) {
         this.input = initialSettings.input;
         this.collisionDetector = initialSettings.collisionDetector;
         this.velocity = initialSettings.velocity;
@@ -131,7 +131,7 @@ export default class PlayerImpl implements Player {
         return this.ticksToMoveDelay;
     }
 
-    public getHead(): PlayerHead {
+    public getHead(): CharacterHead {
         return this.head;
     }
 
@@ -173,7 +173,7 @@ export default class PlayerImpl implements Player {
             position: position,
         };
 
-        const tail = new PlayerTail(tailInitialSettings);
+        const tail = new CharacterTail(tailInitialSettings);
 
         tail.setPosition(position);
         tail.move({
@@ -186,7 +186,7 @@ export default class PlayerImpl implements Player {
     private removeDeadTail(): void {
         if (this.tail.length > this.size) {
             for (let i = 0; this.tail.length - this.size; i++) {
-                const removedTailPiece: PlayerTail = this.tail.shift();
+                const removedTailPiece: CharacterTail = this.tail.shift();
                 this.world.removeWorldItem(removedTailPiece);
             }
         }
@@ -211,6 +211,6 @@ export default class PlayerImpl implements Player {
             position: startPosition,
         };
 
-        this.head = new PlayerHead(headInitialSettings);
+        this.head = new CharacterHead(headInitialSettings);
     }
 }

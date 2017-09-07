@@ -4,12 +4,12 @@ import WorldImpl from './world/world';
 import World from './world/world.interface';
 import Stats = require('stats.js');
 import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
-import PlayerBuilder from './world/player/player-builder';
-import Player from './world/player/player.interface';
+import CharacterBuilder from './world/character/character-builder';
+import Character from './world/character/character.interface';
 
 export default class Game {
     private world: World;
-    private players: Player[];
+    private characters: Character[];
     private fps: number;
     private tickTime: number; // ms
     private lastTime: number; // ms
@@ -23,7 +23,7 @@ export default class Game {
         Game.provideServices();
 
         this.world = Locator.getWorld();
-        this.players = [];
+        this.characters = [];
         this.fps = 120;
         this.tickTime = 1000 / this.fps;
         this.lastTime = 0;
@@ -63,12 +63,12 @@ export default class Game {
     private init(): void {
         this.initFpsStats();
         this.initRenderer();
-        this.initPlayers();
+        this.initCharacters();
     }
 
     private update(): void {
-        for (const player of this.players) {
-            player.update();
+        for (const character of this.characters) {
+            character.update();
         }
     }
 
@@ -76,8 +76,8 @@ export default class Game {
         this.renderer.render();
     }
 
-    private initPlayers(): void {
-        const player1: Player = new PlayerBuilder()
+    private initCharacters(): void {
+        const player1: Character = new CharacterBuilder()
             .setRepresentation('green')
             .setStartingPosition('left')
             .setStartingDirection('right')
@@ -85,7 +85,7 @@ export default class Game {
             .setCollisionStyle('classic')
             .build();
 
-        const player2: Player = new PlayerBuilder()
+        const character2: Character = new CharacterBuilder()
             .setRepresentation('blue')
             .setStartingPosition('right')
             .setStartingDirection('left')
@@ -93,8 +93,8 @@ export default class Game {
             .setCollisionStyle('classic')
             .build();
 
-        this.players.push(player1);
-        this.players.push(player2);
+        this.characters.push(player1);
+        this.characters.push(character2);
     }
 
     private initFpsStats(): void {

@@ -1,7 +1,7 @@
 import Color from '../../../../color.type';
 import CanvasSpriteMaker from './canvas-sprite-maker';
 
-export default class PlayerTailPrimitiveSpriteMaker extends CanvasSpriteMaker {
+export default class CharacterTailPrimitiveSpriteMaker extends CanvasSpriteMaker {
     protected color: Color;
 
     public constructor(color: Color) {

@@ -3,25 +3,25 @@ import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
 import Velocity from '../velocity.type';
 import WorldPosition from '../world-position.type';
+import CharacterImpl from './character';
+import CharacterInputComponentFactory from './character-inputs/character-input-component-factory';
+import CharacterInputComponent from './character-inputs/character-input-component.interface';
+import CharacterInputMethod from './character-inputs/character-input-method.type';
+import Character from './character.interface';
+import CharacterCollisionDetectorComponentFactory from './collision-detectors/character-collision-detector-component-factory'; // tslint:disable-line: max-line-length
+import CharacterCollisionDetectorComponent from './collision-detectors/character-collision-detector-component.interface'; // tslint:disable-line: max-line-length
 import CollisionStyle from './collision-detectors/collision-style.type';
-import PlayerCollisionDetectorComponentFactory from './collision-detectors/player-collision-detector-component-factory';
-import PlayerCollisionDetectorComponent from './collision-detectors/player-collision-detector-component.interface';
-import PlayerImpl from './player';
-import PlayerInputComponentFactory from './player-inputs/player-input-component-factory';
-import PlayerInputComponent from './player-inputs/player-input-component.interface';
-import PlayerInputMethod from './player-inputs/player-input-method.type';
-import Player from './player.interface';
 
-export default class PlayerBuilder {
+export default class CharacterBuilder {
     private representation: Representation;
     private position: WorldPosition;
     private velocity: Velocity;
-    private playerInputComponent: PlayerInputComponent;
-    private playerCollisionDetectorComponent: PlayerCollisionDetectorComponent;
+    private characterInputComponent: CharacterInputComponent;
+    private characterCollisionDetectorComponent: CharacterCollisionDetectorComponent;
 
     private worldSize: Dimensions = Locator.getWorld().getSize();
 
-    public setRepresentation(representationSetName: 'green' | 'blue'): PlayerBuilder {
+    public setRepresentation(representationSetName: 'green' | 'blue'): CharacterBuilder {
         switch (representationSetName) {
             case 'green':
                 this.representation = {
@@ -29,7 +29,7 @@ export default class PlayerBuilder {
                         color: '#8f0',
                     },
                     Sprite: {
-                        spriteName: 'player-green',
+                        spriteName: 'character-green',
                     },
                 };
                 break;
@@ -39,18 +39,18 @@ export default class PlayerBuilder {
                         color: '#08f',
                     },
                     Sprite: {
-                        spriteName: 'player-blue',
+                        spriteName: 'character-blue',
                     },
                 };
                 break;
             default:
-                throw new Error(`No such \`${representationSetName}\` representation set in PlayerBuilder!`);
+                throw new Error(`No such \`${representationSetName}\` representation set in CharacterBuilder!`);
         }
 
         return this;
     }
 
-    public setStartingPosition(position: 'left' | 'right' | 'top' | 'bottom'): PlayerBuilder {
+    public setStartingPosition(position: 'left' | 'right' | 'top' | 'bottom'): CharacterBuilder {
 
         switch (position) {
             case 'left':
@@ -84,7 +84,7 @@ export default class PlayerBuilder {
         return this;
     }
 
-    public setStartingDirection(direction: 'left' | 'up' | 'right' | 'down'): PlayerBuilder {
+    public setStartingDirection(direction: 'left' | 'up' | 'right' | 'down'): CharacterBuilder {
         switch (direction) {
             case 'left':
                 this.velocity = {x: -1, y: 0};
@@ -106,27 +106,27 @@ export default class PlayerBuilder {
         return this;
     }
 
-    public setInputMethod(playerInputMethod: PlayerInputMethod): PlayerBuilder {
-        this.playerInputComponent = PlayerInputComponentFactory.create(playerInputMethod);
+    public setInputMethod(characterInputMethod: CharacterInputMethod): CharacterBuilder {
+        this.characterInputComponent = CharacterInputComponentFactory.create(characterInputMethod);
 
         return this;
     }
 
-    public setCollisionStyle(collisionStyle: CollisionStyle): PlayerBuilder {
-        this.playerCollisionDetectorComponent = PlayerCollisionDetectorComponentFactory.create(collisionStyle);
+    public setCollisionStyle(collisionStyle: CollisionStyle): CharacterBuilder {
+        this.characterCollisionDetectorComponent = CharacterCollisionDetectorComponentFactory.create(collisionStyle);
 
         return this;
     }
 
-    public build(): Player {
+    public build(): Character {
         this.throwErrorsForNotSetProperties();
 
-        return new PlayerImpl({
+        return new CharacterImpl({
                 representation: this.representation,
                 position: this.position,
                 velocity: this.velocity,
-                input: this.playerInputComponent,
-                collisionDetector: this.playerCollisionDetectorComponent,
+                input: this.characterInputComponent,
+                collisionDetector: this.characterCollisionDetectorComponent,
             });
     }
 
@@ -143,11 +143,11 @@ export default class PlayerBuilder {
             throw new Error('Starting direction has to be set.');
         }
 
-        if (!this.playerInputComponent) {
+        if (!this.characterInputComponent) {
             throw new Error('Input method has to be set.');
         }
 
-        if (!this.playerCollisionDetectorComponent) {
+        if (!this.characterCollisionDetectorComponent) {
             throw new Error('Collision style has to be set.');
         }
     }

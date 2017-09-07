@@ -1,7 +1,7 @@
 import CanvasImageSource from '../../canvas-image-source.type';
 import SpritesList from '../sprites-list.type';
-import PlayerHeadPrimitiveSpriteMaker from './sprite-makers/player-head-primitive-sprite-maker';
-import PlayerTailPrimitiveSpriteMaker from './sprite-makers/player-tail-primitive-sprite-maker';
+import CharacterHeadPrimitiveSpriteMaker from './sprite-makers/character-head-primitive-sprite-maker';
+import CharacterTailPrimitiveSpriteMaker from './sprite-makers/character-tail-primitive-sprite-maker';
 import UnknownPrimitiveSpriteMaker from './sprite-makers/unknown-primitive-sprite-maker';
 
 export default class PrimitiveSpriteCache {
@@ -21,17 +21,17 @@ export default class PrimitiveSpriteCache {
             case 'generic-world-item':
                 sprite = (new UnknownPrimitiveSpriteMaker()).getSprite();
                 break;
-            case 'player-green-head':
-                sprite = (new PlayerHeadPrimitiveSpriteMaker('#0f0')).getSprite();
+            case 'character-green-head':
+                sprite = (new CharacterHeadPrimitiveSpriteMaker('#0f0')).getSprite();
                 break;
-            case 'player-green-tail':
-                sprite = (new PlayerTailPrimitiveSpriteMaker('#0f0')).getSprite();
+            case 'character-green-tail':
+                sprite = (new CharacterTailPrimitiveSpriteMaker('#0f0')).getSprite();
                 break;
-            case 'player-blue-head':
-                sprite = (new PlayerHeadPrimitiveSpriteMaker('#08f')).getSprite();
+            case 'character-blue-head':
+                sprite = (new CharacterHeadPrimitiveSpriteMaker('#08f')).getSprite();
                 break;
-            case 'player-blue-tail':
-                sprite = (new PlayerTailPrimitiveSpriteMaker('#08f')).getSprite();
+            case 'character-blue-tail':
+                sprite = (new CharacterTailPrimitiveSpriteMaker('#08f')).getSprite();
                 break;
             default:
                 sprite = (new UnknownPrimitiveSpriteMaker()).getSprite();

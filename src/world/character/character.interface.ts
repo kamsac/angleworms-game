@@ -1,10 +1,10 @@
-import PlayerHead from '../world-item/player-head';
+import CharacterHead from '../world-item/character-head';
 import Movable from './movable.interface';
 import Sizable from './sizable.interface';
 
-interface Player extends Movable, Sizable {
+interface Character extends Movable, Sizable {
     update: () => void;
-    getHead: () => PlayerHead;
+    getHead: () => CharacterHead;
     isSafeToGoLeft: () => boolean;
     isSafeToGoUp: () => boolean;
     isSafeToGoRight: () => boolean;
@@ -14,4 +14,4 @@ interface Player extends Movable, Sizable {
     getTicksToMoveDelay: () => number;
 }
 
-export default Player;
+export default Character;

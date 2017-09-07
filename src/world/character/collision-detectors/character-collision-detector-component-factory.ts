@@ -1,10 +1,10 @@
 import AnglewormsCollisionDetectorComponent from './angleworms-collision-detector';
+import CharacterCollisionDetectorComponent from './character-collision-detector-component.interface';
 import ClassicSnakeCollisionDetectorComponent from './classic-snake-collision-detector';
 import CollisionStyle from './collision-style.type';
-import PlayerCollisionDetectorComponent from './player-collision-detector-component.interface';
 
-export default class PlayerCollisionDetectorComponentFactory {
-    public static create(collisionStyle: CollisionStyle): PlayerCollisionDetectorComponent {
+export default class CharacterCollisionDetectorComponentFactory {
+    public static create(collisionStyle: CollisionStyle): CharacterCollisionDetectorComponent {
         switch (collisionStyle) {
             case 'angleworms':
                 return new AnglewormsCollisionDetectorComponent();
@@ -12,7 +12,7 @@ export default class PlayerCollisionDetectorComponentFactory {
                 return new ClassicSnakeCollisionDetectorComponent();
             default:
                 throw new Error(
-                    `Can't make \`${collisionStyle}\` PlayerCollisionDetectorComponent, but probably should!`);
+                    `Can't make \`${collisionStyle}\` CharacterCollisionDetectorComponent, but probably should!`);
         }
     }
 }

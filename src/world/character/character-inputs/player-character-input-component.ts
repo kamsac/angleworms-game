@@ -1,10 +1,10 @@
 import GameInput from '../../../game-input/game-input.interface';
 import InputBindingInformation from '../../../game-input/input-binding-information.type';
 import Locator from '../../../locator';
-import Player from '../player.interface';
-import PlayerInputComponent from './player-input-component.interface';
+import Character from '../character.interface';
+import CharacterInputComponent from './character-input-component.interface';
 
-export default class HumanPlayerInputComponent implements PlayerInputComponent {
+export default class PlayerCharacterInputComponent implements CharacterInputComponent {
     protected gameInput: GameInput;
     private lastPressedDirection: string;
 
@@ -12,24 +12,24 @@ export default class HumanPlayerInputComponent implements PlayerInputComponent {
         this.gameInput = Locator.getGameInput();
     }
 
-    public update(player: Player): void {
+    public update(character: Character): void {
         this.lastPressedDirection = this.getLastPressedDirection();
 
         switch (this.lastPressedDirection) {
             case 'left': {
-                player.goLeft();
+                character.goLeft();
                 break;
             }
             case 'up': {
-                player.goUp();
+                character.goUp();
                 break;
             }
             case 'right': {
-                player.goRight();
+                character.goRight();
                 break;
             }
             case 'down': {
-                player.goDown();
+                character.goDown();
                 break;
             }
         }
