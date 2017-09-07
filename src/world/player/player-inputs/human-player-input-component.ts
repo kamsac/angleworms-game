@@ -2,9 +2,9 @@ import GameInput from '../../../game-input/game-input.interface';
 import InputBindingInformation from '../../../game-input/input-binding-information.type';
 import Locator from '../../../locator';
 import Player from '../player.interface';
-import InputComponent from './input-component.interface';
+import PlayerInputComponent from './player-input-component.interface';
 
-export default class PlayerInputComponent implements InputComponent {
+export default class HumanPlayerInputComponent implements PlayerInputComponent {
     protected gameInput: GameInput;
     private lastPressedDirection: string;
 

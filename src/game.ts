@@ -1,19 +1,15 @@
 import GameInput from './game-input/game-input';
 import Locator from './locator';
-import Dimensions from './world/dimensions.type';
-import PlayerImpl from './world/player/player';
-import PlayerInitialSettings from './world/player/player-initial-settings.type';
-import PlayerAiInputComponent from './world/player/player-inputs/player-ai-input-component';
-import PlayerCheatInputComponent from './world/player/player-inputs/player-cheat-input-component';
 import WorldImpl from './world/world';
 import World from './world/world.interface';
 import Stats = require('stats.js');
 import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
-import ClassicSnakeCollisionDetectorComponent from './world/player/collision-detectors/classic-snake-collision-detector'; // tslint:disable-line max-line-length
+import PlayerBuilder from './world/player/player-builder';
+import Player from './world/player/player.interface';
 
 export default class Game {
     private world: World;
-    private players: PlayerImpl[];
+    private players: Player[];
     private fps: number;
     private tickTime: number; // ms
     private lastTime: number; // ms
@@ -81,46 +77,24 @@ export default class Game {
     }
 
     private initPlayers(): void {
-        const worldSize: Dimensions = this.world.getSize();
-        const player1Settings: PlayerInitialSettings = {
-            representation: {
-                ColorPixel: {
-                    color: '#8f0',
-                },
-                Sprite: {
-                    spriteName: 'player-green',
-                },
-            },
-            position: {x: Math.floor(2), y: Math.floor(worldSize.height / 2)},
-            velocity: {x: 1, y: 0},
-        };
-        const player2Settings: PlayerInitialSettings = {
-            representation: {
-                ColorPixel: {
-                    color: '#08f',
-                },
-                Sprite: {
-                    spriteName: 'player-blue',
-                },
-            },
-            position: {x: Math.floor(worldSize.width - 2), y: Math.floor(worldSize.height / 2)},
-            velocity: {x: -1, y: 0},
-        };
+        const player1: Player = new PlayerBuilder()
+            .setRepresentation('green')
+            .setStartingPosition('left')
+            .setStartingDirection('right')
+            .setInputMethod('player1')
+            .setCollisionStyle('classic')
+            .build();
 
-        this.players.push(
-            new PlayerImpl(
-                player1Settings,
-                new PlayerCheatInputComponent(),
-                new ClassicSnakeCollisionDetectorComponent(),
-            ),
-        );
-        this.players.push(
-            new PlayerImpl(
-                player2Settings,
-                new PlayerAiInputComponent(),
-                new ClassicSnakeCollisionDetectorComponent(),
-            ),
-        );
+        const player2: Player = new PlayerBuilder()
+            .setRepresentation('blue')
+            .setStartingPosition('right')
+            .setStartingDirection('left')
+            .setInputMethod('ai')
+            .setCollisionStyle('classic')
+            .build();
+
+        this.players.push(player1);
+        this.players.push(player2);
     }
 
     private initFpsStats(): void {

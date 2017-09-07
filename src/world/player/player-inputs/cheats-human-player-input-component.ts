@@ -1,7 +1,7 @@
 import Player from '../player.interface';
-import PlayerInputComponent from './player-input-component';
+import PlayerInputComponent from './human-player-input-component';
 
-export default class PlayerCheatInputComponent extends PlayerInputComponent {
+export default class CheatsHumanPlayerInputComponent extends PlayerInputComponent {
 
     public constructor() {
         super();

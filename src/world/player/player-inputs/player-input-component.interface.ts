@@ -1,7 +1,7 @@
 import Player from '../player.interface';
 
-interface InputComponent {
+interface PlayerInputComponent {
     update: (player: Player) => void;
 }
 
-export default InputComponent;
+export default PlayerInputComponent;

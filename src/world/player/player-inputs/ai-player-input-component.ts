@@ -1,9 +1,9 @@
 import Locator from '../../../locator';
 import World from '../../world.interface';
 import Player from '../player.interface';
-import InputComponent from './input-component.interface';
+import PlayerInputComponent from './player-input-component.interface';
 
-export default class PlayerAiInputComponent implements InputComponent {
+export default class AiPlayerInputComponent implements PlayerInputComponent {
 
     private world: World;
 

@@ -9,7 +9,7 @@ import WorldPosition from '../world-position.type';
 import World from '../world.interface';
 import CollisionDetectorComponent from './collision-detectors/player-collision-detector-component.interface';
 import PlayerInitialSettings from './player-initial-settings.type';
-import InputComponent from './player-inputs/input-component.interface';
+import InputComponent from './player-inputs/player-input-component.interface';
 import Player from './player.interface';
 
 export default class PlayerImpl implements Player {
@@ -27,13 +27,9 @@ export default class PlayerImpl implements Player {
     private ticksToGrow: number;
     private readonly ticksToGrowDelay: number;
 
-    public constructor(
-        initialSettings: PlayerInitialSettings,
-        input: InputComponent,
-        collisionDetector: CollisionDetectorComponent,
-    ) {
-        this.input = input;
-        this.collisionDetector = collisionDetector;
+    public constructor(initialSettings: PlayerInitialSettings) {
+        this.input = initialSettings.input;
+        this.collisionDetector = initialSettings.collisionDetector;
         this.velocity = initialSettings.velocity;
         this.tail = [];
         this.size = 0;

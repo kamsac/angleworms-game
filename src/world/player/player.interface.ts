@@ -3,6 +3,7 @@ import Movable from './movable.interface';
 import Sizable from './sizable.interface';
 
 interface Player extends Movable, Sizable {
+    update: () => void;
     getHead: () => PlayerHead;
     isSafeToGoLeft: () => boolean;
     isSafeToGoUp: () => boolean;
