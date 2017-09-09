@@ -22,11 +22,11 @@ export default class WorldImpl implements World {
         this.worldItems[position.x][position.y].push(worldItem);
     }
 
-    public moveWorldItem(worldItem: WorldItem, position: WorldPosition): void {
+    public moveWorldItem(worldItem: WorldItem, worldPosition: WorldPosition): void {
         const oldPosition: WorldPosition = worldItem.getPosition();
         _.remove(this.worldItems[oldPosition.x][oldPosition.y], worldItem);
-        worldItem.setPosition(position);
-        this.worldItems[position.x][position.y].push(worldItem);
+        worldItem.setPosition(worldPosition);
+        this.worldItems[worldPosition.x][worldPosition.y].push(worldItem);
     }
 
     public removeWorldItem(worldItem: WorldItem): void {
@@ -34,14 +34,25 @@ export default class WorldImpl implements World {
         _.remove(this.worldItems[position.x][position.y], worldItem);
     }
 
-    public getWorldItems(): WorldItem[] {
-        return _.flattenDeep<WorldItem>(this.worldItems);
+    public getWorldItems(itemTypes?: string[]): WorldItem[] {
+        const itemsAtPosition: WorldItem[] = _.flattenDeep<WorldItem>(this.worldItems);
+
+        return this.filterWorldItemsByTypes(itemsAtPosition, itemTypes);
     }
 
-    public getWorldItemsAt(worldPosition: WorldPosition): WorldItem[] {
+    public getWorldItemsAt(worldPosition: WorldPosition, itemTypes?: string[]): WorldItem[] {
         worldPosition.x = (this.size.width + worldPosition.x) % this.size.width;
         worldPosition.y = (this.size.height + worldPosition.y) % this.size.height;
-        return this.worldItems[worldPosition.x][worldPosition.y];
+        const worldItems: WorldItem[] = this.worldItems[worldPosition.x][worldPosition.y];
+
+        return this.filterWorldItemsByTypes(worldItems, itemTypes);
+    }
+
+    public removeWorldItemsAt(worldPosition: WorldPosition, types?: string[]): void {
+        const worldItems: WorldItem[] = this.getWorldItemsAt(worldPosition, types);
+        for (const worldItem of worldItems) {
+            this.removeWorldItem(worldItem);
+        }
     }
 
     private resetWorldItems() {
@@ -52,5 +63,22 @@ export default class WorldImpl implements World {
                 this.worldItems[x][y] = [];
             }
         }
+    }
+
+    private filterWorldItemsByTypes(worldItems: WorldItem[], itemTypes: string[]): WorldItem[] {
+        if (itemTypes === undefined) {
+            return worldItems;
+        }
+
+        return worldItems.filter((worldItem: WorldItem) => {
+            let foundType: boolean = false;
+            for (const itemType of itemTypes) {
+                if (worldItem.getType() === itemType) {
+                    foundType = true;
+                    break;
+                }
+            }
+            return foundType;
+        });
     }
 }

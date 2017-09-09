@@ -5,6 +5,7 @@ import WorldPosition from '../world-position.type';
 interface WorldItem extends Renderable {
     setPosition: (position: WorldPosition) => void;
     getPosition: () => WorldPosition;
+    getType: () => string;
     move: (velocity: Velocity) => void;
 }
 

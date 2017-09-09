@@ -77,24 +77,24 @@ export default class Game {
     }
 
     private initCharacters(): void {
-        const player1: Character = new CharacterBuilder()
+        const player1Character: Character = new CharacterBuilder()
             .setRepresentation('green')
             .setStartingPosition('left')
             .setStartingDirection('right')
             .setInputMethod('player1')
-            .setCollisionStyle('classic')
+            .setCollisionStyle('angleworms')
             .build();
 
-        const character2: Character = new CharacterBuilder()
+        const aiCharacter: Character = new CharacterBuilder()
             .setRepresentation('blue')
             .setStartingPosition('right')
             .setStartingDirection('left')
             .setInputMethod('ai')
-            .setCollisionStyle('classic')
+            .setCollisionStyle('angleworms')
             .build();
 
-        this.characters.push(player1);
-        this.characters.push(character2);
+        this.characters.push(player1Character);
+        this.characters.push(aiCharacter);
     }
 
     private initFpsStats(): void {

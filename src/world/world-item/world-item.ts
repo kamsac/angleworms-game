@@ -44,6 +44,10 @@ class WorldItemImpl implements WorldItem {
         return this.position;
     }
 
+    public getType(): string {
+        return this.type;
+    }
+
     public getRepresentation(representationName: string): AnyRepresentation {
         if (!this.representation[representationName]) {
             throw new Error(`No such \`${representationName}\` representation ` +
