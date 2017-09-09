@@ -139,7 +139,6 @@ export default class CharacterImpl implements Character {
         if (++this.ticksToMove === this.ticksToMoveDelay) {
 
             if (this.isSafeNotToChangeDirection()) {
-                this.world.removeWorldItemsAt(this.head.getPosition(), ['character-tail']);
                 this.head.move(this.velocity);
 
                 this.spawnTail();
@@ -189,6 +188,8 @@ export default class CharacterImpl implements Character {
             for (let i = 0; this.tail.length - this.size; i++) {
                 const removedTailPiece: CharacterTail = this.tail.shift();
                 this.world.removeWorldItem(removedTailPiece);
+
+                this.world.removeWorldItemsAt(removedTailPiece.getPosition(), ['character-tail']);
             }
         }
     }
