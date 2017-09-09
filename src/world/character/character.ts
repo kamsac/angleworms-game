@@ -139,6 +139,7 @@ export default class CharacterImpl implements Character {
         if (++this.ticksToMove === this.ticksToMoveDelay) {
 
             if (this.isSafeNotToChangeDirection()) {
+                this.world.removeWorldItemsAt(this.head.getPosition(), ['character-tail']);
                 this.head.move(this.velocity);
 
                 this.spawnTail();
