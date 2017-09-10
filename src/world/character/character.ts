@@ -35,7 +35,7 @@ export default class CharacterImpl implements Character {
         this.size = 0;
         this.representation = initialSettings.representation;
         this.ticksToMove = 0;
-        this.ticksToMoveDelay = Math.round(120 / 10);
+        this.ticksToMoveDelay = Math.round(120 / 15);
         this.ticksToGrow = 0;
         this.ticksToGrowDelay = Math.round(this.ticksToMoveDelay * 4);
         this.worldSize = Locator.getWorld().getSize();

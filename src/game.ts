@@ -37,7 +37,7 @@ export default class Game {
     }
 
     private static provideServices(): void {
-        Locator.provideWorld(new WorldImpl({width: 20, height: 20}));
+        Locator.provideWorld(new WorldImpl({width: 40, height: 40}));
         Locator.provideGameInput(new GameInput());
         Locator.provideGameResolution({width: 400, height: 400});
     }
