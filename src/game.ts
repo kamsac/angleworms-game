@@ -1,11 +1,11 @@
+import Stats = require('stats.js');
 import GameInput from './game-input/game-input';
 import Locator from './locator';
-import WorldImpl from './world/world';
-import World from './world/world.interface';
-import Stats = require('stats.js');
 import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
 import CharacterBuilder from './world/character/character-builder';
 import Character from './world/character/character.interface';
+import WorldImpl from './world/world';
+import World from './world/world.interface';
 
 export default class Game {
     private world: World;
