@@ -5,6 +5,7 @@ import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
 import CharacterBuilder from './world/character/character-builder';
 import Character from './world/character/character.interface';
 import WorldImpl from './world/world';
+import WallSpawner from './world/world-item/wall-spawner';
 import World from './world/world.interface';
 
 export default class Game {
@@ -64,6 +65,7 @@ export default class Game {
         this.initFpsStats();
         this.initRenderer();
         this.initCharacters();
+        this.initWalls();
     }
 
     private update(): void {
@@ -105,5 +107,12 @@ export default class Game {
 
     private initRenderer(): void {
         this.renderer = new GameCanvasRenderer(this.world);
+    }
+
+    private initWalls(): void {
+        new WallSpawner(this.world)
+            .spawnRandomRectanglesWalls()
+            .removeWallsOnCharactersWay(this.characters)
+            .spawnBorderWalls();
     }
 }

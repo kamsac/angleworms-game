@@ -189,7 +189,10 @@ export default class CharacterImpl implements Character {
                 const removedTailPiece: CharacterTail = this.tail.shift();
                 this.world.removeWorldItem(removedTailPiece);
 
-                this.world.removeWorldItemsAt(removedTailPiece.getPosition(), ['character-tail']);
+                this.world.removeWorldItemsAt(removedTailPiece.getPosition(), [
+                    'character-tail',
+                    'wall',
+                ]);
             }
         }
     }
