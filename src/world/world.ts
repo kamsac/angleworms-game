@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import Dimensions from './dimensions.type';
+import Apple from './world-item/apple';
 import WorldItem from './world-item/world-item';
 import WorldPosition from './world-position.type';
 import World from './world.interface';
@@ -53,6 +54,32 @@ export default class WorldImpl implements World {
         for (const worldItem of worldItems) {
             this.removeWorldItem(worldItem);
         }
+    }
+
+    public getRandomEmptyPosition(): WorldPosition {
+        const emptyPositions: WorldPosition[] = [];
+        for (let x = 0; x < this.size.width; x++) {
+            for (let y = 0; y < this.size.height; y++) {
+                if (this.worldItems[x][y].length === 0) {
+                    const position: WorldPosition = { x, y };
+                    emptyPositions.push(position);
+                }
+            }
+        }
+
+        if (emptyPositions.length === 0) {
+            return null;
+        }
+
+        const randomIndex: number = _.random(0, emptyPositions.length - 1);
+
+        return emptyPositions[randomIndex];
+    }
+
+    public spawnApple() {
+        const apple = new Apple({
+            position: this.getRandomEmptyPosition(),
+        });
     }
 
     private resetWorldItems() {

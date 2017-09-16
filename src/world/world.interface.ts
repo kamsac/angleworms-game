@@ -10,6 +10,8 @@ interface World {
     getWorldItems: (types?: string[]) => WorldItem[];
     getWorldItemsAt: (worldPosition: WorldPosition, types?: string[]) => WorldItem[];
     removeWorldItemsAt: (worldPosition: WorldPosition, types?: string[]) => void;
+    getRandomEmptyPosition: () => WorldPosition;
+    spawnApple: () => void;
 }
 
 export default World;

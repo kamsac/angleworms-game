@@ -2,6 +2,7 @@ import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
 import Velocity from '../velocity.type';
+import Apple from '../world-item/apple';
 import CharacterHead from '../world-item/character-head';
 import CharacterTail from '../world-item/character-tail';
 import WorldItemInitialSettings from '../world-item/world-item-initial-settings.type';
@@ -141,12 +142,25 @@ export default class CharacterImpl implements Character {
             if (this.isSafeNotToChangeDirection()) {
                 this.head.move(this.velocity);
 
+                this.handleApple();
+
                 this.spawnTail();
             } else if (this.isMoving()) {
                 this.kindaDie();
             }
 
             this.ticksToMove = 0;
+        }
+    }
+
+    private handleApple() {
+        const position: WorldPosition = this.head.getPosition();
+        const apples: Apple[] = this.world.getWorldItemsAt(position, ['apple']) as Apple[];
+        for (const apple of apples) {
+            this.size += apple.getFoodValue();
+            this.world.removeWorldItem(apple);
+
+            this.world.spawnApple();
         }
     }
 

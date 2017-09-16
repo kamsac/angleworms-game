@@ -66,6 +66,7 @@ export default class Game {
         this.initRenderer();
         this.initCharacters();
         this.initWalls();
+        this.world.spawnApple();
     }
 
     private update(): void {
@@ -84,7 +85,7 @@ export default class Game {
             .setStartingPosition('left')
             .setStartingDirection('right')
             .setInputMethod('player1')
-            .setCollisionStyle('angleworms')
+            .setCollisionStyle('classic')
             .build();
 
         const aiCharacter: Character = new CharacterBuilder()
@@ -92,7 +93,7 @@ export default class Game {
             .setStartingPosition('right')
             .setStartingDirection('left')
             .setInputMethod('ai')
-            .setCollisionStyle('angleworms')
+            .setCollisionStyle('classic')
             .build();
 
         this.characters.push(player1Character);
