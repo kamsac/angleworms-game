@@ -7,6 +7,8 @@ interface WorldItem extends Renderable {
     getPosition: () => WorldPosition;
     getType: () => string;
     move: (velocity: Velocity) => void;
+    removeItself: () => void;
+    update: () => void;
 }
 
 export default WorldItem;

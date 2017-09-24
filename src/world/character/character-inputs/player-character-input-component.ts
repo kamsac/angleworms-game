@@ -33,6 +33,10 @@ export default class PlayerCharacterInputComponent implements CharacterInputComp
                 break;
             }
         }
+
+        if (this.gameInput.bindings.player1.shoot.isPressed) {
+            character.shoot();
+        }
     }
 
     private getLastPressedDirection(): string {

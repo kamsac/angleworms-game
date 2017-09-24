@@ -76,6 +76,16 @@ export default class WorldImpl implements World {
         return emptyPositions[randomIndex];
     }
 
+    public update(): void {
+        for (let x = 0; x < this.size.width; x++) {
+            for (let y = 0; y < this.size.height; y++) {
+                for (const worldItem of this.worldItems[x][y]) {
+                    worldItem.update();
+                }
+            }
+        }
+    }
+
     public spawnApple() {
         const apple = new Apple({
             position: this.getRandomEmptyPosition(),

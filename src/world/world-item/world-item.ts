@@ -36,6 +36,10 @@ class WorldItemImpl implements WorldItem {
         this.registerItselfToWorld();
     }
 
+    public update(): void {
+        // do nothing
+    }
+
     public setPosition(position: WorldPosition): void {
         this.position = position;
     }
@@ -63,6 +67,10 @@ class WorldItemImpl implements WorldItem {
         };
 
         this.world.moveWorldItem(this, newPosition);
+    }
+
+    public removeItself(): void {
+        this.world.removeWorldItem(this);
     }
 
     private registerItselfToWorld(): void {

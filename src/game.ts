@@ -73,6 +73,8 @@ export default class Game {
         for (const character of this.characters) {
             character.update();
         }
+
+        this.world.update();
     }
 
     private render(): void {
@@ -86,6 +88,7 @@ export default class Game {
             .setStartingDirection('right')
             .setInputMethod('player1')
             .setCollisionStyle('classic')
+            .setGun('angleworms')
             .build();
 
         const aiCharacter: Character = new CharacterBuilder()
@@ -94,6 +97,7 @@ export default class Game {
             .setStartingDirection('left')
             .setInputMethod('ai')
             .setCollisionStyle('classic')
+            .setGun('none')
             .build();
 
         this.characters.push(player1Character);

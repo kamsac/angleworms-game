@@ -6,6 +6,7 @@ type InputBindings = {
         up: InputBindingInformation;
         right: InputBindingInformation;
         down: InputBindingInformation;
+        shoot: InputBindingInformation;
         cheatGrow: InputBindingInformation;
         cheatShrink: InputBindingInformation;
     },

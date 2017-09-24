@@ -35,6 +35,13 @@ export default class GameInputImpl implements GameInput {
                     group: 'player1',
                     action: 'down',
                 },
+                shoot: {
+                    keyName: ' ',
+                    isPressed: false,
+                    lastChange: null,
+                    group: 'player1',
+                    action: 'shoot',
+                },
                 cheatGrow: {
                     keyName: '1',
                     isPressed: false,

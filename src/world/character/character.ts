@@ -12,10 +12,12 @@ import CharacterInitialSettings from './character-initial-settings.type';
 import InputComponent from './character-inputs/character-input-component.interface';
 import Character from './character.interface';
 import CollisionDetectorComponent from './collision-detectors/character-collision-detector-component.interface';
+import GunComponent from './gun/gun-component.interface';
 
 export default class CharacterImpl implements Character {
     private input: InputComponent;
     private collisionDetector: CollisionDetectorComponent;
+    private gun: GunComponent;
     private velocity: Velocity;
     private head: CharacterHead;
     private tail: CharacterTail[];
@@ -31,6 +33,7 @@ export default class CharacterImpl implements Character {
     public constructor(initialSettings: CharacterInitialSettings) {
         this.input = initialSettings.input;
         this.collisionDetector = initialSettings.collisionDetector;
+        this.gun = initialSettings.gun;
         this.velocity = initialSettings.velocity;
         this.tail = [];
         this.size = 0;
@@ -81,6 +84,10 @@ export default class CharacterImpl implements Character {
 
     public goDown(): void {
         this.velocity = {x: 0, y: 1};
+    }
+
+    public shoot(): void {
+        this.gun.shoot(this);
     }
 
     public isMoving(): boolean {

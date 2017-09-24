@@ -11,6 +11,7 @@ interface World {
     getWorldItemsAt: (worldPosition: WorldPosition, types?: string[]) => WorldItem[];
     removeWorldItemsAt: (worldPosition: WorldPosition, types?: string[]) => void;
     getRandomEmptyPosition: () => WorldPosition;
+    update: () => void;
     spawnApple: () => void;
 }
 

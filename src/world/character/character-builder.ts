@@ -11,6 +11,9 @@ import Character from './character.interface';
 import CharacterCollisionDetectorComponentFactory from './collision-detectors/character-collision-detector-component-factory'; // tslint:disable-line: max-line-length
 import CharacterCollisionDetectorComponent from './collision-detectors/character-collision-detector-component.interface'; // tslint:disable-line: max-line-length
 import CollisionStyle from './collision-detectors/collision-style.type';
+import GunComponentFactory from './gun/gun-component-factory';
+import GunComponent from './gun/gun-component.interface';
+import GunType from './gun/gun-type.type';
 
 export default class CharacterBuilder {
     private representation: Representation;
@@ -18,6 +21,7 @@ export default class CharacterBuilder {
     private velocity: Velocity;
     private characterInputComponent: CharacterInputComponent;
     private characterCollisionDetectorComponent: CharacterCollisionDetectorComponent;
+    private gunComponent: GunComponent;
 
     private worldSize: Dimensions = Locator.getWorld().getSize();
 
@@ -99,7 +103,7 @@ export default class CharacterBuilder {
                 this.velocity = {x: 0, y: 1};
                 break;
             default:
-                throw new Error(`Wrong direction \`${direction}\` direction!`);
+                throw new Error(`Wrong \`${direction}\` direction!`);
 
         }
 
@@ -118,6 +122,12 @@ export default class CharacterBuilder {
         return this;
     }
 
+    public setGun(gunType: GunType): CharacterBuilder {
+        this.gunComponent = GunComponentFactory.create(gunType);
+
+        return this;
+    }
+
     public build(): Character {
         this.throwErrorsForNotSetProperties();
 
@@ -127,6 +137,7 @@ export default class CharacterBuilder {
                 velocity: this.velocity,
                 input: this.characterInputComponent,
                 collisionDetector: this.characterCollisionDetectorComponent,
+                gun: this.gunComponent,
             });
     }
 
@@ -149,6 +160,10 @@ export default class CharacterBuilder {
 
         if (!this.characterCollisionDetectorComponent) {
             throw new Error('Collision style has to be set.');
+        }
+
+        if (!this.gunComponent) {
+            throw new Error('Gun has to be set');
         }
     }
 }
