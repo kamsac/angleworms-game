@@ -56,6 +56,8 @@ export default class AiCharacterInputComponent implements CharacterInputComponen
                     finalDirection.go();
                     this.reflex.getTiredBecauseOfChangeDirection();
                 }
+            } else {
+                character.shoot();
             }
 
             this.reflex.getRestBecauseMove();
@@ -110,7 +112,7 @@ export default class AiCharacterInputComponent implements CharacterInputComponen
     }
 
     private getNearestTargetPosition(character): void {
-        const targetWorldItemsTypes: string[] = ['apple'];
+        const targetWorldItemsTypes: string[] = ['apple', 'bullet'];
         const nearestTarget: WorldItem =
             this.aiWorldAnalyser.getNearestTargetWorldItem(character, targetWorldItemsTypes);
         this.targetPosition = (nearestTarget) ? nearestTarget.getPosition() : null;

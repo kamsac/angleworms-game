@@ -98,7 +98,7 @@ export default class Game {
             .setStartingDirection('left')
             .setInputMethod('ai')
             .setCollisionStyle('classic')
-            .setGun('none')
+            .setGun('angleworms')
             .build();
 
         this.characters.push(player1Character);
