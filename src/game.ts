@@ -67,6 +67,7 @@ export default class Game {
         this.initCharacters();
         this.initWalls();
         this.world.spawnApple();
+        this.world.spawnApple();
     }
 
     private update(): void {
