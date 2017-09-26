@@ -77,13 +77,10 @@ export default class WorldImpl implements World {
     }
 
     public update(): void {
-        for (let x = 0; x < this.size.width; x++) {
-            for (let y = 0; y < this.size.height; y++) {
-                for (const worldItem of this.worldItems[x][y]) {
-                    worldItem.update();
-                }
-            }
-        }
+        const worldItems: WorldItem[] = this.getWorldItems();
+        worldItems.forEach((worldItem) => {
+            worldItem.update();
+        });
     }
 
     public spawnApple() {
