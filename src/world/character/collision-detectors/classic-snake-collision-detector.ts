@@ -1,4 +1,5 @@
 import Locator from '../../../locator';
+import WorldPositionHelper from '../../world-position-helper';
 import WorldPosition from '../../world-position.type';
 import World from '../../world.interface';
 import Character from '../character.interface';
@@ -54,10 +55,10 @@ export default class ClassicSnakeCollisionDetectorComponent implements Character
     }
 
     public isSafeNotToChangeDirection(character: Character): boolean {
-        const nextPosition: WorldPosition = {
-            x: character.getHead().getPosition().x + character.getVelocity().x,
-            y: character.getHead().getPosition().y + character.getVelocity().y,
-        };
+        const nextPosition: WorldPosition = WorldPositionHelper.getAdjacentFuturePosition(
+            character.getHead().getPosition(),
+            character.getHead().getVelocity(),
+        );
 
         return (this.world.getWorldItemsAt(nextPosition, this.dangerousWorldItems).length === 0);
     }

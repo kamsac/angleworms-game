@@ -1,4 +1,5 @@
 import Stats = require('stats.js');
+import GameConfiguration from './game-configuration';
 import GameInput from './game-input/game-input';
 import Locator from './locator';
 import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
@@ -25,7 +26,7 @@ export default class Game {
 
         this.world = Locator.getWorld();
         this.characters = [];
-        this.fps = 120;
+        this.fps = GameConfiguration.TICKS_PER_SECOND;
         this.tickTime = 1000 / this.fps;
         this.lastTime = 0;
         this.deltaTime = 0;
@@ -86,7 +87,7 @@ export default class Game {
         const player1Character: Character = new CharacterBuilder()
             .setRepresentation('green')
             .setStartingPosition('left')
-            .setStartingDirection('right')
+            .setStartingDirection('right', 15)
             .setInputMethod('player1')
             .setCollisionStyle('classic')
             .setGun('angleworms')
@@ -95,7 +96,7 @@ export default class Game {
         const aiCharacter: Character = new CharacterBuilder()
             .setRepresentation('blue')
             .setStartingPosition('right')
-            .setStartingDirection('left')
+            .setStartingDirection('left', 15)
             .setInputMethod('ai')
             .setCollisionStyle('classic')
             .setGun('angleworms')

@@ -88,19 +88,19 @@ export default class CharacterBuilder {
         return this;
     }
 
-    public setStartingDirection(direction: 'left' | 'up' | 'right' | 'down'): CharacterBuilder {
+    public setStartingDirection(direction: 'left' | 'up' | 'right' | 'down', speed: number): CharacterBuilder {
         switch (direction) {
             case 'left':
-                this.velocity = {x: -1, y: 0};
+                this.velocity = {x: -speed, y: 0};
                 break;
             case 'up':
-                this.velocity = {x: 0, y: -1};
+                this.velocity = {x: 0, y: -speed};
                 break;
             case 'right':
-                this.velocity = {x: 1, y: 0};
+                this.velocity = {x: speed, y: 0};
                 break;
             case 'down':
-                this.velocity = {x: 0, y: 1};
+                this.velocity = {x: 0, y: speed};
                 break;
             default:
                 throw new Error(`Wrong \`${direction}\` direction!`);

@@ -1,11 +1,12 @@
 import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
+import VelocityHelper from '../velocity-helper';
 import Velocity from '../velocity.type';
-import Apple from '../world-item/apple';
 import CharacterHead from '../world-item/character-head';
 import CharacterTail from '../world-item/character-tail';
 import WorldItemInitialSettings from '../world-item/world-item-initial-settings.type';
+import WorldPositionHelper from '../world-position-helper';
 import WorldPosition from '../world-position.type';
 import World from '../world.interface';
 import CharacterInitialSettings from './character-initial-settings.type';
@@ -18,48 +19,35 @@ export default class CharacterImpl implements Character {
     private input: InputComponent;
     private collisionDetector: CollisionDetectorComponent;
     private gun: GunComponent;
-    private velocity: Velocity;
     private head: CharacterHead;
     private tail: CharacterTail[];
     private size: number;
     private representation: Representation;
     private worldSize: Dimensions;
     private world: World;
-    private ticksToMove: number;
-    private readonly ticksToMoveDelay: number;
-    private ticksToGrow: number;
-    private readonly ticksToGrowDelay: number;
+    private moveSpeed: number;
+    private growSpeed: number;
+    private ticksSinceGrow: number;
 
     public constructor(initialSettings: CharacterInitialSettings) {
         this.input = initialSettings.input;
         this.collisionDetector = initialSettings.collisionDetector;
         this.gun = initialSettings.gun;
-        this.velocity = initialSettings.velocity;
         this.tail = [];
         this.size = 0;
         this.representation = initialSettings.representation;
-        this.ticksToMove = 0;
-        this.ticksToMoveDelay = Math.round(120 / 15);
-        this.ticksToGrow = 0;
-        this.ticksToGrowDelay = Math.round(this.ticksToMoveDelay * 4);
+        this.moveSpeed = 15;
+        this.growSpeed = this.moveSpeed / 4;
+        this.ticksSinceGrow = 0;
         this.worldSize = Locator.getWorld().getSize();
         this.world = Locator.getWorld();
 
-        this.initHead(initialSettings.position);
+        this.initHead(initialSettings.position, initialSettings.velocity);
     }
 
     public update(): void {
         this.input.update(this);
-        this.updateTail();
-        this.moveHead();
-    }
-
-    public getVelocity(): Velocity {
-        return this.velocity;
-    }
-
-    public setVelocity(velocity: Velocity): void {
-        this.velocity = velocity;
+        this.growSize();
     }
 
     public getSize(): number {
@@ -71,19 +59,31 @@ export default class CharacterImpl implements Character {
     }
 
     public goLeft(): void {
-        this.velocity = {x: -1, y: 0};
+        this.head.setVelocity({
+            x: -this.moveSpeed,
+            y: 0,
+        });
     }
 
     public goUp(): void {
-        this.velocity = {x: 0, y: -1};
+        this.head.setVelocity({
+            x: 0,
+            y: -this.moveSpeed,
+        });
     }
 
     public goRight(): void {
-        this.velocity = {x: 1, y: 0};
+        this.head.setVelocity({
+            x: this.moveSpeed,
+            y: 0,
+        });
     }
 
     public goDown(): void {
-        this.velocity = {x: 0, y: 1};
+        this.head.setVelocity({
+            x: 0,
+            y: this.moveSpeed,
+        });
     }
 
     public shoot(): void {
@@ -91,24 +91,25 @@ export default class CharacterImpl implements Character {
     }
 
     public isMoving(): boolean {
-        return (this.velocity.x !== 0 ||
-                this.velocity.y !== 0);
+        const velocity: Velocity = this.head.getVelocity();
+        return (velocity.x !== 0 ||
+                velocity.y !== 0);
     }
 
     public isMovingLeft(): boolean {
-        return this.velocity.x === -1;
+        return this.head.getVelocity().x < 0;
     }
 
     public isMovingUp(): boolean {
-        return this.velocity.y === -1;
+        return this.head.getVelocity().y < 0;
     }
 
     public isMovingRight(): boolean {
-        return this.velocity.x === 1;
+        return this.head.getVelocity().x > 0;
     }
 
     public isMovingDown(): boolean {
-        return this.velocity.y === 1;
+        return this.head.getVelocity().y > 0;
     }
 
     public isSafeToGoLeft(): boolean {
@@ -131,56 +132,12 @@ export default class CharacterImpl implements Character {
         return this.collisionDetector.isSafeNotToChangeDirection(this);
     }
 
-    public getTicksToMove(): number {
-        return this.ticksToMove;
+    public getTicksSinceAnyMove(): number {
+        const ticksSinceMoved: Velocity = this.head.getTicksSinceMoved();
+        return Math.min(ticksSinceMoved.x, ticksSinceMoved.y);
     }
 
-    public getTicksToMoveDelay(): number {
-        return this.ticksToMoveDelay;
-    }
-
-    public getHead(): CharacterHead {
-        return this.head;
-    }
-
-    private moveHead(): void {
-        if (++this.ticksToMove === this.ticksToMoveDelay) {
-
-            if (this.isSafeNotToChangeDirection()) {
-                this.head.move(this.velocity);
-
-                this.handleApple();
-
-                this.spawnTail();
-            } else if (this.isMoving()) {
-                this.kindaDie();
-            }
-
-            this.ticksToMove = 0;
-        }
-    }
-
-    private handleApple() {
-        const position: WorldPosition = this.head.getPosition();
-        const apples: Apple[] = this.world.getWorldItemsAt(position, ['apple']) as Apple[];
-        for (const apple of apples) {
-            this.size += apple.getFoodValue();
-            this.world.removeWorldItem(apple);
-
-            this.world.spawnApple();
-        }
-    }
-
-    private kindaDie(): void {
-        this.size = 0;
-    }
-
-    private updateTail(): void {
-        this.removeDeadTail();
-        this.growSize();
-    }
-
-    private spawnTail(): void {
+    public spawnTail(): void {
         const tailRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
         tailRepresentation.Sprite.spriteName += '-tail';
 
@@ -196,15 +153,11 @@ export default class CharacterImpl implements Character {
 
         const tail = new CharacterTail(tailInitialSettings);
 
-        tail.setPosition(position);
-        tail.move({
-            x: -this.velocity.x,
-            y: -this.velocity.y,
-        });
+        tail.move(WorldPositionHelper.getAdjacentPastPosition(position, this.head.getVelocity()));
         this.tail.push(tail);
     }
 
-    private removeDeadTail(): void {
+    public removeDeadTail(): void {
         if (this.tail.length > this.size) {
             for (let i = 0; this.tail.length - this.size; i++) {
                 const removedTailPiece: CharacterTail = this.tail.shift();
@@ -218,17 +171,26 @@ export default class CharacterImpl implements Character {
         }
     }
 
+    public getHead(): CharacterHead {
+        return this.head;
+    }
+
+    public die(): void {
+        this.size = 0;
+        this.removeDeadTail();
+    }
+
     private growSize(): void {
-        if (++this.ticksToGrow === this.ticksToGrowDelay) {
+        if (this.ticksSinceGrow++ >= VelocityHelper.speedToTicks(this.growSpeed)) {
             if (this.isMoving()) {
                 this.size++;
             }
 
-            this.ticksToGrow = 0;
+            this.ticksSinceGrow = 0;
         }
     }
 
-    private initHead(startPosition: WorldPosition): void {
+    private initHead(startPosition: WorldPosition, velocity: Velocity): void {
         const headRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
         headRepresentation.Sprite.spriteName += '-head';
 
@@ -237,6 +199,7 @@ export default class CharacterImpl implements Character {
             position: startPosition,
         };
 
-        this.head = new CharacterHead(headInitialSettings);
+        this.head = new CharacterHead(headInitialSettings, this);
+        this.head.setVelocity(velocity);
     }
 }

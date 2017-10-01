@@ -33,7 +33,7 @@ export default class AiCharacterInputComponent implements CharacterInputComponen
     }
 
     public update(character: Character) {
-        if (character.getTicksToMove() === 0) {
+        if (character.getTicksSinceAnyMove() === 0) {
             this.getNearestTargetPosition(character);
 
             const directions: GoDirection[] = this.getDirections(character);

@@ -25,9 +25,13 @@ export default class WorldImpl implements World {
 
     public moveWorldItem(worldItem: WorldItem, worldPosition: WorldPosition): void {
         const oldPosition: WorldPosition = worldItem.getPosition();
-        _.remove(this.worldItems[oldPosition.x][oldPosition.y], worldItem);
-        worldItem.setPosition(worldPosition);
-        this.worldItems[worldPosition.x][worldPosition.y].push(worldItem);
+        const removed: WorldItem[] = _.remove(this.worldItems[oldPosition.x][oldPosition.y], worldItem);
+        if (removed.length) {
+            worldItem.setPosition(worldPosition);
+            this.worldItems[worldPosition.x][worldPosition.y].push(worldItem);
+        } else {
+            throw new Error(`Trying to move WorldItem that doesn't exist anymore`);
+        }
     }
 
     public removeWorldItem(worldItem: WorldItem): void {

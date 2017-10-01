@@ -1,20 +1,29 @@
-import Velocity from '../velocity.type';
 import CharacterHead from '../world-item/character-head';
-import Movable from './movable.interface';
-import Sizable from './sizable.interface';
 
-interface Character extends Movable, Sizable {
+interface Character {
     update: () => void;
     getHead: () => CharacterHead;
-    getVelocity: () => Velocity;
     isSafeToGoLeft: () => boolean;
     isSafeToGoUp: () => boolean;
     isSafeToGoRight: () => boolean;
     isSafeToGoDown: () => boolean;
     isSafeNotToChangeDirection: () => boolean;
-    getTicksToMove: () => number;
-    getTicksToMoveDelay: () => number;
+    getTicksSinceAnyMove: () => number;
     shoot: () => void;
+    die: () => void;
+    spawnTail: () => void;
+    removeDeadTail: () => void;
+    goLeft: () => void;
+    goUp: () => void;
+    goRight: () => void;
+    goDown: () => void;
+    isMoving: () => boolean;
+    isMovingLeft: () => boolean;
+    isMovingUp: () => boolean;
+    isMovingRight: () => boolean;
+    isMovingDown: () => boolean;
+    setSize: (size: number) => void;
+    getSize: () => number;
 }
 
 export default Character;
