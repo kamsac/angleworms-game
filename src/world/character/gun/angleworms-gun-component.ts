@@ -1,4 +1,4 @@
-import Velocity from '../../velocity.type';
+import Vector2D from '../../vector-2d.type';
 import Bullet from '../../world-item/bullet';
 import WorldPositionHelper from '../../world-position-helper';
 import WorldPosition from '../../world-position.type';
@@ -18,7 +18,7 @@ export default class AnglewormsGunComponent implements GunComponent {
         if (!this.bulletAlive && this.bulletsLeft && character.isMoving()) {
             this.bulletsLeft--;
             const characterPosition: WorldPosition = character.getHead().getPosition();
-            const characterVelocity: Velocity = character.getHead().getVelocity();
+            const characterVelocity: Vector2D = character.getHead().getVelocity();
             const position: WorldPosition =
                 WorldPositionHelper.getAdjacentFuturePosition(characterPosition, characterVelocity);
             this.bulletAlive = new Bullet({

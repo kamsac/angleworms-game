@@ -1,8 +1,8 @@
 import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
+import Time from '../../time';
 import Dimensions from '../dimensions.type';
-import VelocityHelper from '../velocity-helper';
-import Velocity from '../velocity.type';
+import Vector2D from '../vector-2d.type';
 import CharacterHead from '../world-item/character-head';
 import CharacterTail from '../world-item/character-tail';
 import WorldItemInitialSettings from '../world-item/world-item-initial-settings.type';
@@ -25,7 +25,6 @@ export default class CharacterImpl implements Character {
     private representation: Representation;
     private worldSize: Dimensions;
     private world: World;
-    private moveSpeed: number;
     private growSpeed: number;
     private ticksSinceGrow: number;
 
@@ -36,13 +35,12 @@ export default class CharacterImpl implements Character {
         this.tail = [];
         this.size = 0;
         this.representation = initialSettings.representation;
-        this.moveSpeed = 15;
-        this.growSpeed = this.moveSpeed / 4;
+        this.growSpeed = initialSettings.speed / 4;
         this.ticksSinceGrow = 0;
         this.worldSize = Locator.getWorld().getSize();
         this.world = Locator.getWorld();
 
-        this.initHead(initialSettings.position, initialSettings.velocity);
+        this.initHead(initialSettings.position, initialSettings.direction, initialSettings.speed);
     }
 
     public update(): void {
@@ -59,30 +57,30 @@ export default class CharacterImpl implements Character {
     }
 
     public goLeft(): void {
-        this.head.setVelocity({
-            x: -this.moveSpeed,
+        this.head.setDirection({
+            x: -1,
             y: 0,
         });
     }
 
     public goUp(): void {
-        this.head.setVelocity({
+        this.head.setDirection({
             x: 0,
-            y: -this.moveSpeed,
+            y: -1,
         });
     }
 
     public goRight(): void {
-        this.head.setVelocity({
-            x: this.moveSpeed,
+        this.head.setDirection({
+            x: 1,
             y: 0,
         });
     }
 
     public goDown(): void {
-        this.head.setVelocity({
+        this.head.setDirection({
             x: 0,
-            y: this.moveSpeed,
+            y: 1,
         });
     }
 
@@ -91,7 +89,7 @@ export default class CharacterImpl implements Character {
     }
 
     public isMoving(): boolean {
-        const velocity: Velocity = this.head.getVelocity();
+        const velocity: Vector2D = this.head.getVelocity();
         return (velocity.x !== 0 ||
                 velocity.y !== 0);
     }
@@ -133,7 +131,7 @@ export default class CharacterImpl implements Character {
     }
 
     public getTicksSinceAnyMove(): number {
-        const ticksSinceMoved: Velocity = this.head.getTicksSinceMoved();
+        const ticksSinceMoved: Vector2D = this.head.getTicksSinceMoved();
         return Math.min(ticksSinceMoved.x, ticksSinceMoved.y);
     }
 
@@ -181,7 +179,7 @@ export default class CharacterImpl implements Character {
     }
 
     private growSize(): void {
-        if (this.ticksSinceGrow++ >= VelocityHelper.speedToTicks(this.growSpeed)) {
+        if (this.ticksSinceGrow++ >= Time.secondsToTicks(this.growSpeed)) {
             if (this.isMoving()) {
                 this.size++;
             }
@@ -190,7 +188,7 @@ export default class CharacterImpl implements Character {
         }
     }
 
-    private initHead(startPosition: WorldPosition, velocity: Velocity): void {
+    private initHead(startPosition: WorldPosition, direction: Vector2D, speed: number): void {
         const headRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
         headRepresentation.Sprite.spriteName += '-head';
 
@@ -200,6 +198,7 @@ export default class CharacterImpl implements Character {
         };
 
         this.head = new CharacterHead(headInitialSettings, this);
-        this.head.setVelocity(velocity);
+        this.head.setDirection(direction);
+        this.head.setSpeed(speed);
     }
 }

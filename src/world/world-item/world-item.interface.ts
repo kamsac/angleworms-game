@@ -1,16 +1,19 @@
 import Renderable from '../renderable.interface';
-import Velocity from '../velocity.type';
+import Vector2D from '../vector-2d.type';
 import WorldPosition from '../world-position.type';
 
 interface WorldItem extends Renderable {
     setPosition: (position: WorldPosition) => void;
     getPosition: () => WorldPosition;
-    setVelocity: (velocity: Velocity) => void;
-    getVelocity: () => Velocity;
+    setSpeed: (speed: number) => void;
+    getSpeed: () => number;
+    setDirection: (direction: Vector2D) => void;
+    getDirection: () => Vector2D;
+    getVelocity: () => Vector2D;
     stop: () => void;
-    getTicksSinceMoved: () => Velocity;
+    getTicksSinceMoved: () => Vector2D;
     getType: () => string;
-    move: (velocity: Velocity) => void;
+    move: (velocity: Vector2D) => void;
     removeItself: () => void;
     update: () => void;
 }

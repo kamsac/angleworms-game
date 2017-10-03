@@ -1,7 +1,7 @@
 import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
-import Velocity from '../velocity.type';
+import Vector2D from '../vector-2d.type';
 import WorldPosition from '../world-position.type';
 import CharacterImpl from './character';
 import CharacterInputComponentFactory from './character-inputs/character-input-component-factory';
@@ -18,7 +18,8 @@ import GunType from './gun/gun-type.type';
 export default class CharacterBuilder {
     private representation: Representation;
     private position: WorldPosition;
-    private velocity: Velocity;
+    private speed: number;
+    private direction: Vector2D;
     private characterInputComponent: CharacterInputComponent;
     private characterCollisionDetectorComponent: CharacterCollisionDetectorComponent;
     private gunComponent: GunComponent;
@@ -88,24 +89,30 @@ export default class CharacterBuilder {
         return this;
     }
 
-    public setStartingDirection(direction: 'left' | 'up' | 'right' | 'down', speed: number): CharacterBuilder {
+    public setStartingDirection(direction: 'left' | 'up' | 'right' | 'down'): CharacterBuilder {
         switch (direction) {
             case 'left':
-                this.velocity = {x: -speed, y: 0};
+                this.direction = { x: -1, y: 0 };
                 break;
             case 'up':
-                this.velocity = {x: 0, y: -speed};
+                this.direction = { x: 0, y: -1 };
                 break;
             case 'right':
-                this.velocity = {x: speed, y: 0};
+                this.direction = { x: 1, y: 0 };
                 break;
             case 'down':
-                this.velocity = {x: 0, y: speed};
+                this.direction = { x: 0, y: 1 };
                 break;
             default:
                 throw new Error(`Wrong \`${direction}\` direction!`);
 
         }
+
+        return this;
+    }
+
+    public setSpeed(speed: number): CharacterBuilder {
+        this.speed = speed;
 
         return this;
     }
@@ -132,13 +139,14 @@ export default class CharacterBuilder {
         this.throwErrorsForNotSetProperties();
 
         return new CharacterImpl({
-                representation: this.representation,
-                position: this.position,
-                velocity: this.velocity,
-                input: this.characterInputComponent,
-                collisionDetector: this.characterCollisionDetectorComponent,
-                gun: this.gunComponent,
-            });
+            representation: this.representation,
+            position: this.position,
+            speed: this.speed,
+            direction: this.direction,
+            input: this.characterInputComponent,
+            collisionDetector: this.characterCollisionDetectorComponent,
+            gun: this.gunComponent,
+        });
     }
 
     private throwErrorsForNotSetProperties(): void {
@@ -150,8 +158,12 @@ export default class CharacterBuilder {
             throw new Error('Starting position has to be set.');
         }
 
-        if (!this.velocity) {
+        if (!this.direction) {
             throw new Error('Starting direction has to be set.');
+        }
+
+        if (!this.speed) {
+            throw new Error('Speed has to be set.');
         }
 
         if (!this.characterInputComponent) {

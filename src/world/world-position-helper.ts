@@ -1,11 +1,11 @@
 import Dimensions from './dimensions.type';
-import Velocity from './velocity.type';
+import Vector2D from './vector-2d.type';
 import WorldPosition from './world-position.type';
 
 export default class WorldPositionHelper {
     public static getAdjacentFuturePosition(
         position: WorldPosition,
-        velocity: Velocity,
+        velocity: Vector2D,
         times: number = 1,
     ): WorldPosition {
         let adjacentX = 0;
@@ -23,7 +23,7 @@ export default class WorldPositionHelper {
 
     public static getAdjacentPastPosition(
         position: WorldPosition,
-        velocity: Velocity,
+        velocity: Vector2D,
         times: number = 1,
     ): WorldPosition {
         let adjacentX = 0;

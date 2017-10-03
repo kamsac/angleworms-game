@@ -1,6 +1,6 @@
+import Time from '../../time';
 import Character from '../character/character.interface';
 import GunComponent from '../character/gun/gun-component.interface';
-import VelocityHelper from '../velocity-helper';
 import WorldPositionHelper from '../world-position-helper';
 import WorldPosition from '../world-position.type';
 import WorldItemImpl from './world-item';
@@ -10,7 +10,6 @@ import WorldItem from './world-item.interface';
 export default class Bullet extends WorldItemImpl implements WorldItem {
     private gun: GunComponent;
     private character: Character;
-    private speed: number;
 
     public constructor(initialSettings: WorldItemInitialSettings, gun: GunComponent, character: Character) {
         super(initialSettings);
@@ -27,8 +26,8 @@ export default class Bullet extends WorldItemImpl implements WorldItem {
         this.character = character;
 
         this.type = 'bullet';
-        this.speed = 20;
-        this.velocity = VelocityHelper.fasten(this.character.getHead().getVelocity(), this.speed);
+        this.speed = character.getHead().getSpeed() * 3;
+        this.direction = character.getHead().getDirection();
     }
 
     protected beforeMove(): boolean {
@@ -46,7 +45,7 @@ export default class Bullet extends WorldItemImpl implements WorldItem {
 
     private removeItselfIfOutsideMap(): boolean {
         const futurePosition: WorldPosition =
-            WorldPositionHelper.getAdjacentFuturePosition(this.position, this.velocity);
+            WorldPositionHelper.getAdjacentFuturePosition(this.position, this.getVelocity());
         const isOutsideWorld: boolean = WorldPositionHelper.isOutsideWorld(futurePosition, this.worldSize, 1);
         if (isOutsideWorld) {
             this.removeItself();
