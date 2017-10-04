@@ -1,12 +1,9 @@
 import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
-import Time from '../../time';
 import Dimensions from '../dimensions.type';
 import Vector2D from '../vector-2d.type';
 import CharacterHead from '../world-item/character-head';
-import CharacterTail from '../world-item/character-tail';
 import WorldItemInitialSettings from '../world-item/world-item-initial-settings.type';
-import WorldPositionHelper from '../world-position-helper';
 import WorldPosition from '../world-position.type';
 import World from '../world.interface';
 import CharacterInitialSettings from './character-initial-settings.type';
@@ -14,46 +11,42 @@ import InputComponent from './character-inputs/character-input-component.interfa
 import Character from './character.interface';
 import CollisionDetectorComponent from './collision-detectors/character-collision-detector-component.interface';
 import GunComponent from './gun/gun-component.interface';
+import TailManager from './tail-manager/tail-manager.interface';
 
 export default class CharacterImpl implements Character {
     private input: InputComponent;
     private collisionDetector: CollisionDetectorComponent;
     private gun: GunComponent;
     private head: CharacterHead;
-    private tail: CharacterTail[];
-    private size: number;
+    private tailManager: TailManager;
     private representation: Representation;
     private worldSize: Dimensions;
     private world: World;
-    private growSpeed: number;
-    private ticksSinceGrow: number;
 
     public constructor(initialSettings: CharacterInitialSettings) {
         this.input = initialSettings.input;
+        this.tailManager = initialSettings.tailManager;
         this.collisionDetector = initialSettings.collisionDetector;
         this.gun = initialSettings.gun;
-        this.tail = [];
-        this.size = 0;
         this.representation = initialSettings.representation;
-        this.growSpeed = initialSettings.speed / 4;
-        this.ticksSinceGrow = 0;
         this.worldSize = Locator.getWorld().getSize();
         this.world = Locator.getWorld();
 
+        this.tailManager.setGrowSpeed(initialSettings.speed / 4);
         this.initHead(initialSettings.position, initialSettings.direction, initialSettings.speed);
     }
 
     public update(): void {
         this.input.update(this);
-        this.growSize();
+        this.tailManager.update(this);
     }
 
     public getSize(): number {
-        return this.size;
+        return this.tailManager.getSize();
     }
 
     public setSize(size: number): void {
-        this.size = size;
+        this.tailManager.setSize(size);
     }
 
     public goLeft(): void {
@@ -136,37 +129,11 @@ export default class CharacterImpl implements Character {
     }
 
     public spawnTail(): void {
-        const tailRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
-        tailRepresentation.Sprite.spriteName += '-tail';
-
-        const position: WorldPosition = {
-            x: this.head.getPosition().x,
-            y: this.head.getPosition().y,
-        };
-
-        const tailInitialSettings: WorldItemInitialSettings = {
-            representation: tailRepresentation,
-            position: position,
-        };
-
-        const tail = new CharacterTail(tailInitialSettings);
-
-        tail.move(WorldPositionHelper.getAdjacentPastPosition(position, this.head.getVelocity()));
-        this.tail.push(tail);
+        this.tailManager.spawnTail(this);
     }
 
     public removeDeadTail(): void {
-        if (this.tail.length > this.size) {
-            for (let i = 0; this.tail.length - this.size; i++) {
-                const removedTailPiece: CharacterTail = this.tail.shift();
-                this.world.removeWorldItem(removedTailPiece);
-
-                this.world.removeWorldItemsAt(removedTailPiece.getPosition(), [
-                    'character-tail',
-                    'wall',
-                ]);
-            }
-        }
+        this.tailManager.removeDeadTail();
     }
 
     public getHead(): CharacterHead {
@@ -174,18 +141,8 @@ export default class CharacterImpl implements Character {
     }
 
     public die(): void {
-        this.size = 0;
+        this.tailManager.setSize(0);
         this.removeDeadTail();
-    }
-
-    private growSize(): void {
-        if (this.ticksSinceGrow++ >= Time.secondsToTicks(this.growSpeed)) {
-            if (this.isMoving()) {
-                this.size++;
-            }
-
-            this.ticksSinceGrow = 0;
-        }
     }
 
     private initHead(startPosition: WorldPosition, direction: Vector2D, speed: number): void {

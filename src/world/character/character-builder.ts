@@ -14,6 +14,9 @@ import CollisionStyle from './collision-detectors/collision-style.type';
 import GunComponentFactory from './gun/gun-component-factory';
 import GunComponent from './gun/gun-component.interface';
 import GunType from './gun/gun-type.type';
+import AnglewormsTailManager from './tail-manager/angleworms-tail-manager';
+import TailManagerType from './tail-manager/tail-manager-type.type';
+import TailManager from './tail-manager/tail-manager.interface';
 
 export default class CharacterBuilder {
     private representation: Representation;
@@ -21,6 +24,7 @@ export default class CharacterBuilder {
     private speed: number;
     private direction: Vector2D;
     private characterInputComponent: CharacterInputComponent;
+    private tailManager: TailManager;
     private characterCollisionDetectorComponent: CharacterCollisionDetectorComponent;
     private gunComponent: GunComponent;
 
@@ -123,6 +127,18 @@ export default class CharacterBuilder {
         return this;
     }
 
+    public setTailManager(tailManager: TailManagerType): CharacterBuilder {
+        switch (tailManager) {
+            case 'angleworms':
+                this.tailManager = new AnglewormsTailManager();
+                break;
+            default:
+                throw Error(`Wrong \`${tailManager}\` tail manager!`);
+        }
+
+        return this;
+    }
+
     public setCollisionStyle(collisionStyle: CollisionStyle): CharacterBuilder {
         this.characterCollisionDetectorComponent = CharacterCollisionDetectorComponentFactory.create(collisionStyle);
 
@@ -144,6 +160,7 @@ export default class CharacterBuilder {
             speed: this.speed,
             direction: this.direction,
             input: this.characterInputComponent,
+            tailManager: this.tailManager,
             collisionDetector: this.characterCollisionDetectorComponent,
             gun: this.gunComponent,
         });
@@ -168,6 +185,10 @@ export default class CharacterBuilder {
 
         if (!this.characterInputComponent) {
             throw new Error('Input method has to be set.');
+        }
+
+        if (!this.tailManager) {
+            throw new Error('Tail manager has to be set.');
         }
 
         if (!this.characterCollisionDetectorComponent) {

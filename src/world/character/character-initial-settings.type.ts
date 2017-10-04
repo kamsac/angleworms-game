@@ -4,6 +4,7 @@ import WorldPosition from '../world-position.type';
 import InputComponent from './character-inputs/character-input-component.interface';
 import CollisionDetectorComponent from './collision-detectors/character-collision-detector-component.interface';
 import GunComponent from './gun/gun-component.interface';
+import TailManager from './tail-manager/tail-manager.interface';
 
 type  CharacterInitialSettings = {
     representation: Representation;
@@ -11,6 +12,7 @@ type  CharacterInitialSettings = {
     speed: number;
     direction: Vector2D;
     input: InputComponent;
+    tailManager: TailManager;
     collisionDetector: CollisionDetectorComponent;
     gun: GunComponent;
 };

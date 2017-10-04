@@ -90,6 +90,7 @@ export default class Game {
             .setStartingDirection('right')
             .setSpeed(15)
             .setInputMethod('player1')
+            .setTailManager('angleworms')
             .setCollisionStyle('classic')
             .setGun('angleworms')
             .build();
@@ -100,6 +101,7 @@ export default class Game {
             .setStartingDirection('left')
             .setSpeed(15)
             .setInputMethod('ai')
+            .setTailManager('angleworms')
             .setCollisionStyle('classic')
             .setGun('angleworms')
             .build();

@@ -119,7 +119,11 @@ class WorldItemImpl implements WorldItem {
         return this.type;
     }
 
-    public getRepresentation(representationName: string): AnyRepresentation {
+    public getRepresentation(representationName?: string): Representation | AnyRepresentation {
+        if (!representationName) {
+            return this.representation;
+        }
+
         if (!this.representation[representationName]) {
             throw new Error(`No such \`${representationName}\` representation ` +
                 `in \`${this.constructor.name}\` implementation!`);
