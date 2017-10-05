@@ -26,10 +26,10 @@ export default class ColorPixelWorldRenderer {
                 worldObject.getRepresentation('ColorPixel') as ColorPixelRepresentation;
             this.context.fillStyle = representation.color;
             this.context.fillRect(
-                worldObjectPosition.x * this.tileSize.width,
-                worldObjectPosition.y * this.tileSize.height,
-                this.tileSize.width,
-                this.tileSize.height,
+                Math.floor(worldObjectPosition.x * this.tileSize.width),
+                Math.floor(worldObjectPosition.y * this.tileSize.height),
+                Math.ceil(this.tileSize.width),
+                Math.ceil(this.tileSize.height),
             );
         }
     }
