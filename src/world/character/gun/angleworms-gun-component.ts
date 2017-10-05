@@ -1,5 +1,5 @@
 import Vector2D from '../../vector-2d.type';
-import Bullet from '../../world-item/bullet';
+import Bullet from '../../world-object/bullet';
 import WorldPositionHelper from '../../world-position-helper';
 import WorldPosition from '../../world-position.type';
 import Character from '../character.interface';

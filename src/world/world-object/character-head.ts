@@ -1,12 +1,12 @@
 import Character from '../character/character.interface';
 import Apple from './apple';
-import WorldItemImpl from './world-item';
-import WorldItemInitialSettings from './world-item-initial-settings.type';
+import WorldObjectImpl from './world-object';
+import WorldObjectInitialSettings from './world-object-initial-settings.type';
 
-export default class CharacterHead extends WorldItemImpl {
+export default class CharacterHead extends WorldObjectImpl {
     private character: Character;
 
-    public constructor(initialSettings: WorldItemInitialSettings, character: Character) {
+    public constructor(initialSettings: WorldObjectInitialSettings, character: Character) {
         super(initialSettings);
 
         this.type = 'character-head';
@@ -29,10 +29,10 @@ export default class CharacterHead extends WorldItemImpl {
     }
 
     private handleApple() {
-        const apples: Apple[] = this.world.getWorldItemsAt(this.position, ['apple']) as Apple[];
+        const apples: Apple[] = this.world.getWorldObjectsAt(this.position, ['apple']) as Apple[];
         for (const apple of apples) {
             this.character.setSize( this.character.getSize() + apple.getFoodValue() );
-            this.world.removeWorldItem(apple);
+            this.world.removeWorldObject(apple);
 
             this.world.spawnApple();
         }

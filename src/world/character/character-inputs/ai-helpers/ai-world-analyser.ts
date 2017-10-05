@@ -1,5 +1,5 @@
 import Locator from '../../../../locator';
-import WorldItem from '../../../world-item/world-item.interface';
+import WorldObject from '../../../world-object/world-object.interface';
 import WorldPosition from '../../../world-position.type';
 import World from '../../../world.interface';
 import Character from '../../character.interface';
@@ -18,25 +18,25 @@ export default class AiWorldAnalyser {
         return distanceX + distanceY;
     }
 
-    public getNearestTargetWorldItem(character: Character, itemTypes: string[]): WorldItem | null {
-        const targets: WorldItem[] = this.world.getWorldItems(itemTypes);
+    public getNearestTargetWorldObject(character: Character, itemTypes: string[]): WorldObject | null {
+        const targets: WorldObject[] = this.world.getWorldObjects(itemTypes);
         if (targets.length === 0) {
             return null;
         }
 
-        return this.getNearestWorldItem(character, targets);
+        return this.getNearestWorldObject(character, targets);
     }
 
-    private getNearestWorldItem(character: Character, worldItems: WorldItem[]): WorldItem {
+    private getNearestWorldObject(character: Character, worldObjects: WorldObject[]): WorldObject {
         const characterPosition: WorldPosition = character.getHead().getPosition();
 
-        worldItems.sort((worldItem1, worldItem2: WorldItem) => {
-            const distance1: number = AiWorldAnalyser.distance(characterPosition, worldItem1.getPosition());
-            const distance2: number = AiWorldAnalyser.distance(characterPosition, worldItem2.getPosition());
+        worldObjects.sort((worldObject1: WorldObject, worldObject2: WorldObject) => {
+            const distance1: number = AiWorldAnalyser.distance(characterPosition, worldObject1.getPosition());
+            const distance2: number = AiWorldAnalyser.distance(characterPosition, worldObject2.getPosition());
 
             return distance1 - distance2;
         });
 
-        return worldItems[0];
+        return worldObjects[0];
     }
 }

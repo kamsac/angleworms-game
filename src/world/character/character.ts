@@ -2,8 +2,8 @@ import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
 import Vector2D from '../vector-2d.type';
-import CharacterHead from '../world-item/character-head';
-import WorldItemInitialSettings from '../world-item/world-item-initial-settings.type';
+import CharacterHead from '../world-object/character-head';
+import WorldObjectInitialSettings from '../world-object/world-object-initial-settings.type';
 import WorldPosition from '../world-position.type';
 import World from '../world.interface';
 import CharacterInitialSettings from './character-initial-settings.type';
@@ -149,7 +149,7 @@ export default class CharacterImpl implements Character {
         const headRepresentation: Representation = JSON.parse(JSON.stringify(this.representation));
         headRepresentation.Sprite.spriteName += '-head';
 
-        const headInitialSettings: WorldItemInitialSettings = {
+        const headInitialSettings: WorldObjectInitialSettings = {
             representation: headRepresentation,
             position: startPosition,
         };

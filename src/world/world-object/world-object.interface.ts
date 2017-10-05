@@ -2,7 +2,7 @@ import Renderable from '../renderable.interface';
 import Vector2D from '../vector-2d.type';
 import WorldPosition from '../world-position.type';
 
-interface WorldItem extends Renderable {
+interface WorldObject extends Renderable {
     setPosition: (position: WorldPosition) => void;
     getPosition: () => WorldPosition;
     setSpeed: (speed: number) => void;
@@ -18,4 +18,4 @@ interface WorldItem extends Renderable {
     update: () => void;
 }
 
-export default WorldItem;
+export default WorldObject;

@@ -1,5 +1,5 @@
 import Locator from '../../../locator';
-import WorldItem from '../../world-item/world-item.interface';
+import WorldObject from '../../world-object/world-object.interface';
 import WorldPosition from '../../world-position.type';
 import World from '../../world.interface';
 import Character from '../character.interface';
@@ -112,9 +112,9 @@ export default class AiCharacterInputComponent implements CharacterInputComponen
     }
 
     private getNearestTargetPosition(character): void {
-        const targetWorldItemsTypes: string[] = ['apple', 'bullet'];
-        const nearestTarget: WorldItem =
-            this.aiWorldAnalyser.getNearestTargetWorldItem(character, targetWorldItemsTypes);
+        const targetWorldObjectsTypes: string[] = ['apple', 'bullet'];
+        const nearestTarget: WorldObject =
+            this.aiWorldAnalyser.getNearestTargetWorldObject(character, targetWorldObjectsTypes);
         this.targetPosition = (nearestTarget) ? nearestTarget.getPosition() : null;
     }
 

@@ -1,4 +1,4 @@
-import CharacterHead from '../world-item/character-head';
+import CharacterHead from '../world-object/character-head';
 
 interface Character {
     update: () => void;

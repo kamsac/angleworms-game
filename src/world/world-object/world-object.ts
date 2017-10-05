@@ -7,10 +7,10 @@ import Vector2D from '../vector-2d.type';
 import WorldPositionHelper from '../world-position-helper';
 import WorldPosition from '../world-position.type';
 import World from '../world.interface';
-import WorldItemInitialSettings from './world-item-initial-settings.type';
-import WorldItem from './world-item.interface';
+import WorldObjectInitialSettings from './world-object-initial-settings.type';
+import WorldObject from './world-object.interface';
 
-class WorldItemImpl implements WorldItem {
+class WorldObjectImpl implements WorldObject {
     protected type: string;
     protected position: WorldPosition;
     protected world: World;
@@ -20,7 +20,7 @@ class WorldItemImpl implements WorldItem {
     protected ticksSinceMoved: Vector2D;
     protected representation: Representation;
 
-    public constructor(initialSettings: WorldItemInitialSettings) {
+    public constructor(initialSettings: WorldObjectInitialSettings) {
         this.world = Locator.getWorld();
         this.worldSize = Locator.getWorld().getSize();
         this.position = WorldPositionHelper.wrap(initialSettings.position, this.worldSize);
@@ -32,7 +32,7 @@ class WorldItemImpl implements WorldItem {
                 color: '#888',
             },
             Sprite: {
-                spriteName: 'generic-world-item',
+                spriteName: 'generic-world-object',
             },
         };
         for (const renderer in initialSettings.representation) {
@@ -70,7 +70,7 @@ class WorldItemImpl implements WorldItem {
             const canMove: boolean = this.beforeMove();
 
             if (canMove) {
-                this.world.moveWorldItem(this, newPosition);
+                this.world.moveWorldObject(this, newPosition);
                 this.afterMove();
             }
         }
@@ -134,7 +134,7 @@ class WorldItemImpl implements WorldItem {
     public move(newPosition): void {
         newPosition = WorldPositionHelper.wrap(newPosition, this.worldSize);
 
-        this.world.moveWorldItem(this, newPosition);
+        this.world.moveWorldObject(this, newPosition);
     }
 
     public getTicksSinceMoved(): Vector2D {
@@ -142,7 +142,7 @@ class WorldItemImpl implements WorldItem {
     }
 
     public removeItself(): void {
-        this.world.removeWorldItem(this);
+        this.world.removeWorldObject(this);
     }
 
     protected beforeMove(): boolean {
@@ -154,8 +154,8 @@ class WorldItemImpl implements WorldItem {
     }
 
     private registerItselfToWorld(): void {
-        this.world.addWorldItem(this);
+        this.world.addWorldObject(this);
     }
 }
 
-export default WorldItemImpl;
+export default WorldObjectImpl;

@@ -7,11 +7,11 @@ import CharacterCollisionDetectorComponent from './character-collision-detector-
 
 export default class ClassicSnakeCollisionDetectorComponent implements CharacterCollisionDetectorComponent {
     private world: World;
-    private dangerousWorldItems: string[];
+    private dangerousWorldObjects: string[];
 
     public constructor() {
         this.world = Locator.getWorld();
-        this.dangerousWorldItems = [
+        this.dangerousWorldObjects = [
             'character-head',
             'character-tail',
             'wall',
@@ -24,7 +24,7 @@ export default class ClassicSnakeCollisionDetectorComponent implements Character
             y: character.getHead().getPosition().y,
         };
 
-        return (this.world.getWorldItemsAt(nextPosition, this.dangerousWorldItems).length === 0);
+        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 
     public isSafeToGoUp(character: Character): boolean {
@@ -33,7 +33,7 @@ export default class ClassicSnakeCollisionDetectorComponent implements Character
             y: character.getHead().getPosition().y - 1,
         };
 
-        return (this.world.getWorldItemsAt(nextPosition, this.dangerousWorldItems).length === 0);
+        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 
     public isSafeToGoRight(character: Character): boolean {
@@ -42,7 +42,7 @@ export default class ClassicSnakeCollisionDetectorComponent implements Character
             y: character.getHead().getPosition().y,
         };
 
-        return (this.world.getWorldItemsAt(nextPosition, this.dangerousWorldItems).length === 0);
+        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 
     public isSafeToGoDown(character: Character): boolean {
@@ -51,7 +51,7 @@ export default class ClassicSnakeCollisionDetectorComponent implements Character
             y: character.getHead().getPosition().y + 1,
         };
 
-        return (this.world.getWorldItemsAt(nextPosition, this.dangerousWorldItems).length === 0);
+        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 
     public isSafeNotToChangeDirection(character: Character): boolean {
@@ -60,6 +60,6 @@ export default class ClassicSnakeCollisionDetectorComponent implements Character
             character.getHead().getVelocity(),
         );
 
-        return (this.world.getWorldItemsAt(nextPosition, this.dangerousWorldItems).length === 0);
+        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 }

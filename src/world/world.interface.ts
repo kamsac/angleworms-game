@@ -1,15 +1,15 @@
 import Dimensions from './dimensions.type';
-import WorldItem from './world-item/world-item';
+import WorldObject from './world-object/world-object';
 import WorldPosition from './world-position.type';
 
 interface World {
     getSize: () => Dimensions;
-    addWorldItem: (worldItem: WorldItem) => void;
-    moveWorldItem: (worldItem: WorldItem, worldPosition: WorldPosition) => void;
-    removeWorldItem: (worldItem: WorldItem) => void;
-    getWorldItems: (types?: string[]) => WorldItem[];
-    getWorldItemsAt: (worldPosition: WorldPosition, types?: string[]) => WorldItem[];
-    removeWorldItemsAt: (worldPosition: WorldPosition, types?: string[]) => void;
+    addWorldObject: (worldObject: WorldObject) => void;
+    moveWorldObject: (worldObject: WorldObject, worldPosition: WorldPosition) => void;
+    removeWorldObject: (worldObject: WorldObject) => void;
+    getWorldObjects: (types?: string[]) => WorldObject[];
+    getWorldObjectsAt: (worldPosition: WorldPosition, types?: string[]) => WorldObject[];
+    removeWorldObjectsAt: (worldPosition: WorldPosition, types?: string[]) => void;
     getRandomEmptyPosition: () => WorldPosition;
     update: () => void;
     spawnApple: () => void;

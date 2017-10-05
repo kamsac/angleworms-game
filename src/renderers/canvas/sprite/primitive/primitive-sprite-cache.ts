@@ -18,7 +18,7 @@ export default class PrimitiveSpriteCache {
     private static loadSprite(spriteName): void {
         let sprite: CanvasImageSource;
         switch (spriteName) {
-            case 'generic-world-item':
+            case 'generic-world-object':
                 sprite = (new UnknownPrimitiveSpriteMaker()).getSprite();
                 break;
             case 'character-green-head':

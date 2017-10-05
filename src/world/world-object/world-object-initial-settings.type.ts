@@ -1,9 +1,9 @@
 import Representation from '../../renderers/representation.type';
 import WorldPosition from '../world-position.type';
 
-type WorldItemInitialSettings = {
+type WorldObjectInitialSettings = {
     representation?: Representation;
     position: WorldPosition;
 }
 
-export default WorldItemInitialSettings;
+export default WorldObjectInitialSettings;

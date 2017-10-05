@@ -92,7 +92,7 @@ export default class WallSpawner {
                         x: x,
                         y: characterPosition.y,
                     };
-                    this.world.removeWorldItemsAt(position, ['wall']);
+                    this.world.removeWorldObjectsAt(position, ['wall']);
                 }
             }
 
@@ -102,7 +102,7 @@ export default class WallSpawner {
                         x: characterPosition.x,
                         y: y,
                     };
-                    this.world.removeWorldItemsAt(position, ['wall']);
+                    this.world.removeWorldObjectsAt(position, ['wall']);
                 }
             }
         }

@@ -1,8 +1,8 @@
 import Locator from '../../../locator';
 import Representation from '../../../renderers/representation.type';
 import Time from '../../../time';
-import CharacterTail from '../../world-item/character-tail';
-import WorldItemInitialSettings from '../../world-item/world-item-initial-settings.type';
+import CharacterTail from '../../world-object/character-tail';
+import WorldObjectInitialSettings from '../../world-object/world-object-initial-settings.type';
 import WorldPositionHelper from '../../world-position-helper';
 import WorldPosition from '../../world-position.type';
 import World from '../../world.interface';
@@ -68,7 +68,7 @@ export default class AnglewormsTailManager implements TailManager {
             y: character.getHead().getPosition().y,
         };
 
-        const tailInitialSettings: WorldItemInitialSettings = {
+        const tailInitialSettings: WorldObjectInitialSettings = {
             representation: tailRepresentation,
             position: position,
         };
@@ -83,9 +83,9 @@ export default class AnglewormsTailManager implements TailManager {
         if (this.tailPieces.length > this.size) {
             for (let i = 0; this.tailPieces.length - this.size; i++) {
                 const removedTailPiece: CharacterTail = this.tailPieces.shift();
-                this.world.removeWorldItem(removedTailPiece);
+                this.world.removeWorldObject(removedTailPiece);
 
-                this.world.removeWorldItemsAt(removedTailPiece.getPosition(), [
+                this.world.removeWorldObjectsAt(removedTailPiece.getPosition(), [
                     'character-tail',
                     'wall',
                 ]);

@@ -6,7 +6,7 @@ import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
 import CharacterBuilder from './world/character/character-builder';
 import Character from './world/character/character.interface';
 import WorldImpl from './world/world';
-import WallSpawner from './world/world-item/wall-spawner';
+import WallSpawner from './world/world-object/wall-spawner';
 import World from './world/world.interface';
 
 export default class Game {

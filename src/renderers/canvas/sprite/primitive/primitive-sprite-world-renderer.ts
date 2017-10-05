@@ -21,15 +21,15 @@ export default class PrimitiveSpriteWorldRenderer {
     }
 
     public render(): void {
-        for (const worldItem of this.world.getWorldItems()) {
-            const worldItemPosition: WorldPosition = worldItem.getPosition();
+        for (const worldObject of this.world.getWorldObjects()) {
+            const worldObjectPosition: WorldPosition = worldObject.getPosition();
             const representation: SpriteRepresentation =
-                worldItem.getRepresentation('Sprite') as SpriteRepresentation;
+                worldObject.getRepresentation('Sprite') as SpriteRepresentation;
 
             this.context.drawImage(
                 PrimitiveSpriteCache.getSprite(representation.spriteName),
-                worldItemPosition.x * this.tileSize.width,
-                worldItemPosition.y * this.tileSize.height,
+                worldObjectPosition.x * this.tileSize.width,
+                worldObjectPosition.y * this.tileSize.height,
                 this.tileSize.width,
                 this.tileSize.height,
             );

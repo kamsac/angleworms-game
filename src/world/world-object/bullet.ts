@@ -3,15 +3,15 @@ import Character from '../character/character.interface';
 import GunComponent from '../character/gun/gun-component.interface';
 import WorldPositionHelper from '../world-position-helper';
 import WorldPosition from '../world-position.type';
-import WorldItemImpl from './world-item';
-import WorldItemInitialSettings from './world-item-initial-settings.type';
-import WorldItem from './world-item.interface';
+import WorldObjectImpl from './world-object';
+import WorldObjectInitialSettings from './world-object-initial-settings.type';
+import WorldObject from './world-object.interface';
 
-export default class Bullet extends WorldItemImpl implements WorldItem {
+export default class Bullet extends WorldObjectImpl implements WorldObject {
     private gun: GunComponent;
     private character: Character;
 
-    public constructor(initialSettings: WorldItemInitialSettings, gun: GunComponent, character: Character) {
+    public constructor(initialSettings: WorldObjectInitialSettings, gun: GunComponent, character: Character) {
         super(initialSettings);
 
         this.representation = {
@@ -32,7 +32,7 @@ export default class Bullet extends WorldItemImpl implements WorldItem {
 
     protected beforeMove(): boolean {
         if (!this.removeItselfIfOutsideMap()) {
-            this.destroyWorldItems();
+            this.destroyWorldObjects();
             return true;
         }
 
@@ -40,7 +40,7 @@ export default class Bullet extends WorldItemImpl implements WorldItem {
     }
 
     protected afterMove(): void {
-        this.destroyWorldItems();
+        this.destroyWorldObjects();
     }
 
     private removeItselfIfOutsideMap(): boolean {
@@ -56,7 +56,7 @@ export default class Bullet extends WorldItemImpl implements WorldItem {
         return false;
     }
 
-    private destroyWorldItems(): void {
-        this.world.removeWorldItemsAt(this.position, ['wall', 'character-tail']);
+    private destroyWorldObjects(): void {
+        this.world.removeWorldObjectsAt(this.position, ['wall', 'character-tail']);
     }
 }
