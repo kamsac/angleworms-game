@@ -97,7 +97,7 @@ export default class WorldImpl implements World {
         this.worldObjects = [];
         for (let x = 0; x < this.size.width; x++) {
             this.worldObjects[x] = [];
-            for (let y = 0; y < this.size.width; y++) {
+            for (let y = 0; y < this.size.height; y++) {
                 this.worldObjects[x][y] = [];
             }
         }

@@ -8,6 +8,7 @@ export default class ColorPixelWorldRenderer {
     private context: CanvasRenderingContext2D;
     private world: World;
     private tileSize: Dimensions;
+    private drawingOffset: Dimensions;
     private resolution: Dimensions;
 
     public constructor(context: CanvasRenderingContext2D, world: World) {
@@ -17,6 +18,7 @@ export default class ColorPixelWorldRenderer {
 
         this.resolution = Locator.getGameResolution();
         this.loadTileSize();
+        this.loadDrawingOffset();
     }
 
     public render(): void {
@@ -26,8 +28,8 @@ export default class ColorPixelWorldRenderer {
                 worldObject.getRepresentation('ColorPixel') as ColorPixelRepresentation;
             this.context.fillStyle = representation.color;
             this.context.fillRect(
-                Math.floor(worldObjectPosition.x * this.tileSize.width),
-                Math.floor(worldObjectPosition.y * this.tileSize.height),
+                Math.floor(worldObjectPosition.x * this.tileSize.width + this.drawingOffset.width),
+                Math.floor(worldObjectPosition.y * this.tileSize.height + this.drawingOffset.height),
                 Math.ceil(this.tileSize.width),
                 Math.ceil(this.tileSize.height),
             );
@@ -35,11 +37,21 @@ export default class ColorPixelWorldRenderer {
     }
 
     private loadTileSize(): void {
-        const worldResolution: Dimensions = Locator.getGameResolution();
         const worldSize: Dimensions = this.world.getSize();
+        const maxWorldSize: number = Math.max(worldSize.width, worldSize.height);
         this.tileSize = {
-            width: worldResolution.width / worldSize.width,
-            height: worldResolution.height / worldSize.height,
+            width: this.resolution.width / maxWorldSize,
+            height: this.resolution.height / maxWorldSize,
+        };
+    }
+
+    private loadDrawingOffset(): void {
+        const worldSize: Dimensions = this.world.getSize();
+        const tilesWidth: number = worldSize.width * this.tileSize.width;
+        const tilesHeight: number = worldSize.height * this.tileSize.height;
+        this.drawingOffset = {
+            width: (this.resolution.width - tilesWidth) / 2,
+            height: (this.resolution.height - tilesHeight) / 2,
         };
     }
 }
