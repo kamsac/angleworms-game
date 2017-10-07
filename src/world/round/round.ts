@@ -58,6 +58,7 @@ export default class RoundImpl implements Round {
             .setInputMethod('player1')
             .setTailManager('angleworms')
             .setCollisionStyle('classic')
+            .setDeathStyle('regular')
             .setGun('angleworms')
             .build();
 
@@ -70,6 +71,7 @@ export default class RoundImpl implements Round {
             .setInputMethod('ai')
             .setTailManager('angleworms')
             .setCollisionStyle('classic')
+            .setDeathStyle('regular')
             .setGun('angleworms')
             .build();
 

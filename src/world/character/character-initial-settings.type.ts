@@ -4,6 +4,7 @@ import WorldPosition from '../world-position.type';
 import World from '../world.interface';
 import InputComponent from './character-inputs/character-input-component.interface';
 import CollisionDetectorComponent from './collision-detectors/character-collision-detector-component.interface';
+import CharacterDeathComponent from './death/character-death-component.interface';
 import GunComponent from './gun/gun-component.interface';
 import TailManager from './tail-manager/tail-manager.interface';
 
@@ -16,6 +17,7 @@ type  CharacterInitialSettings = {
     input: InputComponent;
     tailManager: TailManager;
     collisionDetector: CollisionDetectorComponent;
+    death: CharacterDeathComponent
     gun: GunComponent;
 };
 

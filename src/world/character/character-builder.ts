@@ -11,6 +11,10 @@ import Character from './character.interface';
 import CharacterCollisionDetectorComponentFactory from './collision-detectors/character-collision-detector-component-factory'; // tslint:disable-line: max-line-length
 import CharacterCollisionDetectorComponent from './collision-detectors/character-collision-detector-component.interface'; // tslint:disable-line: max-line-length
 import CollisionStyle from './collision-detectors/collision-style.type';
+import CharacterDeathComponent from './death/character-death-component.interface';
+import DeathStyle from './death/death-style.type';
+import KindaCharacterDeathComponent from './death/kinda-character-death-component';
+import RegularCharacterDeathComponent from './death/regular-character-death-component';
 import GunComponentFactory from './gun/gun-component-factory';
 import GunComponent from './gun/gun-component.interface';
 import GunType from './gun/gun-type.type';
@@ -28,6 +32,7 @@ export default class CharacterBuilder {
     private tailManager: TailManager;
     private characterCollisionDetectorComponent: CharacterCollisionDetectorComponent;
     private gunComponent: GunComponent;
+    private deathComponent: CharacterDeathComponent;
 
     public setRepresentation(representationSetName: 'green' | 'blue'): CharacterBuilder {
         switch (representationSetName) {
@@ -152,6 +157,21 @@ export default class CharacterBuilder {
         return this;
     }
 
+    public setDeathStyle(deathStyle: DeathStyle): CharacterBuilder {
+        switch (deathStyle) {
+            case 'regular':
+                this.deathComponent = new RegularCharacterDeathComponent();
+                break;
+            case 'kinda':
+                this.deathComponent = new KindaCharacterDeathComponent();
+                break;
+            default:
+                throw Error(`Wrong \`${deathStyle}\` death style!`);
+        }
+
+        return this;
+    }
+
     public setGun(gunType: GunType): CharacterBuilder {
         this.gunComponent = GunComponentFactory.create(gunType);
 
@@ -170,6 +190,7 @@ export default class CharacterBuilder {
             input: this.characterInputComponent,
             tailManager: this.tailManager,
             collisionDetector: this.characterCollisionDetectorComponent,
+            death: this.deathComponent,
             gun: this.gunComponent,
         });
     }
@@ -205,6 +226,10 @@ export default class CharacterBuilder {
 
         if (!this.characterCollisionDetectorComponent) {
             throw new Error('Collision style has to be set.');
+        }
+
+        if (!this.deathComponent) {
+            throw new Error('Death style has to be set.');
         }
 
         if (!this.gunComponent) {
