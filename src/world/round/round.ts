@@ -1,3 +1,5 @@
+import Locator from '../../locator';
+import GameRenderer from '../../renderers/game-renderer.interface';
 import CharacterBuilder from '../character/character-builder';
 import Character from '../character/character.interface';
 import Dimensions from '../dimensions.type';
@@ -9,12 +11,18 @@ import Round from './round.interface';
 export default class RoundImpl implements Round {
     private world: World;
     private characters: Character[];
+    private renderer: GameRenderer;
+
+    public constructor() {
+        this.renderer = Locator.getGameRenderer();
+    }
 
     public start(): void {
         this.initWorld();
         this.initCharacters();
         this.initWalls();
         this.initApples();
+        this.initRenderer();
     }
 
     public update(): void {
@@ -34,7 +42,7 @@ export default class RoundImpl implements Round {
             width: 40,
             height: 40,
         };
-        this.world = new WorldImpl(worldSize);
+        this.world = new WorldImpl(worldSize, this);
         this.world.reset();
     }
 
@@ -79,5 +87,9 @@ export default class RoundImpl implements Round {
     private initApples(): void {
         this.world.spawnApple();
         this.world.spawnApple();
+    }
+
+    private initRenderer(): void {
+        this.renderer.setWorldRenderer(this.world);
     }
 }

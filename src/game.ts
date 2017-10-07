@@ -3,6 +3,7 @@ import GameConfiguration from './game-configuration';
 import GameInput from './game-input/game-input';
 import Locator from './locator';
 import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
+import GameRenderer from './renderers/game-renderer.interface';
 import RoundImpl from './world/round/round';
 import Round from './world/round/round.interface';
 
@@ -14,12 +15,10 @@ export default class Game {
     private updateLag: number; // ms
     private maxUpdateLag: number; // ms
     private fpsStats: Stats;
-    private renderer: GameCanvasRenderer;
+    private renderer: GameRenderer;
     private round: Round;
 
     public constructor() {
-        Game.provideServices();
-
         this.fps = GameConfiguration.TICKS_PER_SECOND;
         this.tickTime = 1000 / this.fps;
         this.lastTime = 0;
@@ -29,10 +28,6 @@ export default class Game {
 
         this.init();
         this.requestNextFrame();
-    }
-
-    private static provideServices(): void {
-        Locator.provideGameInput(new GameInput());
     }
 
     private requestNextFrame(): void {
@@ -56,8 +51,9 @@ export default class Game {
 
     private init(): void {
         this.initFpsStats();
-        this.initRound();
+        this.initInput();
         this.initRenderer();
+        this.initRound();
     }
 
     private update(): void {
@@ -79,7 +75,14 @@ export default class Game {
         document.body.appendChild(this.fpsStats.dom);
     }
 
+    private initInput(): void {
+        const gameInput: GameInput = new GameInput();
+        Locator.provideGameInput(gameInput);
+    }
+
     private initRenderer(): void {
-        this.renderer = new GameCanvasRenderer(this.round.getWorld());
+        const gameRenderer: GameRenderer = new GameCanvasRenderer();
+        Locator.provideGameRenderer(gameRenderer);
+        this.renderer = gameRenderer;
     }
 }

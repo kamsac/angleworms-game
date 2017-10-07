@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import Dimensions from './dimensions.type';
+import Round from './round/round.interface';
 import Apple from './world-object/apple';
 import WorldObject from './world-object/world-object';
 import WorldPosition from './world-position.type';
@@ -7,10 +8,12 @@ import World from './world.interface';
 
 export default class WorldImpl implements World {
     private size: Dimensions;
+    private round: Round;
     private worldObjects: WorldObject[][][];
 
-    public constructor(size: Dimensions = {width: 20, height: 20}) {
+    public constructor(size: Dimensions, round: Round) {
         this.size = size;
+        this.round = round;
         this.resetWorldObjects();
     }
 
@@ -96,6 +99,10 @@ export default class WorldImpl implements World {
 
     public reset(): void {
         this.resetWorldObjects();
+    }
+
+    public getRound(): Round {
+        return this.round;
     }
 
     private resetWorldObjects() {

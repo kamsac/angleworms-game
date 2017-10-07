@@ -1,22 +1,19 @@
 import Dimensions from '../../world/dimensions.type';
 import World from '../../world/world.interface';
+import GameRenderer from '../game-renderer.interface';
 import CanvasRenderer from './canvas-renderer';
 import CanvasRendererConfiguration from './canvas-renderer-configuration';
 import ColorPixelWorldRenderer from './color-pixel/color-pixel-world-renderer';
 import PrimitiveSpriteWorldRenderer from './sprite/primitive/primitive-sprite-world-renderer';
 
-class GameCanvasRenderer extends CanvasRenderer {
+class GameCanvasRenderer extends CanvasRenderer implements GameRenderer {
     protected resolution: Dimensions;
-    protected world: World;
     protected worldRenderer: ColorPixelWorldRenderer | PrimitiveSpriteWorldRenderer;
 
-    public constructor(world: World) {
+    public constructor() {
         super();
 
-        this.world = world;
         this.resolution = CanvasRendererConfiguration.RESOLUTION;
-        this.worldRenderer = new ColorPixelWorldRenderer(this.context, this.world);
-        // this.worldRenderer = new PrimitiveSpriteWorldRenderer(this.context, this.world);
 
         this.setResolution(this.resolution);
         this.attachCanvas();
@@ -24,7 +21,15 @@ class GameCanvasRenderer extends CanvasRenderer {
 
     public render(): void {
         this.clearCanvas();
-        this.worldRenderer.render();
+
+        if (this.worldRenderer) {
+            this.worldRenderer.render();
+        }
+    }
+
+    public setWorldRenderer(world: World): void {
+        this.worldRenderer = new ColorPixelWorldRenderer(this.context, world);
+        // this.worldRenderer = new PrimitiveSpriteWorldRenderer(this.context, world);
     }
 
     private attachCanvas(): void {

@@ -1,4 +1,5 @@
 import Dimensions from './dimensions.type';
+import Round from './round/round.interface';
 import WorldObject from './world-object/world-object';
 import WorldPosition from './world-position.type';
 
@@ -14,6 +15,7 @@ interface World {
     update: () => void;
     spawnApple: () => void;
     reset: () => void;
+    getRound: () => Round;
 }
 
 export default World;

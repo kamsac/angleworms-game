@@ -144,6 +144,10 @@ export default class CharacterImpl implements Character {
     }
 
     public die(): void {
+        this.world.getRound().start();
+    }
+
+    private kindaDie(): void {
         this.tailManager.setSize(0);
         this.removeDeadTail();
     }
