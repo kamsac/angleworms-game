@@ -3,15 +3,13 @@ import GameConfiguration from './game-configuration';
 import GameInput from './game-input/game-input';
 import Locator from './locator';
 import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
-import CharacterBuilder from './world/character/character-builder';
-import Character from './world/character/character.interface';
+import RoundImpl from './world/round/round';
+import Round from './world/round/round.interface';
 import WorldImpl from './world/world';
-import WallSpawner from './world/world-object/wall-spawner';
 import World from './world/world.interface';
 
 export default class Game {
     private world: World;
-    private characters: Character[];
     private fps: number;
     private tickTime: number; // ms
     private lastTime: number; // ms
@@ -20,12 +18,12 @@ export default class Game {
     private maxUpdateLag: number; // ms
     private fpsStats: Stats;
     private renderer: GameCanvasRenderer;
+    private round: Round;
 
     public constructor() {
         Game.provideServices();
 
         this.world = Locator.getWorld();
-        this.characters = [];
         this.fps = GameConfiguration.TICKS_PER_SECOND;
         this.tickTime = 1000 / this.fps;
         this.lastTime = 0;
@@ -64,50 +62,21 @@ export default class Game {
 
     private init(): void {
         this.initFpsStats();
+        this.initRound();
         this.initRenderer();
-        this.initCharacters();
-        this.initWalls();
-        this.world.spawnApple();
-        this.world.spawnApple();
     }
 
     private update(): void {
-        for (const character of this.characters) {
-            character.update();
-        }
-
-        this.world.update();
+        this.round.update();
     }
 
     private render(): void {
         this.renderer.render();
     }
 
-    private initCharacters(): void {
-        const player1Character: Character = new CharacterBuilder()
-            .setRepresentation('green')
-            .setStartingPosition('left')
-            .setStartingDirection('right')
-            .setSpeed(15)
-            .setInputMethod('player1')
-            .setTailManager('angleworms')
-            .setCollisionStyle('classic')
-            .setGun('angleworms')
-            .build();
-
-        const aiCharacter: Character = new CharacterBuilder()
-            .setRepresentation('blue')
-            .setStartingPosition('right')
-            .setStartingDirection('left')
-            .setSpeed(15)
-            .setInputMethod('ai')
-            .setTailManager('angleworms')
-            .setCollisionStyle('classic')
-            .setGun('angleworms')
-            .build();
-
-        this.characters.push(player1Character);
-        this.characters.push(aiCharacter);
+    private initRound(): void {
+        this.round = new RoundImpl();
+        this.round.start();
     }
 
     private initFpsStats(): void {
@@ -118,12 +87,5 @@ export default class Game {
 
     private initRenderer(): void {
         this.renderer = new GameCanvasRenderer(this.world);
-    }
-
-    private initWalls(): void {
-        new WallSpawner(this.world)
-            .spawnRandomRectanglesWalls()
-            .removeWallsOnCharactersWay(this.characters)
-            .spawnBorderWalls();
     }
 }

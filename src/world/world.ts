@@ -93,6 +93,10 @@ export default class WorldImpl implements World {
         });
     }
 
+    public reset(): void {
+        this.resetWorldObjects();
+    }
+
     private resetWorldObjects() {
         this.worldObjects = [];
         for (let x = 0; x < this.size.width; x++) {

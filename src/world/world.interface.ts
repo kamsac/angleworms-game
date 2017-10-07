@@ -13,6 +13,7 @@ interface World {
     getRandomEmptyPosition: () => WorldPosition;
     update: () => void;
     spawnApple: () => void;
+    reset: () => void;
 }
 
 export default World;
