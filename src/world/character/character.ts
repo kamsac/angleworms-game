@@ -41,6 +41,7 @@ export default class CharacterImpl implements Character {
     public update(): void {
         this.input.update(this);
         this.tailManager.update(this);
+        this.death.update();
     }
 
     public getSize(): number {
@@ -139,6 +140,11 @@ export default class CharacterImpl implements Character {
     }
 
     public removeDeadTail(): void {
+        this.tailManager.removeDeadTail(this);
+    }
+
+    public removeAllTail(): void {
+        this.tailManager.setSize(0);
         this.tailManager.removeDeadTail(this);
     }
 

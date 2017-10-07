@@ -14,6 +14,7 @@ interface Character {
     die: () => void;
     spawnTail: () => void;
     removeDeadTail: () => void;
+    removeAllTail: () => void;
     goLeft: () => void;
     goUp: () => void;
     goRight: () => void;

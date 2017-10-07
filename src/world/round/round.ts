@@ -37,13 +37,18 @@ export default class RoundImpl implements Round {
         return this.world;
     }
 
+    public stopAllCharacters(): void {
+        this.characters.forEach((character) => {
+            character.getHead().stop();
+        });
+    }
+
     private initWorld(): void {
         const worldSize: Dimensions = {
             width: 40,
             height: 40,
         };
         this.world = new WorldImpl(worldSize, this);
-        this.world.reset();
     }
 
     private initCharacters(): void {

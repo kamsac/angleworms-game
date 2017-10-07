@@ -21,7 +21,7 @@ export default class AnglewormsTailManager implements TailManager {
     }
 
     public update(character: Character): void {
-        if (this.ticksSinceGrow++ >= Time.secondsToTicks(this.growSpeed)) {
+        if (this.ticksSinceGrow++ >= Time.squaresPerSecondsToTicks(this.growSpeed)) {
             if (character.isMoving()) {
                 this.size++;
             }

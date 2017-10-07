@@ -53,13 +53,13 @@ class WorldObjectImpl implements WorldObject {
             y: this.position.y,
         };
 
-        if (this.ticksSinceMoved.x++ >= Time.secondsToTicks(Math.abs(this.getVelocity().x))) {
+        if (this.ticksSinceMoved.x++ >= Time.squaresPerSecondsToTicks(Math.abs(this.getVelocity().x))) {
             newPosition.x = futurePosition.x;
             this.ticksSinceMoved.x = 0;
             this.ticksSinceMoved.y = 0;
         }
 
-        if (this.ticksSinceMoved.y++ >= Time.secondsToTicks(Math.abs(this.getVelocity().y))) {
+        if (this.ticksSinceMoved.y++ >= Time.squaresPerSecondsToTicks(Math.abs(this.getVelocity().y))) {
             newPosition.y = futurePosition.y;
             this.ticksSinceMoved.x = 0;
             this.ticksSinceMoved.y = 0;
