@@ -1,7 +1,7 @@
-import Locator from '../../locator';
 import Dimensions from '../../world/dimensions.type';
 import World from '../../world/world.interface';
 import CanvasRenderer from './canvas-renderer';
+import CanvasRendererConfiguration from './canvas-renderer-configuration';
 import ColorPixelWorldRenderer from './color-pixel/color-pixel-world-renderer';
 import PrimitiveSpriteWorldRenderer from './sprite/primitive/primitive-sprite-world-renderer';
 
@@ -14,7 +14,7 @@ class GameCanvasRenderer extends CanvasRenderer {
         super();
 
         this.world = world;
-        this.resolution = Locator.getGameResolution();
+        this.resolution = CanvasRendererConfiguration.RESOLUTION;
         this.worldRenderer = new ColorPixelWorldRenderer(this.context, this.world);
         // this.worldRenderer = new PrimitiveSpriteWorldRenderer(this.context, this.world);
 

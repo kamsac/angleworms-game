@@ -1,7 +1,7 @@
-import Locator from '../../../locator';
 import Dimensions from '../../../world/dimensions.type';
 import WorldPosition from '../../../world/world-position.type';
 import World from '../../../world/world.interface';
+import CanvasRendererConfiguration from '../canvas-renderer-configuration';
 import ColorPixelRepresentation from './color-pixel-representation.type';
 
 export default class ColorPixelWorldRenderer {
@@ -16,7 +16,7 @@ export default class ColorPixelWorldRenderer {
         this.context = context;
         this.world = world;
 
-        this.resolution = Locator.getGameResolution();
+        this.resolution = CanvasRendererConfiguration.RESOLUTION;
         this.loadTileSize();
         this.loadDrawingOffset();
     }

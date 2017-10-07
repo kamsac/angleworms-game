@@ -1,7 +1,7 @@
-import Locator from '../../../../locator';
 import Dimensions from '../../../../world/dimensions.type';
 import WorldPosition from '../../../../world/world-position.type';
 import World from '../../../../world/world.interface';
+import CanvasRendererConfiguration from '../../canvas-renderer-configuration';
 import SpriteRepresentation from '../sprite-representation.type';
 import PrimitiveSpriteCache from './primitive-sprite-cache';
 
@@ -16,7 +16,7 @@ export default class PrimitiveSpriteWorldRenderer {
         this.context = context;
         this.world = world;
 
-        this.resolution = Locator.getGameResolution();
+        this.resolution = CanvasRendererConfiguration.RESOLUTION;
         this.loadTileSize();
     }
 
@@ -37,7 +37,7 @@ export default class PrimitiveSpriteWorldRenderer {
     }
 
     private loadTileSize(): void {
-        const worldResolution: Dimensions = Locator.getGameResolution();
+        const worldResolution: Dimensions = this.resolution;
         const worldSize: Dimensions = this.world.getSize();
         this.tileSize = {
             width: worldResolution.width / worldSize.width,
