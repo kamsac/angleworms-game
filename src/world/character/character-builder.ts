@@ -1,8 +1,8 @@
-import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
 import Vector2D from '../vector-2d.type';
 import WorldPosition from '../world-position.type';
+import World from '../world.interface';
 import CharacterImpl from './character';
 import CharacterInputComponentFactory from './character-inputs/character-input-component-factory';
 import CharacterInputComponent from './character-inputs/character-input-component.interface';
@@ -21,14 +21,13 @@ import TailManager from './tail-manager/tail-manager.interface';
 export default class CharacterBuilder {
     private representation: Representation;
     private position: WorldPosition;
+    private world: World;
     private speed: number;
     private direction: Vector2D;
     private characterInputComponent: CharacterInputComponent;
     private tailManager: TailManager;
     private characterCollisionDetectorComponent: CharacterCollisionDetectorComponent;
     private gunComponent: GunComponent;
-
-    private worldSize: Dimensions = Locator.getWorld().getSize();
 
     public setRepresentation(representationSetName: 'green' | 'blue'): CharacterBuilder {
         switch (representationSetName) {
@@ -59,31 +58,39 @@ export default class CharacterBuilder {
         return this;
     }
 
+    public setWorld(world: World): CharacterBuilder {
+        this.world = world;
+
+        return this;
+    }
+
     public setStartingPosition(position: 'left' | 'right' | 'top' | 'bottom'): CharacterBuilder {
+
+        const worldSize: Dimensions = this.world.getSize();
 
         switch (position) {
             case 'left':
                 this.position = {
                     x: Math.floor(2),
-                    y: Math.floor(this.worldSize.height / 2),
+                    y: Math.floor(worldSize.height / 2),
                 };
                 break;
             case 'right':
                 this.position = {
-                    x: Math.floor(this.worldSize.width - 2),
-                    y: Math.floor(this.worldSize.height / 2),
+                    x: Math.floor(worldSize.width - 2),
+                    y: Math.floor(worldSize.height / 2),
                 };
                 break;
             case 'top':
                 this.position = {
-                    x: Math.floor(this.worldSize.width / 2),
+                    x: Math.floor(worldSize.width / 2),
                     y: Math.floor(2),
                 };
                 break;
             case 'bottom':
                 this.position = this.position = {
-                    x: Math.floor(this.worldSize.width / 2),
-                    y: Math.floor(this.worldSize.height - 2),
+                    x: Math.floor(worldSize.width / 2),
+                    y: Math.floor(worldSize.height - 2),
                 };
                 break;
             default:
@@ -156,6 +163,7 @@ export default class CharacterBuilder {
 
         return new CharacterImpl({
             representation: this.representation,
+            world: this.world,
             position: this.position,
             speed: this.speed,
             direction: this.direction,
@@ -169,6 +177,10 @@ export default class CharacterBuilder {
     private throwErrorsForNotSetProperties(): void {
         if (!this.representation) {
             throw new Error('Representation has to be set.');
+        }
+
+        if (!this.world) {
+            throw new Error('World has to be set.');
         }
 
         if (!this.position) {

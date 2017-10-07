@@ -90,6 +90,7 @@ export default class WorldImpl implements World {
     public spawnApple() {
         const apple = new Apple({
             position: this.getRandomEmptyPosition(),
+            world: this,
         });
     }
 

@@ -1,4 +1,3 @@
-import Locator from '../../locator';
 import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
 import Vector2D from '../vector-2d.type';
@@ -20,8 +19,8 @@ export default class CharacterImpl implements Character {
     private head: CharacterHead;
     private tailManager: TailManager;
     private representation: Representation;
-    private worldSize: Dimensions;
     private world: World;
+    private worldSize: Dimensions;
 
     public constructor(initialSettings: CharacterInitialSettings) {
         this.input = initialSettings.input;
@@ -29,8 +28,8 @@ export default class CharacterImpl implements Character {
         this.collisionDetector = initialSettings.collisionDetector;
         this.gun = initialSettings.gun;
         this.representation = initialSettings.representation;
-        this.worldSize = Locator.getWorld().getSize();
-        this.world = Locator.getWorld();
+        this.world = initialSettings.world;
+        this.worldSize = this.world.getSize();
 
         this.tailManager.setGrowSpeed(initialSettings.speed / 4);
         this.initHead(initialSettings.position, initialSettings.direction, initialSettings.speed);
@@ -47,6 +46,10 @@ export default class CharacterImpl implements Character {
 
     public setSize(size: number): void {
         this.tailManager.setSize(size);
+    }
+
+    public getWorld(): World {
+        return this.world;
     }
 
     public goLeft(): void {
@@ -133,7 +136,7 @@ export default class CharacterImpl implements Character {
     }
 
     public removeDeadTail(): void {
-        this.tailManager.removeDeadTail();
+        this.tailManager.removeDeadTail(this);
     }
 
     public getHead(): CharacterHead {
@@ -152,6 +155,7 @@ export default class CharacterImpl implements Character {
         const headInitialSettings: WorldObjectInitialSettings = {
             representation: headRepresentation,
             position: startPosition,
+            world: this.world,
         };
 
         this.head = new CharacterHead(headInitialSettings, this);

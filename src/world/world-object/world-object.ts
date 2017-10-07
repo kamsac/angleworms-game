@@ -1,4 +1,3 @@
-import Locator from '../../locator';
 import AnyRepresentation from '../../renderers/any-representation.type';
 import Representation from '../../renderers/representation.type';
 import Time from '../../time';
@@ -21,8 +20,8 @@ class WorldObjectImpl implements WorldObject {
     protected representation: Representation;
 
     public constructor(initialSettings: WorldObjectInitialSettings) {
-        this.world = Locator.getWorld();
-        this.worldSize = Locator.getWorld().getSize();
+        this.world = initialSettings.world;
+        this.worldSize = this.world.getSize();
         this.position = WorldPositionHelper.wrap(initialSettings.position, this.worldSize);
         this.speed = 0;
         this.direction = { x: 0, y: 0 };
@@ -82,6 +81,10 @@ class WorldObjectImpl implements WorldObject {
 
     public getPosition(): WorldPosition {
         return this.position;
+    }
+
+    public getWorld(): World {
+        return this.world;
     }
 
     public setSpeed(speed: number): void {

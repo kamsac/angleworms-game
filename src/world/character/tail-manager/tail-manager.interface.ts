@@ -9,7 +9,7 @@ interface TailManager {
     grow: (size: number) => void;
     shrink: (size: number) => void;
     spawnTail: (character: Character) => void;
-    removeDeadTail: () => void;
+    removeDeadTail: (character: Character) => void;
 }
 
 export default TailManager;

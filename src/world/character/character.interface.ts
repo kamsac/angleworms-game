@@ -1,4 +1,5 @@
 import CharacterHead from '../world-object/character-head';
+import World from '../world.interface';
 
 interface Character {
     update: () => void;
@@ -24,6 +25,7 @@ interface Character {
     isMovingDown: () => boolean;
     setSize: (size: number) => void;
     getSize: () => number;
+    getWorld: () => World;
 }
 
 export default Character;

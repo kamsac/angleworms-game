@@ -21,12 +21,14 @@ export default class WallSpawner {
                     x: x,
                     y: 0,
                 },
+                world: this.world,
             });
             const bottomWall: Wall = new Wall({
                 position: {
                     x: x,
                     y: this.worldSize.height - 1,
                 },
+                world: this.world,
             });
         }
 
@@ -36,12 +38,14 @@ export default class WallSpawner {
                     x: 0,
                     y: y,
                 },
+                world: this.world,
             });
             const rightWall: Wall = new Wall({
                 position: {
                     x: this.worldSize.width - 1,
                     y: y,
                 },
+                world: this.world,
             });
         }
 
@@ -72,6 +76,7 @@ export default class WallSpawner {
                 for (let y = startY, endY = (startY + groupHeight); y < endY; y++) {
                     const wall: Wall = new Wall({
                         position: { x, y },
+                        world: this.world,
                     });
                 }
             }

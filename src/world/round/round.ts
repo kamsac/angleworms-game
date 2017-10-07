@@ -1,6 +1,7 @@
-import Locator from '../../locator';
 import CharacterBuilder from '../character/character-builder';
 import Character from '../character/character.interface';
+import Dimensions from '../dimensions.type';
+import WorldImpl from '../world';
 import WallSpawner from '../world-object/wall-spawner';
 import World from '../world.interface';
 import Round from './round.interface';
@@ -24,8 +25,16 @@ export default class RoundImpl implements Round {
         this.world.update();
     }
 
+    public getWorld(): World {
+        return this.world;
+    }
+
     private initWorld(): void {
-        this.world = Locator.getWorld();
+        const worldSize: Dimensions = {
+            width: 40,
+            height: 40,
+        };
+        this.world = new WorldImpl(worldSize);
         this.world.reset();
     }
 
@@ -34,6 +43,7 @@ export default class RoundImpl implements Round {
 
         const player1Character: Character = new CharacterBuilder()
             .setRepresentation('green')
+            .setWorld(this.world)
             .setStartingPosition('left')
             .setStartingDirection('right')
             .setSpeed(15)
@@ -45,6 +55,7 @@ export default class RoundImpl implements Round {
 
         const aiCharacter: Character = new CharacterBuilder()
             .setRepresentation('blue')
+            .setWorld(this.world)
             .setStartingPosition('right')
             .setStartingDirection('left')
             .setSpeed(15)

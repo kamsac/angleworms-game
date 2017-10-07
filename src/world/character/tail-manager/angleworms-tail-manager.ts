@@ -1,11 +1,9 @@
-import Locator from '../../../locator';
 import Representation from '../../../renderers/representation.type';
 import Time from '../../../time';
 import CharacterTail from '../../world-object/character-tail';
 import WorldObjectInitialSettings from '../../world-object/world-object-initial-settings.type';
 import WorldPositionHelper from '../../world-position-helper';
 import WorldPosition from '../../world-position.type';
-import World from '../../world.interface';
 import Character from '../character.interface';
 import TailManager from './tail-manager.interface';
 
@@ -14,14 +12,12 @@ export default class AnglewormsTailManager implements TailManager {
     private ticksSinceGrow: number;
     private growSpeed: number;
     private tailPieces: CharacterTail[];
-    private world: World;
 
     public constructor() {
         this.size = 0;
         this.ticksSinceGrow = 0;
         this.growSpeed = 0;
         this.tailPieces = [];
-        this.world = Locator.getWorld();
     }
 
     public update(character: Character): void {
@@ -71,6 +67,7 @@ export default class AnglewormsTailManager implements TailManager {
         const tailInitialSettings: WorldObjectInitialSettings = {
             representation: tailRepresentation,
             position: position,
+            world: character.getWorld(),
         };
 
         const tail = new CharacterTail(tailInitialSettings);
@@ -79,13 +76,13 @@ export default class AnglewormsTailManager implements TailManager {
         this.tailPieces.push(tail);
     }
 
-    public removeDeadTail(): void {
+    public removeDeadTail(character: Character): void {
         if (this.tailPieces.length > this.size) {
             for (let i = 0; this.tailPieces.length - this.size; i++) {
                 const removedTailPiece: CharacterTail = this.tailPieces.shift();
-                this.world.removeWorldObject(removedTailPiece);
+                character.getWorld().removeWorldObject(removedTailPiece);
 
-                this.world.removeWorldObjectsAt(removedTailPiece.getPosition(), [
+                character.getWorld().removeWorldObjectsAt(removedTailPiece.getPosition(), [
                     'character-tail',
                     'wall',
                 ]);

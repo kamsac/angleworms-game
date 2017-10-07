@@ -5,11 +5,8 @@ import Locator from './locator';
 import GameCanvasRenderer from './renderers/canvas/game-canvas-renderer';
 import RoundImpl from './world/round/round';
 import Round from './world/round/round.interface';
-import WorldImpl from './world/world';
-import World from './world/world.interface';
 
 export default class Game {
-    private world: World;
     private fps: number;
     private tickTime: number; // ms
     private lastTime: number; // ms
@@ -23,7 +20,6 @@ export default class Game {
     public constructor() {
         Game.provideServices();
 
-        this.world = Locator.getWorld();
         this.fps = GameConfiguration.TICKS_PER_SECOND;
         this.tickTime = 1000 / this.fps;
         this.lastTime = 0;
@@ -36,7 +32,6 @@ export default class Game {
     }
 
     private static provideServices(): void {
-        Locator.provideWorld(new WorldImpl({width: 40, height: 40}));
         Locator.provideGameInput(new GameInput());
     }
 
@@ -85,6 +80,6 @@ export default class Game {
     }
 
     private initRenderer(): void {
-        this.renderer = new GameCanvasRenderer(this.world);
+        this.renderer = new GameCanvasRenderer(this.round.getWorld());
     }
 }

@@ -1,16 +1,12 @@
-import Locator from '../../../locator';
 import WorldPositionHelper from '../../world-position-helper';
 import WorldPosition from '../../world-position.type';
-import World from '../../world.interface';
 import Character from '../character.interface';
 import CharacterCollisionDetectorComponent from './character-collision-detector-component.interface';
 
 export default class AnglewormsCollisionDetectorComponent implements CharacterCollisionDetectorComponent {
-    private world: World;
     private dangerousWorldObjects: string[];
 
     public constructor() {
-        this.world = Locator.getWorld();
         this.dangerousWorldObjects = [
             'character-head',
             'character-tail',
@@ -25,7 +21,7 @@ export default class AnglewormsCollisionDetectorComponent implements CharacterCo
             y: character.getHead().getPosition().y,
         };
 
-        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
+        return (character.getWorld().getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 
     public isSafeToGoUp(character: Character): boolean {
@@ -34,7 +30,7 @@ export default class AnglewormsCollisionDetectorComponent implements CharacterCo
             y: character.getHead().getPosition().y - 2,
         };
 
-        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
+        return (character.getWorld().getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 
     public isSafeToGoRight(character: Character): boolean {
@@ -43,7 +39,7 @@ export default class AnglewormsCollisionDetectorComponent implements CharacterCo
             y: character.getHead().getPosition().y,
         };
 
-        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
+        return (character.getWorld().getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 
     public isSafeToGoDown(character: Character): boolean {
@@ -52,7 +48,7 @@ export default class AnglewormsCollisionDetectorComponent implements CharacterCo
             y: character.getHead().getPosition().y + 2,
         };
 
-        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
+        return (character.getWorld().getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 
     public isSafeNotToChangeDirection(character: Character): boolean {
@@ -62,6 +58,6 @@ export default class AnglewormsCollisionDetectorComponent implements CharacterCo
             2,
         );
 
-        return (this.world.getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
+        return (character.getWorld().getWorldObjectsAt(nextPosition, this.dangerousWorldObjects).length === 0);
     }
 }

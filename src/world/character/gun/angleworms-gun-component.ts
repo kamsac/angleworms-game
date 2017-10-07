@@ -23,6 +23,7 @@ export default class AnglewormsGunComponent implements GunComponent {
                 WorldPositionHelper.getAdjacentFuturePosition(characterPosition, characterVelocity);
             this.bulletAlive = new Bullet({
                 position: position,
+                world: character.getWorld(),
             }, this, character);
         }
     }

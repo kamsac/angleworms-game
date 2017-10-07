@@ -1,7 +1,5 @@
-import Locator from '../../../locator';
 import WorldObject from '../../world-object/world-object.interface';
 import WorldPosition from '../../world-position.type';
-import World from '../../world.interface';
 import Character from '../character.interface';
 import AiInputReflex from './ai-helpers/ai-input-reflex';
 import AiWorldAnalyser from './ai-helpers/ai-world-analyser';
@@ -15,15 +13,12 @@ type GoDirection = {
 };
 
 export default class AiCharacterInputComponent implements CharacterInputComponent {
-
-    private world: World;
     private aiWorldAnalyser: AiWorldAnalyser;
     private targetPosition: WorldPosition;
     private randomChangeDirectionChance: number;
     private reflex: AiInputReflex;
 
     public constructor(aiWorldAnalyser: AiWorldAnalyser) {
-        this.world = Locator.getWorld();
         this.aiWorldAnalyser = aiWorldAnalyser;
         this.targetPosition = null;
         this.randomChangeDirectionChance = 0.2;

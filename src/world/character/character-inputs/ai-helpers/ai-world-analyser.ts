@@ -1,16 +1,8 @@
-import Locator from '../../../../locator';
 import WorldObject from '../../../world-object/world-object.interface';
 import WorldPosition from '../../../world-position.type';
-import World from '../../../world.interface';
 import Character from '../../character.interface';
 
 export default class AiWorldAnalyser {
-
-    private world: World;
-
-    public constructor() {
-        this.world = Locator.getWorld();
-    }
 
     private static distance(worldPosition1: WorldPosition, worldPosition2: WorldPosition): number {
         const distanceX: number = Math.abs(worldPosition1.x - worldPosition2.x);
@@ -19,7 +11,7 @@ export default class AiWorldAnalyser {
     }
 
     public getNearestTargetWorldObject(character: Character, itemTypes: string[]): WorldObject | null {
-        const targets: WorldObject[] = this.world.getWorldObjects(itemTypes);
+        const targets: WorldObject[] = character.getWorld().getWorldObjects(itemTypes);
         if (targets.length === 0) {
             return null;
         }

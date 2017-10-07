@@ -1,10 +1,12 @@
 import Renderable from '../renderable.interface';
 import Vector2D from '../vector-2d.type';
 import WorldPosition from '../world-position.type';
+import World from '../world.interface';
 
 interface WorldObject extends Renderable {
     setPosition: (position: WorldPosition) => void;
     getPosition: () => WorldPosition;
+    getWorld: () => World;
     setSpeed: (speed: number) => void;
     getSpeed: () => number;
     setDirection: (direction: Vector2D) => void;

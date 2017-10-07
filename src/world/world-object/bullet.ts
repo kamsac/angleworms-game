@@ -1,4 +1,3 @@
-import Time from '../../time';
 import Character from '../character/character.interface';
 import GunComponent from '../character/gun/gun-component.interface';
 import WorldPositionHelper from '../world-position-helper';
