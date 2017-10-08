@@ -1,3 +1,4 @@
+import CharacterTail from '../../world-object/character-tail';
 import Character from '../character.interface';
 
 interface TailManager {
@@ -10,6 +11,7 @@ interface TailManager {
     shrink: (size: number) => void;
     spawnTail: (character: Character) => void;
     removeDeadTail: (character: Character) => void;
+    getTailPieces: () => CharacterTail[];
 }
 
 export default TailManager;

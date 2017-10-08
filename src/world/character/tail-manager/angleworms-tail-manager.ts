@@ -56,7 +56,7 @@ export default class AnglewormsTailManager implements TailManager {
 
     public spawnTail(character: Character): void {
         const tailRepresentation: Representation =
-            JSON.parse(JSON.stringify(character.getHead().getRepresentation()));
+            JSON.parse(JSON.stringify(character.getHead().getEveryRepresentation()));
         tailRepresentation.Sprite.spriteName += '-tail';
 
         const position: WorldPosition = {
@@ -88,5 +88,9 @@ export default class AnglewormsTailManager implements TailManager {
                 ]);
             }
         }
+    }
+
+    public getTailPieces(): CharacterTail[] {
+        return this.tailPieces;
     }
 }

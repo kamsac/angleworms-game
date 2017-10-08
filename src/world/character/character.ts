@@ -2,6 +2,7 @@ import Representation from '../../renderers/representation.type';
 import Dimensions from '../dimensions.type';
 import Vector2D from '../vector-2d.type';
 import CharacterHead from '../world-object/character-head';
+import CharacterTail from '../world-object/character-tail';
 import WorldObjectInitialSettings from '../world-object/world-object-initial-settings.type';
 import WorldPosition from '../world-position.type';
 import World from '../world.interface';
@@ -150,6 +151,10 @@ export default class CharacterImpl implements Character {
 
     public getHead(): CharacterHead {
         return this.head;
+    }
+
+    public getTailPieces(): CharacterTail[] {
+        return this.tailManager.getTailPieces();
     }
 
     public die(): void {

@@ -1,9 +1,11 @@
 import CharacterHead from '../world-object/character-head';
 import World from '../world.interface';
+import CharacterTail from '../world-object/character-tail';
 
 interface Character {
     update: () => void;
     getHead: () => CharacterHead;
+    getTailPieces: () => CharacterTail[];
     isSafeToGoLeft: () => boolean;
     isSafeToGoUp: () => boolean;
     isSafeToGoRight: () => boolean;

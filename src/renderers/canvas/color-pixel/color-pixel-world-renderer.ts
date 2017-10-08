@@ -27,6 +27,7 @@ export default class ColorPixelWorldRenderer {
             const representation: ColorPixelRepresentation =
                 worldObject.getRepresentation('ColorPixel') as ColorPixelRepresentation;
             this.context.fillStyle = representation.color;
+            this.context.globalAlpha = (representation.alpha !== undefined) ? representation.alpha : 1;
             this.context.fillRect(
                 Math.floor(worldObjectPosition.x * this.tileSize.width + this.drawingOffset.width),
                 Math.floor(worldObjectPosition.y * this.tileSize.height + this.drawingOffset.height),

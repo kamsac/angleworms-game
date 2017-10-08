@@ -122,16 +122,32 @@ class WorldObjectImpl implements WorldObject {
         return this.type;
     }
 
-    public getRepresentation(representationName?: string): Representation | AnyRepresentation {
-        if (!representationName) {
-            return this.representation;
+    public setRepresentation(representationName: string, representationInformation: AnyRepresentation): void {
+        if (!this.representation[representationName]) {
+            throw new Error(`Wrong \`${representationName}\` representation name.`);
         }
 
+        this.representation[representationName] = representationInformation;
+    }
+
+    public setRepresentationProperty(representationName: string, representationProperty: string, value: any): void {
+        if (!this.representation[representationName]) {
+            throw new Error(`Wrong \`${representationName}\` representation name.`);
+        }
+
+        this.representation[representationName][representationProperty] = value;
+    }
+
+    public getRepresentation(representationName: string): AnyRepresentation {
         if (!this.representation[representationName]) {
             throw new Error(`No such \`${representationName}\` representation ` +
                 `in \`${this.constructor.name}\` implementation!`);
         }
         return this.representation[representationName];
+    }
+
+    public getEveryRepresentation(): Representation {
+        return this.representation;
     }
 
     public move(newPosition): void {

@@ -1,3 +1,3 @@
-type DeathStyle = 'regular' | 'kinda';
+type DeathStyle = 'angleworms' | 'regular' | 'kinda';
 
 export default DeathStyle;
