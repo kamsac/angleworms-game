@@ -5,6 +5,7 @@ interface Round {
     update: () => void;
     getWorld: () => World;
     stopAllCharacters: () => void;
+    getStartTime: () => number;
 }
 
 export default Round;

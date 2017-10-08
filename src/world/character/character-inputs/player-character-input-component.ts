@@ -13,7 +13,7 @@ export default class PlayerCharacterInputComponent implements CharacterInputComp
     }
 
     public update(character: Character): void {
-        this.lastPressedDirection = this.getLastPressedDirection();
+        this.lastPressedDirection = this.getLastPressedDirection(character);
 
         switch (this.lastPressedDirection) {
             case 'left': {
@@ -34,17 +34,20 @@ export default class PlayerCharacterInputComponent implements CharacterInputComp
             }
         }
 
-        if (this.gameInput.bindings.player1.shoot.isPressed) {
+        if (
+            this.gameInput.bindings.player1.shoot.isPressed &&
+            this.isPressedAfterRoundStart(this.gameInput.bindings.player1.shoot, character)
+        ) {
             character.shoot();
         }
     }
 
-    private getLastPressedDirection(): string {
+    private getLastPressedDirection(character: Character): string {
         const pressedKeys: InputBindingInformation[] = [];
         for (const actionName in this.gameInput.bindings.player1) {
             if (this.gameInput.bindings.player1.hasOwnProperty(actionName)) {
                 const bindingInformation: InputBindingInformation = this.gameInput.bindings.player1[actionName];
-                if (bindingInformation.isPressed) {
+                if (bindingInformation.isPressed && this.isPressedAfterRoundStart(bindingInformation, character)) {
                     pressedKeys.push(this.gameInput.bindings.player1[actionName]);
                 }
             }
@@ -59,5 +62,11 @@ export default class PlayerCharacterInputComponent implements CharacterInputComp
         });
 
         return pressedKeys.shift().action;
+    }
+
+    private isPressedAfterRoundStart(bindingInformation: InputBindingInformation, character: Character): boolean {
+        const keyPressedTime: number = bindingInformation.lastChange;
+        const roundStartTime: number = character.getWorld().getRound().getStartTime();
+        return keyPressedTime > roundStartTime;
     }
 }

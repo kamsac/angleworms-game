@@ -12,12 +12,14 @@ export default class RoundImpl implements Round {
     private world: World;
     private characters: Character[];
     private renderer: GameRenderer;
+    private startTime: number;
 
     public constructor() {
         this.renderer = Locator.getGameRenderer();
     }
 
     public start(): void {
+        this.startTime = new Date().valueOf();
         this.initWorld();
         this.initCharacters();
         this.initWalls();
@@ -41,6 +43,10 @@ export default class RoundImpl implements Round {
         this.characters.forEach((character) => {
             character.getHead().stop();
         });
+    }
+
+    public getStartTime(): number {
+        return this.startTime;
     }
 
     private initWorld(): void {

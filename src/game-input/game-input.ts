@@ -66,6 +66,22 @@ export default class GameInputImpl implements GameInput {
         return event.key;
     }
 
+    public isAnyBindedKeyPressed(bindingGroup: string): boolean {
+        if (!this.bindings.hasOwnProperty(bindingGroup)) {
+            throw new Error(`Wrong \`${bindingGroup}\` bindingGroup`);
+        }
+
+        for (const actionName in this.bindings[bindingGroup]) {
+            if (this.bindings[bindingGroup].hasOwnProperty(actionName)) {
+                if (this.bindings[bindingGroup][actionName].isPressed) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private updateInput(pressedKey: string, pressed: boolean) {
         for (const bindingGroup in this.bindings) {
             if (this.bindings.hasOwnProperty(bindingGroup)) {
